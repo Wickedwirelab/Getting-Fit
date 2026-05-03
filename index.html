@@ -93,6 +93,12 @@ input:focus,textarea:focus{outline:none}
 /* Points info bar */
 #pts-info{background:#fff;border-radius:11px;padding:7px 12px;display:flex;justify-content:space-around;font-size:10px;color:#bbb;margin:7px 14px 0}
 
+/* Manage mode */
+#manage-bar{margin:8px 14px 0;display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:11px;padding:9px 14px}
+.ex-row.hidden-ex{opacity:.4;background:#f5f5f5}
+.hide-btn{flex-shrink:0;background:none;border:1.5px solid #eee;border-radius:7px;padding:4px 9px;font-size:11px;cursor:pointer;color:#999;font-family:inherit;white-space:nowrap}
+.hide-btn.unhide{border-color:#2D5A27;color:#2D5A27}
+
 /* Phase goal */
 #phase-goal-card{margin:12px 14px 0;background:#fff;border-radius:11px;padding:10px 14px}
 
@@ -294,12 +300,16 @@ input:focus,textarea:focus{outline:none}
 
   <div id="tab-workout" class="hidden">
     <div id="phase-goal-card"><span style="font-weight:bold;font-size:12px">Phase Goal: </span><span id="phase-goal-text" style="font-size:12px;color:#555"></span></div>
-    <div id="pts-info"><span>✅ +10/exercise</span><span>🏁 +50/workout</span><span>📅 +200/week</span></div>
+    <div id="pts-info"><span>✅ +10/exercise</span><span>💪 +25 for 5 done</span><span>🏁 +50/workout</span><span>📅 +200/week</span></div>
     <div id="day-tabs"></div>
     <div id="day-header"><div id="day-name"></div><div id="day-label-badge"></div></div>
     <div id="progress-wrap">
       <div id="progress-text"><span id="progress-done-text"></span><span id="progress-pct-text"></span></div>
       <div id="progress-bar-bg"><div id="progress-bar"></div></div>
+    </div>
+    <div id="manage-bar">
+      <span style="font-size:12px;color:#888">Manage exercises</span>
+      <button id="manage-toggle-btn" onclick="toggleManageMode()" style="background:none;border:1.5px solid #eee;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit;color:#888">✏️ Edit</button>
     </div>
     <div id="exercise-list"></div>
     <div style="padding:0 14px">
@@ -332,7 +342,7 @@ input:focus,textarea:focus{outline:none}
 
 <script>
 // ── Data ──────────────────────────────────────────────────────
-const PTS_EX=10,PTS_WO=50,PTS_WK=200;
+const PTS_EX=10,PTS_WO=50,PTS_WK=200,PTS_5=25;
 const STORE_KEY='ft_v6';
 
 const THEMES=[
@@ -534,6 +544,7 @@ let nutDate=new Date().toISOString().split('T')[0];
 let nutMealType='Breakfast';
 let expandedDay=null;
 let foodSearchTimeout=null;
+let manageMode=false;
 
 function load(){try{const r=localStorage.getItem(STORE_KEY);if(r)G=JSON.parse(r);}catch{}}
 function saveAll(){try{localStorage.setItem(STORE_KEY,JSON.stringify(G));}catch{}}
@@ -548,7 +559,7 @@ function weekKey(date){const d=new Date(date);d.setHours(0,0,0,0);d.setDate(d.ge
 function mkProfile(name,avatar,themeId,sw,gw,cg,pg,cbg,fg){
   return{id:Date.now().toString(),name,avatar,themeId,sw,gw,
     cg:Number(cg)||2000,pg:Number(pg)||150,cbg:Number(cbg)||200,fg:Number(fg)||65,
-    pts:0,wc:0,fwc:0,awards:[],checked:{},cd:{},weekLog:{},cw:[],wl:[],ml:{},ce:{}};
+    pts:0,wc:0,fwc:0,awards:[],checked:{},cd:{},weekLog:{},cw:[],wl:[],ml:{},ce:{},he:{}};
 }
 
 function toCode(p){
@@ -575,6 +586,7 @@ function updateProfile(fn){
   p.wl=[...(p.wl||[])];
   p.ml={...p.ml};
   p.ce={...(p.ce||{})};
+  p.he={...(p.he||{})};
   fn(p);
   const a=checkAwards(p);
   G.profiles[G.activeId]=p;
@@ -702,7 +714,7 @@ function doRestore(){
   const p=fromCode(code);
   const msg=document.getElementById('restore-msg');
   if(!p||!p.id||!p.name){msg.textContent='Invalid code. Please try again.';return;}
-  p.checked=p.checked||{};p.wl=p.wl||[];p.ml=p.ml||{};p.ce=p.ce||{};
+  p.checked=p.checked||{};p.wl=p.wl||[];p.ml=p.ml||{};p.ce=p.ce||{};p.he=p.he||{};
   G.profiles[p.id]=p;G.activeId=p.id;saveAll();
   startApp();
 }
@@ -796,7 +808,27 @@ function copyCode(){
 }
 
 // ── Workout ───────────────────────────────────────────────────
-function ck(ph,d,i){const p=profile();return p.id+'_p'+ph+'_'+d+'_'+i;}
+function ck(ph,d,key){const p=profile();return p.id+'_p'+ph+'_'+d+'_'+key;}
+
+function toggleManageMode(){
+  manageMode=!manageMode;
+  const btn=document.getElementById('manage-toggle-btn');
+  if(btn){
+    btn.textContent=manageMode?'✅ Done':'✏️ Edit';
+    btn.style.color=manageMode?theme().bg:'#888';
+    btn.style.borderColor=manageMode?theme().bg:'#eee';
+  }
+  renderWorkout();
+}
+
+function toggleHideEx(exKey){
+  updateProfile(p=>{
+    const he={...(p.he||{})};
+    he[exKey]=!he[exKey];
+    p.he=he;
+  });
+  renderWorkout();
+}
 
 function renderWorkout(){
   const p=profile();if(!p)return;
@@ -805,14 +837,26 @@ function renderWorkout(){
   const dayData=phase.days[curDay];
   const ceKey='p'+(curPhase+1)+'_'+curDay;
   const customExs=(p.ce||{})[ceKey]||[];
-  const allExs=[...dayData.ex,...customExs];
+  const hiddenExs=p.he||{};
+
+  // Build full exercise list with hidden flags
+  const baseExs=dayData.ex.map((ex,i)=>({...ex,_key:'p'+(curPhase+1)+'_'+curDay+'_base_'+i,_isBase:true}));
+  const allExs=[...baseExs,...customExs.map(ex=>({...ex,_key:ex.id,_isBase:false}))];
+
+  // Active (non-hidden) exercises for progress
+  const activeExs=allExs.filter(ex=>!hiddenExs[ex._key]);
 
   // Phase goal
   document.getElementById('phase-goal-text').textContent=phase.goal;
   document.getElementById('phase-goal-card').style.borderLeft='4px solid '+t.bg;
 
-  // Pts info
-  document.getElementById('pts-info').style.background='#fff';
+  // Manage bar
+  const mb=document.getElementById('manage-toggle-btn');
+  if(mb){
+    mb.textContent=manageMode?'✅ Done':'✏️ Edit';
+    mb.style.color=manageMode?t.bg:'#888';
+    mb.style.borderColor=manageMode?t.bg:'#eee';
+  }
 
   // Day tabs
   document.getElementById('day-tabs').innerHTML=DAYS.map(d=>`
@@ -823,10 +867,11 @@ function renderWorkout(){
   document.getElementById('day-name').textContent=DAY_FULL[curDay];
   document.getElementById('day-label-badge').textContent=dayData.label;
 
-  // Progress
-  const done=allExs.filter((_,i)=>p.checked[ck(curPhase+1,curDay,i)]).length;
-  const pct=Math.round((done/allExs.length)*100);
-  document.getElementById('progress-done-text').textContent=done+'/'+allExs.length+' done';
+  // Progress — only count active (visible) exercises
+  const done=activeExs.filter(ex=>p.checked[ck(curPhase+1,curDay,ex._key)]).length;
+  const total=activeExs.length;
+  const pct=total?Math.round((done/total)*100):0;
+  document.getElementById('progress-done-text').textContent=done+'/'+total+' done';
   document.getElementById('progress-pct-text').textContent=pct+'%';
   document.getElementById('progress-pct-text').style.color=pct===100?t.bg:'#ccc';
   document.getElementById('progress-bar').style.width=pct+'%';
@@ -834,32 +879,40 @@ function renderWorkout(){
   document.getElementById('add-ex-btn').style.borderColor=t.bg;
   document.getElementById('add-ex-btn').style.color=t.bg;
 
-  // Exercises
-  document.getElementById('exercise-list').innerHTML=allExs.map((ex,i)=>{
-    const isDone=!!p.checked[ck(curPhase+1,curDay,i)];
-    const isCustom=!!ex.custom;
-    return `<div class="ex-row ${isDone?'done':''} ${isCustom?'custom-ex':''}" style="${isDone?'border-color:'+t.bg+'22':isCustom?'border-color:'+t.bg+'55':''}">
-      ${isCustom?`<span class="custom-badge" style="color:${t.bg}">Custom</span>`:''}
-      <div class="ex-check ${isDone?'done':''}" style="${isDone?'background:'+t.bg:''}" onclick="toggleEx(${i})">
+  // 5-exercise bonus indicator
+  const bonusEarned=done>=5;
+  document.getElementById('pts-info').innerHTML=
+    `<span>✅ +${PTS_EX}/exercise</span><span style="${bonusEarned?'color:#F5A623;font-weight:bold':''}">💪 +${PTS_5} for 5 done${bonusEarned?' ✓':''}</span><span>🏁 +${PTS_WO}/workout</span><span>📅 +${PTS_WK}/week</span>`;
+
+  // Exercise list
+  document.getElementById('exercise-list').innerHTML=allExs.map((ex)=>{
+    const isHidden=!!hiddenExs[ex._key];
+    const isDone=!isHidden&&!!p.checked[ck(curPhase+1,curDay,ex._key)];
+    const isCustom=!ex._isBase;
+    const idx=allExs.indexOf(ex);
+    return `<div class="ex-row ${isDone?'done':''} ${isCustom?'custom-ex':''} ${isHidden?'hidden-ex':''}" style="${isDone?'border-color:'+t.bg+'22':isCustom&&!isHidden?'border-color:'+t.bg+'55':''}">
+      ${isCustom&&!manageMode?`<span class="custom-badge" style="color:${t.bg}">Custom</span>`:''}
+      ${!isHidden?`<div class="ex-check ${isDone?'done':''}" style="${isDone?'background:'+t.bg:''}" onclick="toggleEx('${ex._key}',${isHidden})">
         ${isDone?'<span class="ex-check-inner">✓</span>':''}
-      </div>
-      <div class="ex-info" onclick="toggleEx(${i})">
-        <div class="ex-name ${isDone?'done':''}">${ex.n}</div>
+      </div>`:`<div style="width:24px;flex-shrink:0"></div>`}
+      <div class="ex-info" onclick="${!isHidden&&!manageMode?'toggleEx(\''+ex._key+'\',false)':''}">
+        <div class="ex-name ${isDone?'done':''}" style="${isHidden?'color:#ccc;text-decoration:line-through':''}">${ex.n}</div>
         ${ex.c?`<div class="ex-cue">${ex.c}</div>`:''}
       </div>
-      <div class="ex-sets-reps" onclick="toggleEx(${i})">
+      <div class="ex-sets-reps" style="${isHidden?'opacity:.4':''}">
         <div class="ex-sets" style="color:${t.bg}">${ex.s}</div>
         <div class="ex-reps">${ex.r}</div>
       </div>
-      ${ex.yt?`<a href="${ex.yt}" target="_blank" class="yt-btn" onclick="event.stopPropagation()"><svg width="8" height="8" viewBox="0 0 10 10" fill="white"><polygon points="2,1 9,5 2,9"/></svg>YT</a>`:'<div class="yt-placeholder"></div>'}
-      ${isCustom?`<button class="remove-btn" onclick="removeCustomEx('${ex.id}',event)">×</button>`:''}
+      ${!manageMode&&ex.yt&&!isHidden?`<a href="${ex.yt}" target="_blank" class="yt-btn" onclick="event.stopPropagation()"><svg width="8" height="8" viewBox="0 0 10 10" fill="white"><polygon points="2,1 9,5 2,9"/></svg>YT</a>`:'<div class="yt-placeholder"></div>'}
+      ${manageMode?`<button class="hide-btn ${isHidden?'unhide':''}" onclick="toggleHideEx('${ex._key}')">${isHidden?'Show':'Hide'}</button>`:''}
+      ${manageMode&&isCustom?`<button class="remove-btn" onclick="removeCustomEx('${ex.id||ex._key}',event)" style="margin-left:4px">×</button>`:''}
     </div>`;
   }).join('');
 
   // Log button
   const todayLogged=!!(p.cd||{})[todayLabel()];
   const logBtn=document.getElementById('log-workout-btn');
-  if(pct===100){
+  if(pct===100&&!manageMode){
     logBtn.classList.remove('hidden');
     logBtn.style.background=todayLogged?'#e8e8e8':t.bg;
     logBtn.style.color=todayLogged?'#aaa':'#fff';
@@ -871,17 +924,40 @@ function renderWorkout(){
   }
 }
 
-function selectDay(d){curDay=d;renderWorkout();}
+function selectDay(d){curDay=d;manageMode=false;renderWorkout();}
 
-function toggleEx(i){
+function toggleEx(exKey,isHidden){
+  if(isHidden||manageMode)return;
   const p=profile();if(!p)return;
-  const k=ck(curPhase+1,curDay,i);
+  const k=ck(curPhase+1,curDay,exKey);
   const was=!!p.checked[k];
+
+  // Count active done before this toggle
+  const phase=PHASES[curPhase];
+  const dayData=phase.days[curDay];
+  const ceKey='p'+(curPhase+1)+'_'+curDay;
+  const customExs=(p.ce||{})[ceKey]||[];
+  const hiddenExs=p.he||{};
+  const baseExs=dayData.ex.map((ex,i)=>({...ex,_key:'p'+(curPhase+1)+'_'+curDay+'_base_'+i}));
+  const allExs=[...baseExs,...customExs.map(ex=>({...ex,_key:ex.id}))];
+  const activeExs=allExs.filter(ex=>!hiddenExs[ex._key]);
+  const doneBefore=activeExs.filter(ex=>p.checked[ck(curPhase+1,curDay,ex._key)]).length;
+
   updateProfile(pr=>{
     pr.checked={...pr.checked,[k]:!was};
     pr.pts=Math.max(0,(pr.pts||0)+(was?-PTS_EX:PTS_EX));
+    // 5-exercise bonus: award when crossing 5, remove when uncrossing
+    const doneAfter=doneBefore+(was?-1:1);
+    if(!was&&doneAfter===5&&!(pr.got5|{})[ceKey]){
+      pr.pts=(pr.pts||0)+PTS_5;
+      const g5={...(pr.got5||{})};g5[ceKey]=true;pr.got5=g5;
+    }
+    if(was&&doneBefore===5){
+      pr.pts=Math.max(0,(pr.pts||0)-PTS_5);
+      const g5={...(pr.got5||{})};g5[ceKey]=false;pr.got5=g5;
+    }
   });
-  if(!was)showPtsToast(PTS_EX);
+  if(!was)showPtsToast(doneBefore+1===5?PTS_EX+PTS_5:PTS_EX);
   renderWorkout();
 }
 
@@ -942,7 +1018,7 @@ function submitAddEx(){
   renderWorkout();
 }
 function removeCustomEx(id,event){
-  event.stopPropagation();
+  if(event)event.stopPropagation();
   const ceKey='p'+(curPhase+1)+'_'+curDay;
   updateProfile(p=>{
     const ce={...(p.ce||{})};
