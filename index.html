@@ -852,7 +852,8 @@ async function renderFriendsList(){
 }
 
 // ── Workout ───────────────────────────────────────────────────
-function ck(ph,d,key){const p=profile();return p.id+'_p'+ph+'_'+d+'_'+key;}
+// Checks are scoped to the current week — auto-resets every Monday
+function ck(ph,d,key){const p=profile();const wk=weekKey(new Date());return p.id+'_w'+wk+'_p'+ph+'_'+d+'_'+key;}
 
 function toggleManageMode(){
   manageMode=!manageMode;
@@ -947,8 +948,9 @@ function toggleEx(exKey,isHidden){
     pr.checked={...pr.checked,[k]:!was};
     pr.pts=Math.max(0,(pr.pts||0)+(was?-PTS_EX:PTS_EX));
     const doneAfter=doneBefore+(was?-1:1);
-    if(!was&&doneAfter===5){const g5={...(pr.got5||{})};if(!g5[ceKey]){pr.pts=(pr.pts||0)+PTS_5;g5[ceKey]=true;pr.got5=g5;}}
-    if(was&&doneBefore===5){const g5={...(pr.got5||{})};if(g5[ceKey]){pr.pts=Math.max(0,(pr.pts||0)-PTS_5);g5[ceKey]=false;pr.got5=g5;}}
+    const bonusKey=wk+'_'+ceKey;
+    if(!was&&doneAfter===5){const g5={...(pr.got5||{})};if(!g5[bonusKey]){pr.pts=(pr.pts||0)+PTS_5;g5[bonusKey]=true;pr.got5=g5;}}
+    if(was&&doneBefore===5){const g5={...(pr.got5||{})};if(g5[bonusKey]){pr.pts=Math.max(0,(pr.pts||0)-PTS_5);g5[bonusKey]=false;pr.got5=g5;}}
   });
   if(!was)showPtsToast(doneBefore+1===5?PTS_EX+PTS_5:PTS_EX);
   renderWorkout();
