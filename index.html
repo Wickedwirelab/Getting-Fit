@@ -122,6 +122,15 @@ input:focus,textarea:focus,select:focus{outline:none}
 .fp-stat{background:#fff;border-radius:11px;padding:10px 6px;text-align:center}
 .fp-week-days{display:flex;gap:4px;margin-top:8px}
 .fp-award-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+/* AI Suggestions Modal */
+#suggest-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:flex;align-items:flex-end}
+#suggest-sheet{background:#fff;border-radius:18px 18px 0 0;padding:20px 16px 40px;width:100%;max-width:480px;margin:0 auto;max-height:85vh;overflow-y:auto}
+.suggest-card{background:#f7f6f3;border-radius:12px;padding:13px 14px;margin-bottom:8px;border:1.5px solid transparent}
+.suggest-name{font-weight:bold;font-size:14px;margin-bottom:3px}
+.suggest-desc{font-size:11px;color:#888;line-height:1.4}
+.suggest-meta{font-size:11px;color:#bbb;margin-top:4px}
+.suggest-add-btn{float:right;border:1.5px solid #ddd;border-radius:7px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit;color:#888;background:#fff}
+
 #weight-progress-bar-bg{height:10px;background:#f0f0f0;border-radius:5px;overflow:hidden}
 #weight-progress-bar{height:100%;border-radius:5px;transition:width .4s}
 .weight-history-row{background:#fff;border-radius:11px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
@@ -274,6 +283,18 @@ input:focus,textarea:focus,select:focus{outline:none}
 
   </div>
 
+  <!-- AI Suggestions Modal -->
+
+  <div id="suggest-modal" class="hidden" onclick="closeSuggest()">
+    <div id="suggest-sheet" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div id="suggest-title" style="font-weight:bold;font-size:16px;margin-bottom:4px"></div>
+      <div id="suggest-subtitle" style="font-size:12px;color:#999;margin-bottom:16px"></div>
+      <div id="suggest-content"></div>
+      <div onclick="closeSuggest()" style="text-align:center;margin-top:14px;color:#bbb;font-size:13px;cursor:pointer">Close</div>
+    </div>
+  </div>
+
   <!-- Friend Profile Modal -->
 
   <div id="friend-profile-modal" class="hidden" onclick="closeFriendProfile()">
@@ -351,7 +372,7 @@ input:focus,textarea:focus,select:focus{outline:none}
     <div id="exercise-list"></div>
     <div style="padding:0 14px">
       <button id="add-ex-btn" onclick="openAddEx()">➕ Add Custom Exercise</button>
-      <div id="workout-hint">Tap ▶ YT for tutorial · Tap to check off · Tap × to remove custom</div>
+      <div id="workout-hint">Tap ▶ YT for tutorial · 💡 for AI suggestions · Tap to check off</div>
       <button id="log-workout-btn" class="hidden" onclick="logWorkout()"></button>
     </div>
   </div>
@@ -1039,6 +1060,7 @@ function renderWorkout(){
       </div>
       <div class="ex-sets-reps" style="${isHidden?'opacity:.4':''}"><div class="ex-sets" style="color:${t.bg}">${ex.s}</div><div class="ex-reps">${ex.r}</div></div>
       ${!manageMode&&ex.yt&&!isHidden?`<a href="${ex.yt}" target="_blank" class="yt-btn" onclick="event.stopPropagation()"><svg width="8" height="8" viewBox="0 0 10 10" fill="white"><polygon points="2,1 9,5 2,9"/></svg>YT</a>`:'<div class="yt-placeholder"></div>'}
+      ${!manageMode&&!isHidden?`<button onclick="event.stopPropagation();getSuggestions('${ex.n.replace(/'/g,"\\'")}','${curDay}')" style="flex-shrink:0;background:none;border:none;font-size:16px;cursor:pointer;padding:2px" title="Get AI exercise suggestions">💡</button>`:''}
       ${manageMode?`<button class="hide-btn ${isHidden?'unhide':''}" onclick="toggleHideEx('${ex._key}')">${isHidden?'Show':'Hide'}</button>`:''}
       ${manageMode&&isCustom?`<button class="remove-btn" onclick="removeCustomEx('${ex.id||ex._key}',event)" style="margin-left:4px">×</button>`:''}
     </div>`;
@@ -1126,6 +1148,83 @@ function removeCustomEx(id,event){
   const ceKey='p'+(curPhase+1)+'_'+curDay;
   updateProfile(p=>{const ce={...(p.ce||{})};ce[ceKey]=(ce[ceKey]||[]).filter(e=>e.id!==id);p.ce=ce;});
   renderWorkout();
+}
+
+// ── AI Exercise Suggestions ───────────────────────────────────
+function closeSuggest(){document.getElementById('suggest-modal').classList.add('hidden');}
+
+async function getSuggestions(exerciseName, day){
+  const p=profile();
+  const t=theme();
+  const phase=PHASES[curPhase];
+  const dayData=phase.days[day];
+
+  document.getElementById('suggest-title').textContent='💡 Alternatives for '+exerciseName;
+  document.getElementById('suggest-subtitle').textContent='AI-powered suggestions · tap + to add any to your workout';
+  document.getElementById('suggest-content').innerHTML=`<div style="text-align:center;padding:30px;color:#bbb"><div style="font-size:28px;margin-bottom:10px">🤔</div><div>Getting smart suggestions...</div></div>`;
+  document.getElementById('suggest-modal').classList.remove('hidden');
+
+  const prompt=`You are a fitness coach. Suggest 5 alternative exercises for "${exerciseName}" for someone doing a ${phase.name} phase (${phase.weeks}) workout. Today is ${DAY_FULL[day]||day} which is a ${dayData.label} day.
+
+Return ONLY a JSON array with exactly 5 objects. Each object must have these fields:
+- name: exercise name (string)
+- desc: 1 sentence form tip (string)  
+- sets: sets recommendation like "3x" (string)
+- reps: reps or duration like "10-12" or "30 sec" (string)
+- muscle: primary muscle targeted (string)
+
+No markdown, no explanation, just the raw JSON array.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'[]';
+    let suggestions;
+    try{suggestions=JSON.parse(text.replace(/```json|```/g,'').trim());}
+    catch{suggestions=null;}
+
+    if(!suggestions||!suggestions.length){
+      document.getElementById('suggest-content').innerHTML=`<div style="text-align:center;padding:20px;color:#bbb">Could not get suggestions. Try again.</div>`;
+      return;
+    }
+
+    document.getElementById('suggest-content').innerHTML=suggestions.map((s,i)=>`
+      <div class="suggest-card">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+          <div style="flex:1">
+            <div class="suggest-name">${s.name}</div>
+            <div class="suggest-desc">${s.desc}</div>
+            <div class="suggest-meta">💪 ${s.muscle} · ${s.sets} × ${s.reps}</div>
+          </div>
+          <button class="suggest-add-btn" onclick="addSuggestion('${s.name.replace(/'/g,"\\'")}','${(s.desc||'').replace(/'/g,"\\'")}','${s.sets}','${s.reps}','${(s.muscle||'').replace(/'/g,"\\'")}',${i})" id="suggest-add-${i}">+ Add</button>
+        </div>
+      </div>`).join('');
+
+    // Color the add buttons
+    suggestions.forEach((_,i)=>{
+      const btn=document.getElementById('suggest-add-'+i);
+      if(btn){btn.style.borderColor=t.bg;btn.style.color=t.bg;}
+    });
+
+  }catch(e){
+    document.getElementById('suggest-content').innerHTML=`<div style="text-align:center;padding:20px;color:#bbb">Something went wrong. Please try again.</div>`;
+  }
+}
+
+function addSuggestion(name,desc,sets,reps,muscle,idx){
+  const ex={id:'c_'+Date.now(),n:name,c:desc+' ('+muscle+')',s:sets,r:reps,yt:ytUrl(name),custom:true};
+  const ceKey='p'+(curPhase+1)+'_'+curDay;
+  updateProfile(p=>{const ce={...(p.ce||{})};ce[ceKey]=[...(ce[ceKey]||[]),ex];p.ce=ce;});
+  const btn=document.getElementById('suggest-add-'+idx);
+  if(btn){btn.textContent='✓ Added';btn.style.background=theme().bg;btn.style.color='#fff';btn.style.borderColor=theme().bg;btn.disabled=true;}
 }
 
 // ── Weight ────────────────────────────────────────────────────
