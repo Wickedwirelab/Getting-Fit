@@ -1149,7 +1149,9 @@ function renderWorkout(){
 function selectDay(d){curDay=d;manageMode=false;renderWorkout();}
 
 function toggleExByEl(el){
-  const key=el.dataset.exkey||el.closest('[data-exkey]')?.dataset.exkey;
+  let target=el;
+  while(target&&!target.dataset.exkey){target=target.parentElement;}
+  const key=target&&target.dataset.exkey;
   if(key)toggleEx(key,false);
 }
 function toggleHideByEl(el){
@@ -1166,7 +1168,9 @@ function toggleEx(exKey,isHidden){
   const p=profile();if(!p)return;
   const k=ck(curPhase+1,curDay,exKey);
   const was=!!p.checked[k];
-  const phase=PHASES[curPhase];const dayData=phase.days[curDay];
+  const wk=weekKey(new Date());
+  const phases=getPhases();
+  const phase=phases[curPhase];const dayData=phase.days[curDay];
   const ceKey='p'+(curPhase+1)+'_'+curDay;
   const customExs=(p.ce||{})[ceKey]||[];
   const hiddenExs=p.he||{};
