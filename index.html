@@ -504,6 +504,45 @@ const PHASES=[
   }},
 ];
 
+// ── Female Workout Plans ──────────────────────────────────────
+const PHASES_FEMALE=[
+  {id:1,name:'Fat Burn',weeks:'Wks 1-4',color:'#8B2E2E',goal:'Tone up, build glute strength, boost cardio endurance',days:{
+    Mon:{label:'Glutes & Core',ex:[{n:'Glute Bridges',c:'Squeeze hard at the top, hold 2 sec',s:'4x',r:'15-20',yt:ytUrl('glute bridges form')},{n:'Sumo Squats',c:'Wide stance, toes out 45 degrees',s:'3x',r:'15',yt:ytUrl('sumo squat form')},{n:'Donkey Kicks',c:'Keep back flat, kick through heel',s:'3x',r:'15/side',yt:ytUrl('donkey kicks form')},{n:'Dead Bug',c:'Lower back pressed flat to floor',s:'3x',r:'10/side',yt:ytUrl('dead bug core')},{n:'Plank Hold',c:'Hips level, breathe steadily',s:'3x',r:'30 sec',yt:ytUrl('plank form')},{n:'Hip Thrusts',c:'Drive through heels, squeeze glutes',s:'3x',r:'15',yt:ytUrl('hip thrust form')}]},
+    Tue:{label:'Cardio Burn',ex:[{n:'Brisk Walk / Light Jog',c:'Zone 2 - you can still hold a conversation',s:'1x',r:'30 min',yt:ytUrl('zone 2 cardio walk')},{n:'Jump Rope',c:'Land softly on balls of feet',s:'3x',r:'60 sec',yt:ytUrl('jump rope beginner')}]},
+    Wed:{label:'Lower Body',ex:[{n:'Bodyweight Squats',c:'Weight in heels, chest tall',s:'3x',r:'15',yt:ytUrl('squat form beginner')},{n:'Reverse Lunges',c:'Front knee tracks over toe, stay upright',s:'3x',r:'12/leg',yt:ytUrl('reverse lunge form')},{n:'Romanian Deadlifts',c:'Feel the hamstring stretch, hinge at hips',s:'3x',r:'12',yt:ytUrl('Romanian deadlift form')},{n:'Lateral Band Walks',c:'Keep constant tension in the band',s:'3x',r:'15/side',yt:ytUrl('lateral band walks')},{n:'Calf Raises',c:'Full range of motion, pause at top',s:'3x',r:'20',yt:ytUrl('calf raises')},{n:'Bicycle Crunches',c:'Slow and controlled rotation',s:'2x',r:'20',yt:ytUrl('bicycle crunches')}]},
+    Thu:{label:'Active Recovery',ex:[{n:'Light Walk',c:'Easy pace, just move your body',s:'1x',r:'20-30 min',yt:ytUrl('active recovery walk')},{n:'Full Body Stretch',c:'Hold each stretch 30+ seconds',s:'1x',r:'15 min',yt:ytUrl('full body stretch')}]},
+    Fri:{label:'Upper Body Tone',ex:[{n:'Push-Ups (Modified OK)',c:'Full or knee push-ups, full range',s:'3x',r:'10-12',yt:ytUrl('push up modified beginner')},{n:'Dumbbell Rows',c:'Elbow close to body, squeeze at top',s:'3x',r:'12/side',yt:ytUrl('dumbbell row form')},{n:'Lateral Raises',c:'Light weight, lead with elbows',s:'3x',r:'15',yt:ytUrl('lateral raise form')},{n:'Bicep Curls',c:'Slow on the way down — 3 count',s:'2x',r:'12-15',yt:ytUrl('bicep curl form')},{n:'Tricep Kickbacks',c:'Upper arm parallel to floor',s:'2x',r:'12',yt:ytUrl('tricep kickback form')},{n:'Russian Twists',c:'Feet off floor for extra challenge',s:'2x',r:'20',yt:ytUrl('Russian twists form')}]},
+    Sat:{label:'HIIT',ex:[{n:'Warm-Up March',c:'High knees, arm swings',s:'1x',r:'5 min',yt:ytUrl('warm up march cardio')},{n:'Squat Jumps',c:'Land softly with bent knees',s:'4x',r:'10',yt:ytUrl('squat jumps form')},{n:'Mountain Climbers',c:'Drive knees fast, hips stay level',s:'4x',r:'30 sec',yt:ytUrl('mountain climbers form')},{n:'Cool-Down Stretch',c:'Focus on hip flexors and quads',s:'1x',r:'5 min',yt:ytUrl('hip flexor stretch')}]},
+    Sun:{label:'Rest',ex:[{n:'Complete Rest',c:'Sleep 7-9 hrs. Your muscles grow at rest.',s:'-',r:'-',yt:null}]},
+  }},
+  {id:2,name:'Strength',weeks:'Wks 5-8',color:'#2D5A27',goal:'Build lean muscle, sculpt glutes and core, increase weights',days:{
+    Mon:{label:'Glute Focus',ex:[{n:'Hip Thrusts',c:'Add weight — barbell or dumbbell on hips',s:'4x',r:'12',yt:ytUrl('hip thrust weighted')},{n:'Bulgarian Split Squats',c:'Rear foot elevated, drop straight down',s:'3x',r:'10/leg',yt:ytUrl('Bulgarian split squat')},{n:'Cable Kickbacks',c:'Full extension, squeeze at top',s:'3x',r:'15/side',yt:ytUrl('cable kickback glute')},{n:'Sumo Deadlifts',c:'Wide stance, push floor away',s:'3x',r:'12',yt:ytUrl('sumo deadlift form')},{n:'Side-Lying Leg Raises',c:'Slow and controlled both ways',s:'3x',r:'15/side',yt:ytUrl('side lying leg raises')},{n:'Plank Hip Dips',c:'Rotate hips side to side with control',s:'3x',r:'20',yt:ytUrl('plank hip dips')}]},
+    Tue:{label:'Pull Day',ex:[{n:'Dumbbell Rows',c:'Heavier than Phase 1',s:'4x',r:'10/side',yt:ytUrl('dumbbell row heavy')},{n:'Resistance Band Pull-Aparts',c:'Arms straight, squeeze shoulder blades',s:'3x',r:'15',yt:ytUrl('band pull apart')},{n:'Hammer Curls',c:'Neutral grip, controlled descent',s:'3x',r:'12',yt:ytUrl('hammer curls form')},{n:'Face Pulls',c:'Elbows high, pull to forehead',s:'3x',r:'15',yt:ytUrl('face pulls form')},{n:'Dead Bug',c:'Opposite arm and leg extend together',s:'3x',r:'10/side',yt:ytUrl('dead bug form')}]},
+    Wed:{label:'Legs & Glutes',ex:[{n:'Goblet Squats',c:'Heavier than Phase 1, chest tall',s:'4x',r:'12',yt:ytUrl('goblet squat form')},{n:'Romanian Deadlifts',c:'More weight, feel every inch of stretch',s:'4x',r:'10',yt:ytUrl('RDL form')},{n:'Walking Lunges',c:'Add light dumbbells for resistance',s:'3x',r:'12/leg',yt:ytUrl('walking lunges')},{n:'Glute Bridges',c:'Single leg for extra challenge',s:'3x',r:'12/leg',yt:ytUrl('single leg glute bridge')},{n:'Wall Sit',c:'Thighs parallel, back flat',s:'3x',r:'45 sec',yt:ytUrl('wall sit')},{n:'V-Ups',c:'Reach hands to feet simultaneously',s:'3x',r:'12',yt:ytUrl('v ups core')}]},
+    Thu:{label:'HIIT Cardio',ex:[{n:'Warm-Up',c:'Light jog or jumping jacks',s:'1x',r:'5 min',yt:ytUrl('warm up routine')},{n:'Tabata',c:'Squat jumps, burpees, mountain climbers',s:'4x',r:'20s on/10s off x 8',yt:ytUrl('Tabata workout beginner')},{n:'Cool Down',c:'Hip flexors, hamstrings, quads',s:'1x',r:'10 min',yt:ytUrl('cool down stretch lower body')}]},
+    Fri:{label:'Upper Body',ex:[{n:'Dumbbell Bench Press',c:'3 second descent, full range',s:'3x',r:'10-12',yt:ytUrl('dumbbell bench press form')},{n:'Incline Push-Ups',c:'Hands on bench, upper chest focus',s:'3x',r:'12',yt:ytUrl('incline push ups form')},{n:'Lateral Raises',c:'Heavier than Phase 1',s:'3x',r:'12-15',yt:ytUrl('lateral raises form')},{n:'Tricep Overhead Extension',c:'Elbows forward, full range',s:'3x',r:'12',yt:ytUrl('overhead tricep extension')},{n:'Plank Shoulder Taps',c:'Hips square, minimal rotation',s:'3x',r:'20 taps',yt:ytUrl('plank shoulder taps')}]},
+    Sat:{label:'Cardio',ex:[{n:'Steady State Run / Bike',c:'Zone 2-3, moderate effort',s:'1x',r:'35-40 min',yt:ytUrl('steady state cardio')}]},
+    Sun:{label:'Rest',ex:[{n:'Complete Rest',c:'Sleep 7-9 hrs.',s:'-',r:'-',yt:null}]},
+  }},
+  {id:3,name:'Peak',weeks:'Wks 9-12',color:'#1A2C5B',goal:'Max definition, heavy lifts, peak glute and core strength',days:{
+    Mon:{label:'Glute Power',ex:[{n:'Barbell / Heavy DB Hip Thrusts',c:'Heaviest weight yet — explosive drive',s:'4x',r:'10',yt:ytUrl('hip thrust barbell heavy')},{n:'Bulgarian Split Squats',c:'Heavier than Phase 2',s:'4x',r:'8-10/leg',yt:ytUrl('Bulgarian split squat heavy')},{n:'Cable Pull-Throughs',c:'Hinge at hips, squeeze glutes at top',s:'3x',r:'12',yt:ytUrl('cable pull through')},{n:'Deficit Reverse Lunges',c:'Step back onto a lower surface',s:'3x',r:'10/leg',yt:ytUrl('deficit reverse lunge')},{n:'Frog Pumps',c:'Feet together, rapid reps',s:'3x',r:'25',yt:ytUrl('frog pumps glutes')},{n:'Ab Circuit',c:'Plank 45s, V-Ups 15, Twists 20',s:'3x',r:'No rest',yt:ytUrl('ab circuit core')}]},
+    Tue:{label:'Lower Power',ex:[{n:'Heavy DB Squats',c:'Heaviest squats of the program',s:'4x',r:'8-10',yt:ytUrl('heavy squat form')},{n:'Stiff-Leg Deadlifts',c:'Max stretch, controlled descent',s:'4x',r:'10',yt:ytUrl('stiff leg deadlift')},{n:'Walking Lunges',c:'Heavy dumbbells, full stride',s:'3x',r:'12/leg',yt:ytUrl('walking lunges heavy')},{n:'Nordic Curls',c:'4-count eccentric, fight gravity',s:'3x',r:'8-10',yt:ytUrl('Nordic curl form')},{n:'Weighted Glute Bridge',c:'Max weight, 2 sec squeeze at top',s:'3x',r:'15',yt:ytUrl('weighted glute bridge')},{n:'Side Plank + Hip Dip',c:'Full range, both sides',s:'2x',r:'30s/side',yt:ytUrl('side plank hip dip')}]},
+    Wed:{label:'HIIT + Core',ex:[{n:'Jump Rope',c:'High knees, push pace',s:'3x',r:'3 min/1 min off',yt:ytUrl('jump rope hiit')},{n:'Burpees',c:'Explosive jump at top',s:'4x',r:'10',yt:ytUrl('burpees form')},{n:'Core Circuit',c:'Hollow hold 30s, V-Ups 15, Twists 20',s:'3x',r:'No rest',yt:ytUrl('core circuit women')}]},
+    Thu:{label:'Upper Body',ex:[{n:'Dumbbell Bench Press',c:'Heavier than Phase 2',s:'4x',r:'8-10',yt:ytUrl('dumbbell bench press heavy')},{n:'Dumbbell Rows',c:'Heaviest rows of the program',s:'4x',r:'10/side',yt:ytUrl('heavy dumbbell row')},{n:'Arnold Press',c:'Full rotation, controlled',s:'3x',r:'10',yt:ytUrl('Arnold press form')},{n:'Lateral Raises',c:'Go heavier, maintain control',s:'3x',r:'12',yt:ytUrl('lateral raises heavy')},{n:'Tricep Dips',c:'Full range, slow descent',s:'3x',r:'12',yt:ytUrl('tricep dips form')},{n:'Hammer Curls',c:'Peak contraction, squeeze at top',s:'3x',r:'10',yt:ytUrl('hammer curls heavy')}]},
+    Fri:{label:'Full Body',ex:[{n:'Deadlifts',c:'Hip hinge, drive through heels',s:'4x',r:'8',yt:ytUrl('dumbbell deadlift heavy')},{n:'Push-Ups',c:'Full range, chest to floor',s:'3x',r:'15',yt:ytUrl('push ups full range')},{n:'Single-Leg RDL',c:'Balance and stretch',s:'3x',r:'10/leg',yt:ytUrl('single leg RDL')},{n:'Renegade Rows',c:'Control rotation, row each arm',s:'3x',r:'8/side',yt:ytUrl('renegade row form')},{n:'V-Ups',c:'Weighted if possible',s:'3x',r:'15',yt:ytUrl('v ups weighted')},{n:'Plank',c:'Max time hold',s:'3x',r:'Max',yt:ytUrl('plank hold form')}]},
+    Sat:{label:'Cardio',ex:[{n:'Long Run or Bike',c:'Zone 2-3, build endurance',s:'1x',r:'40-50 min',yt:ytUrl('endurance cardio women')}]},
+    Sun:{label:'Rest',ex:[{n:'Complete Rest',c:'You earned it. Sleep 7-9 hrs.',s:'-',r:'-',yt:null}]},
+  }},
+];
+
+// Helper — get the right plan based on profile sex
+function getPhases(){
+  const p=profile();
+  if(!p)return PHASES;
+  if(p.sex==='female')return PHASES_FEMALE;
+  return PHASES; // male and other use the same balanced plan
+}
+
 // ── Local Storage ─────────────────────────────────────────────
 function load(){try{const r=localStorage.getItem(STORE_KEY);return r?JSON.parse(r):{profiles:{},activeId:null};}catch{return{profiles:{},activeId:null};}}
 function saveLocal(g){try{localStorage.setItem(STORE_KEY,JSON.stringify(g));}catch{}}
@@ -583,7 +622,7 @@ function generateFriendCode(name){
 // ── State ─────────────────────────────────────────────────────
 let G=load();
 let curPhase=0,curDay='Mon',curTab='workout';
-let cAG=0,cTheme='rose',cAvatar='🦋';
+let cAG=0,cTheme='rose',cAvatar='🦋',cSex='male';
 let nutDate=new Date().toISOString().split('T')[0];
 let nutMealType='Breakfast';
 let expandedDay=null;
@@ -596,9 +635,9 @@ function todayLabel(){return new Date().toLocaleDateString('en-US',{month:'short
 function dateLabel(d){return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
 function weekKey(date){const d=new Date(date);d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return d.toISOString().split('T')[0];}
 
-function mkProfile(name,avatar,themeId,sw,gw,cg,pg,cbg,fg){
+function mkProfile(name,avatar,themeId,sw,gw,cg,pg,cbg,fg,sex){
   const friendCode=generateFriendCode(name);
-  return{id:Date.now().toString(),name,avatar,themeId,sw,gw,
+  return{id:Date.now().toString(),name,avatar,themeId,sw,gw,sex:sex||'male',
     cg:Number(cg)||2000,pg:Number(pg)||150,cbg:Number(cbg)||200,fg:Number(fg)||65,
     pts:0,wc:0,fwc:0,awards:[],checked:{},cd:{},weekLog:{},cw:[],wl:[],ml:{},ce:{},he:{},
     friendCode,friends:[]};
@@ -666,7 +705,7 @@ function renderSplashMain(){
   el.innerHTML=html;
 }
 
-function goCreate(){document.getElementById('splash-main').classList.add('hidden');document.getElementById('splash-restore').classList.add('hidden');cAG=0;cTheme='rose';cAvatar='🦋';renderCreateForm();document.getElementById('splash-create').classList.remove('hidden');}
+function goCreate(){document.getElementById('splash-main').classList.add('hidden');document.getElementById('splash-restore').classList.add('hidden');cAG=0;cTheme='rose';cAvatar='🦋';cSex='male';renderCreateForm();document.getElementById('splash-create').classList.remove('hidden');}
 function goRestoreScreen(){document.getElementById('splash-main').classList.add('hidden');document.getElementById('splash-create').classList.add('hidden');document.getElementById('splash-restore').classList.remove('hidden');}
 
 function renderCreateForm(){
@@ -678,6 +717,10 @@ function renderCreateForm(){
   el.innerHTML=`
     <div class="splash-form-title">Create Profile</div>
     <input id="c-name" class="splash-input" placeholder="Your name"/>
+    <div class="splash-label">Sex</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      ${['male','female','other'].map(s=>`<div onclick="selectSex('${s}')" style="flex:1;padding:9px 4px;border-radius:9px;border:2px solid ${cSex===s?'#fff':'rgba(255,255,255,.15)'};background:${cSex===s?'rgba(255,255,255,.2)':'rgba(255,255,255,.06)'};color:${cSex===s?'#fff':'rgba(255,255,255,.4)'};font-size:13px;text-align:center;cursor:pointer;font-weight:${cSex===s?'bold':'normal'};text-transform:capitalize">${s==='male'?'👨 Male':s==='female'?'👩 Female':'🧑 Other'}</div>`).join('')}
+    </div>
     <div class="splash-label">Weight</div>
     <div class="splash-grid-2"><input id="c-sw" class="splash-num-input" type="number" placeholder="Start (lbs)"/><input id="c-gw" class="splash-num-input" type="number" placeholder="Goal (lbs)"/></div>
     <div class="splash-label">Daily Nutrition Goals</div>
@@ -696,6 +739,10 @@ function renderCreateForm(){
     <div class="splash-back" onclick="showSplashMain()">← Back</div>`;
 }
 
+function selectSex(s){
+  cSex=s;
+  _saveFormValues();renderCreateForm();_restoreFormValues();
+}
 function selectTheme(id){
   cTheme=id;
   _saveFormValues();renderCreateForm();_restoreFormValues();
@@ -724,7 +771,7 @@ function doCreate(){
   const p=mkProfile(name.trim(),cAvatar,cTheme,
     document.getElementById('c-sw').value,document.getElementById('c-gw').value,
     document.getElementById('c-cal').value||'1950',document.getElementById('c-pro').value||'150',
-    document.getElementById('c-carb').value||'180',document.getElementById('c-fat').value||'65');
+    document.getElementById('c-carb').value||'180',document.getElementById('c-fat').value||'65',cSex);
   if(p.sw)p.wl=[{d:todayLabel(),w:Number(p.sw)}];
   G.profiles[p.id]=p;G.activeId=p.id;saveLocal(G);syncToCloud(p);
   startApp();
@@ -820,7 +867,8 @@ function buildNav(){
 
 function buildPhaseTabs(){
   const t=theme();
-  document.getElementById('phase-tabs').innerHTML=PHASES.map((p,i)=>`
+  const phases=getPhases();
+  document.getElementById('phase-tabs').innerHTML=phases.map((p,i)=>`
     <button class="phase-btn ${curPhase===i?'active':''}" style="${curPhase===i?'color:'+t.bg:''}" onclick="selectPhase(${i})">
       <div class="phase-name">${p.name}</div><div class="phase-weeks">${p.weeks}</div>
     </button>`).join('');
@@ -1033,7 +1081,8 @@ function toggleHideEx(exKey){updateProfile(p=>{const he={...(p.he||{})};he[exKey
 function renderWorkout(){
   const p=profile();if(!p)return;
   const t=theme();
-  const phase=PHASES[curPhase];
+  const phases=getPhases();
+  const phase=phases[curPhase];
   const dayData=phase.days[curDay];
   const ceKey='p'+(curPhase+1)+'_'+curDay;
   const customExs=(p.ce||{})[ceKey]||[];
@@ -1126,7 +1175,8 @@ function toggleEx(exKey,isHidden){
 function logWorkout(){
   const p=profile();if(!p)return;
   const todayKey=todayLabel();if((p.cd||{})[todayKey])return;
-  const phase=PHASES[curPhase];const dayData=phase.days[curDay];
+  const phases=getPhases();
+  const phase=phases[curPhase];const dayData=phase.days[curDay];
   const ceKey='p'+(curPhase+1)+'_'+curDay;
   const customExs=(p.ce||{})[ceKey]||[];
   const hiddenExs=p.he||{};
@@ -1259,7 +1309,8 @@ function getMusclGroup(exerciseName){
 
 async function getSuggestions(exerciseName, day){
   const t=theme();
-  const phase=PHASES[curPhase];
+  const phases=getPhases();
+  const phase=phases[curPhase];
   const dayData=phase.days[day];
 
   document.getElementById('suggest-title').textContent='💡 Alternatives for '+exerciseName;
@@ -1271,7 +1322,22 @@ async function getSuggestions(exerciseName, day){
   await new Promise(r=>setTimeout(r,400));
 
   const group=getMusclGroup(exerciseName);
-  const pool=EX_DB[group]||EX_DB.core;
+
+  // Pick suggestions — female gets more glute/lower body options in those categories
+  const p2=profile();
+  const isFemale=p2&&p2.sex==='female';
+  const femaleGluteSuggestions=[
+    {name:'Hip Thrusts',desc:'Drive through heels, squeeze glutes at top for 2 seconds',sets:'4x',reps:'12-15',muscle:'Glutes'},
+    {name:'Cable Kickbacks',desc:'Full extension at top, keep back flat',sets:'3x',reps:'15/side',muscle:'Glutes'},
+    {name:'Sumo Squats',desc:'Wide stance, toes out 45 degrees, push knees out',sets:'3x',reps:'15',muscle:'Glutes/Inner Thighs'},
+    {name:'Frog Pumps',desc:'Feet together, rapid reps, feel the glute burn',sets:'3x',reps:'25',muscle:'Glutes'},
+    {name:'Donkey Kicks',desc:'Keep back flat, kick through the heel',sets:'3x',reps:'15/side',muscle:'Glutes'},
+    {name:'Single-Leg Glute Bridge',desc:'One leg extended, drive through planted heel',sets:'3x',reps:'12/side',muscle:'Glutes'},
+  ];
+  let pool=EX_DB[group]||EX_DB.core;
+  if(isFemale&&(group==='legs'||group==='core')){
+    pool=[...femaleGluteSuggestions,...pool];
+  }
 
   // Filter out the current exercise and pick 5
   const filtered=pool.filter(e=>e.name.toLowerCase()!==exerciseName.toLowerCase());
