@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -105,7 +104,6 @@ input:focus,textarea:focus,select:focus{outline:none}
 #code-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
 #code-sheet{background:#fff;border-radius:18px;padding:22px;max-width:380px;width:100%}
 
-/* Friends modal */
 #friends-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;display:flex;align-items:flex-end}
 #friends-sheet{background:#fff;border-radius:18px 18px 0 0;padding:20px 16px 40px;width:100%;max-width:480px;margin:0 auto;max-height:85vh;overflow-y:auto}
 .friend-row{background:#f7f6f3;border-radius:11px;padding:11px 14px;display:flex;align-items:center;gap:12px;margin-bottom:7px}
@@ -113,7 +111,6 @@ input:focus,textarea:focus,select:focus{outline:none}
 .friend-code-box{background:#f7f6f3;border-radius:11px;padding:14px;text-align:center;margin-bottom:12px}
 .friend-code{font-size:24px;font-weight:bold;letter-spacing:4px;font-family:monospace}
 
-/* Friend profile modal */
 #friend-profile-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:flex;align-items:flex-end}
 #friend-profile-sheet{background:#f7f6f3;border-radius:18px 18px 0 0;padding:20px 16px 40px;width:100%;max-width:480px;margin:0 auto;max-height:88vh;overflow-y:auto}
 .fp-header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
@@ -122,10 +119,9 @@ input:focus,textarea:focus,select:focus{outline:none}
 .fp-stat{background:#fff;border-radius:11px;padding:10px 6px;text-align:center}
 .fp-week-days{display:flex;gap:4px;margin-top:8px}
 .fp-award-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-/* Edit Profile Modal */
+
 #edit-profile-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:flex;align-items:flex-end}
 
-/* AI Suggestions Modal */
 #suggest-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:flex;align-items:flex-end}
 #suggest-sheet{background:#fff;border-radius:18px 18px 0 0;padding:20px 16px 40px;width:100%;max-width:480px;margin:0 auto;max-height:85vh;overflow-y:auto}
 .suggest-card{background:#f7f6f3;border-radius:12px;padding:13px 14px;margin-bottom:8px;border:1.5px solid transparent}
@@ -138,7 +134,6 @@ input:focus,textarea:focus,select:focus{outline:none}
 #weight-progress-bar{height:100%;border-radius:5px;transition:width .4s}
 .weight-history-row{background:#fff;border-radius:11px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
 
-/* Nutrition */
 .meal-type-tabs{display:flex;gap:5px;overflow-x:auto;margin-bottom:9px;padding-bottom:1px}
 .meal-type-btn{flex-shrink:0;padding:4px 9px;border-radius:18px;border:none;font-size:11px;cursor:pointer;font-family:inherit}
 .macro-rings{display:flex;justify-content:space-around}
@@ -168,7 +163,6 @@ input:focus,textarea:focus,select:focus{outline:none}
 .past-day-row{background:#fff;border-radius:11px;margin-bottom:7px;overflow:hidden}
 .past-day-header{padding:11px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 
-/* Awards */
 .awards-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .award-card{border-radius:13px;padding:13px 11px;text-align:center;border:2px solid transparent}
 .award-card.earned{background:#fff}
@@ -178,12 +172,10 @@ input:focus,textarea:focus,select:focus{outline:none}
 .award-desc{font-size:10px;color:#bbb;margin-top:3px;line-height:1.4}
 .award-badge{margin-top:6px;font-size:10px;font-weight:bold;padding:2px 8px;border-radius:18px;display:inline-block}
 
-/* Leaderboard */
 .lb-row{background:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:7px;border:2px solid transparent}
 .lb-row.me{box-shadow:0 4px 14px rgba(0,0,0,.07)}
 .lb-avatar{width:36px;height:36px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 
-/* Splash */
 #splash-screen{min-height:100vh;background:linear-gradient(160deg,#1a1a2e,#2c1654,#0f3460);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto;max-width:480px;margin:0 auto}
 .splash-title{font-size:24px;font-weight:bold;color:#fff;text-align:center}
 .splash-sub{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:24px;margin-top:4px;text-align:center}
@@ -209,13 +201,19 @@ input:focus,textarea:focus,select:focus{outline:none}
 .splash-back{color:rgba(255,255,255,.3);font-size:12px;text-align:center;margin-top:12px;cursor:pointer}
 .profile-list-item{background:rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:7px;border:1px solid rgba(255,255,255,.1)}
 .profile-avatar-circle{width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-</style>
 
+/* Quick Session Card */
+#quick-session-card{margin:10px 14px 0;border-radius:13px;overflow:hidden;background:#1a1a2e;cursor:pointer}
+.qs-ex-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.qs-num{width:22px;height:22px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:rgba(255,255,255,.5);flex-shrink:0}
+.qs-stat{flex:1;background:rgba(255,255,255,.07);border-radius:9px;padding:8px;text-align:center}
+.qs-stat-val{font-size:16px;font-weight:bold;color:#F5A623}
+.qs-stat-lbl{font-size:9px;color:rgba(255,255,255,.4);margin-top:1px}
+</style>
 </head>
 <body>
 
 <!-- SPLASH -->
-
 <div id="splash-screen">
   <div style="font-size:44px;margin-bottom:8px">🏋️</div>
   <div class="splash-title">Fitness Tracker</div>
@@ -233,14 +231,12 @@ input:focus,textarea:focus,select:focus{outline:none}
 </div>
 
 <!-- APP -->
-
 <div id="app-screen" class="hidden">
   <div id="pts-toast"></div>
   <div id="award-toast"></div>
   <div id="sync-indicator">☁️ Syncing...</div>
 
   <!-- Save Code Modal -->
-
   <div id="code-modal" class="hidden" onclick="closeCodeModal()">
     <div id="code-sheet" onclick="event.stopPropagation()">
       <div style="font-weight:bold;font-size:16px;margin-bottom:8px">💾 Your Save Code</div>
@@ -252,42 +248,30 @@ input:focus,textarea:focus,select:focus{outline:none}
   </div>
 
   <!-- Friends Modal -->
-
   <div id="friends-modal" class="hidden" onclick="closeFriendsModal()">
     <div id="friends-sheet" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
       <div style="font-weight:bold;font-size:17px;margin-bottom:4px">👥 Friends</div>
       <div style="font-size:12px;color:#999;margin-bottom:16px">Share your code so friends can add you. Enter their code to add them.</div>
-
-```
-  <!-- Your code -->
-  <div class="card-title">Your Friend Code</div>
-  <div class="friend-code-box" id="my-friend-code-box">
-    <div class="friend-code" id="my-friend-code">—</div>
-    <div style="font-size:11px;color:#999;margin-top:6px">Share this with friends</div>
-    <button onclick="copyFriendCode()" style="margin-top:10px;padding:8px 16px;border:none;border-radius:9px;font-size:12px;font-weight:bold;cursor:pointer;color:#fff;font-family:inherit" id="copy-fc-btn">📋 Copy Code</button>
-  </div>
-
-  <!-- Add friend -->
-  <div class="card-title">Add a Friend</div>
-  <div style="display:flex;gap:8px;margin-bottom:14px">
-    <input id="add-friend-input" placeholder="Enter friend's code" style="flex:1;padding:10px 12px;border-radius:9px;border:1.5px solid #eee;font-size:13px;font-family:inherit;text-transform:uppercase"/>
-    <button onclick="addFriend()" style="padding:10px 16px;border:none;border-radius:9px;font-size:13px;font-weight:bold;cursor:pointer;color:#fff;font-family:inherit" id="add-friend-btn">Add</button>
-  </div>
-  <div id="add-friend-msg" style="font-size:12px;margin-bottom:10px;text-align:center"></div>
-
-  <!-- Friends list -->
-  <div class="card-title">My Friends (<span id="friends-count">0</span>)</div>
-  <div id="friends-list"></div>
-
-  <div onclick="closeFriendsModal()" style="text-align:center;margin-top:14px;color:#bbb;font-size:13px;cursor:pointer">Close</div>
-</div>
-```
-
+      <div class="card-title">Your Friend Code</div>
+      <div class="friend-code-box" id="my-friend-code-box">
+        <div class="friend-code" id="my-friend-code">—</div>
+        <div style="font-size:11px;color:#999;margin-top:6px">Share this with friends</div>
+        <button onclick="copyFriendCode()" style="margin-top:10px;padding:8px 16px;border:none;border-radius:9px;font-size:12px;font-weight:bold;cursor:pointer;color:#fff;font-family:inherit" id="copy-fc-btn">📋 Copy Code</button>
+      </div>
+      <div class="card-title">Add a Friend</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <input id="add-friend-input" placeholder="Enter friend's code" style="flex:1;padding:10px 12px;border-radius:9px;border:1.5px solid #eee;font-size:13px;font-family:inherit;text-transform:uppercase"/>
+        <button onclick="addFriend()" style="padding:10px 16px;border:none;border-radius:9px;font-size:13px;font-weight:bold;cursor:pointer;color:#fff;font-family:inherit" id="add-friend-btn">Add</button>
+      </div>
+      <div id="add-friend-msg" style="font-size:12px;margin-bottom:10px;text-align:center"></div>
+      <div class="card-title">My Friends (<span id="friends-count">0</span>)</div>
+      <div id="friends-list"></div>
+      <div onclick="closeFriendsModal()" style="text-align:center;margin-top:14px;color:#bbb;font-size:13px;cursor:pointer">Close</div>
+    </div>
   </div>
 
   <!-- Edit Profile Modal -->
-
   <div id="edit-profile-modal" class="hidden" onclick="closeEditProfile()">
     <div id="edit-profile-sheet" style="background:#fff;border-radius:18px 18px 0 0;padding:20px 16px 40px;width:100%;max-width:480px;margin:0 auto;max-height:88vh;overflow-y:auto;position:relative" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
@@ -297,7 +281,6 @@ input:focus,textarea:focus,select:focus{outline:none}
   </div>
 
   <!-- AI Suggestions Modal -->
-
   <div id="suggest-modal" class="hidden" onclick="closeSuggest()">
     <div id="suggest-sheet" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
@@ -309,7 +292,6 @@ input:focus,textarea:focus,select:focus{outline:none}
   </div>
 
   <!-- Friend Profile Modal -->
-
   <div id="friend-profile-modal" class="hidden" onclick="closeFriendProfile()">
     <div id="friend-profile-sheet" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
@@ -319,7 +301,6 @@ input:focus,textarea:focus,select:focus{outline:none}
   </div>
 
   <!-- Add Exercise Modal -->
-
   <div id="add-ex-modal" class="hidden" onclick="closeAddEx()">
     <div id="add-ex-sheet" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
@@ -342,7 +323,6 @@ input:focus,textarea:focus,select:focus{outline:none}
   </div>
 
   <!-- Profile Menu -->
-
   <div id="profile-menu" class="hidden">
     <div class="menu-item" onclick="openEditProfile()">✏️ Edit Profile</div>
     <div class="menu-item" onclick="openFriendsModal()">👥 Friends & Leaderboard</div>
@@ -353,7 +333,6 @@ input:focus,textarea:focus,select:focus{outline:none}
   </div>
 
   <!-- Header -->
-
   <div id="header">
     <div id="header-top">
       <div>
@@ -369,8 +348,61 @@ input:focus,textarea:focus,select:focus{outline:none}
   </div>
 
   <!-- Content -->
-
   <div id="tab-workout" class="hidden">
+
+    <!-- ⚡ Quick Session Card -->
+    <div id="quick-session-card" onclick="toggleQuickSession()">
+      <div style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.5);text-transform:uppercase">35-Min Circuit</div>
+          <div style="font-size:15px;font-weight:bold;color:#fff;margin-top:2px">⚡ Full Body Quick Session</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">Fat burn + strength · 4 rounds</div>
+        </div>
+        <div id="qs-chevron" style="color:rgba(255,255,255,.4);font-size:18px;transition:transform .25s">▼</div>
+      </div>
+      <div id="quick-session-body" style="display:none;padding:0 16px 16px">
+        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:12px;line-height:1.6">
+          Do all 6 exercises back-to-back · 45s work / 15s rest between each · 60s rest after full round · Repeat 4 rounds
+        </div>
+        <div class="qs-ex-row">
+          <div class="qs-num">1</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:bold;color:#fff">Lat Pulldown</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">Back / Lats</div></div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.07);padding:3px 8px;border-radius:8px">45 sec</div>
+        </div>
+        <div class="qs-ex-row">
+          <div class="qs-num">2</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:bold;color:#fff">Goblet Squat</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">Legs / Glutes</div></div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.07);padding:3px 8px;border-radius:8px">45 sec</div>
+        </div>
+        <div class="qs-ex-row">
+          <div class="qs-num">3</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:bold;color:#fff">Seated Cable Row</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">Mid Back</div></div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.07);padding:3px 8px;border-radius:8px">45 sec</div>
+        </div>
+        <div class="qs-ex-row">
+          <div class="qs-num">4</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:bold;color:#fff">Dumbbell Shoulder Press</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">Shoulders</div></div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.07);padding:3px 8px;border-radius:8px">45 sec</div>
+        </div>
+        <div class="qs-ex-row">
+          <div class="qs-num">5</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:bold;color:#fff">Romanian Deadlift</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">Hamstrings / Glutes</div></div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.07);padding:3px 8px;border-radius:8px">45 sec</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+          <div class="qs-num">6</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:bold;color:#fff">Curl to Press</div><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">Biceps / Shoulders</div></div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);background:rgba(255,255,255,.07);padding:3px 8px;border-radius:8px">45 sec</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <div class="qs-stat"><div class="qs-stat-val">4</div><div class="qs-stat-lbl">Rounds</div></div>
+          <div class="qs-stat"><div class="qs-stat-val">60s</div><div class="qs-stat-lbl">Rest/Round</div></div>
+          <div class="qs-stat"><div class="qs-stat-val">~35</div><div class="qs-stat-lbl">Minutes</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- End Quick Session Card -->
+
     <div id="phase-goal-card"><span style="font-weight:bold;font-size:12px">Phase Goal: </span><span id="phase-goal-text" style="font-size:12px;color:#555"></span></div>
     <div id="pts-info"></div>
     <div id="day-tabs"></div>
@@ -401,7 +433,6 @@ input:focus,textarea:focus,select:focus{outline:none}
 </div>
 
 <!-- Firebase SDK -->
-
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import{getFirestore,doc,setDoc,getDoc,collection,getDocs,query,where}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -418,7 +449,6 @@ const firebaseConfig={
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 
-// Expose Firebase functions to global scope
 window._db=db;
 window._fbDoc=doc;
 window._fbSetDoc=setDoc;
@@ -429,7 +459,6 @@ window._fbQuery=query;
 window._fbWhere=where;
 window._fbReady=true;
 
-// Signal app to init
 if(window._onFbReady)window._onFbReady();
 </script>
 
@@ -518,7 +547,6 @@ const PHASES=[
   }},
 ];
 
-// ── Female Workout Plans ──────────────────────────────────────
 const PHASES_FEMALE=[
   {id:1,name:'Fat Burn',weeks:'Wks 1-4',color:'#8B2E2E',goal:'Tone up, build glute strength, boost cardio endurance',days:{
     Mon:{label:'Glutes & Core',ex:[{n:'Glute Bridges',c:'Squeeze hard at the top, hold 2 sec',s:'4x',r:'15-20',yt:ytUrl('glute bridges form')},{n:'Sumo Squats',c:'Wide stance, toes out 45 degrees',s:'3x',r:'15',yt:ytUrl('sumo squat form')},{n:'Donkey Kicks',c:'Keep back flat, kick through heel',s:'3x',r:'15/side',yt:ytUrl('donkey kicks form')},{n:'Dead Bug',c:'Lower back pressed flat to floor',s:'3x',r:'10/side',yt:ytUrl('dead bug core')},{n:'Plank Hold',c:'Hips level, breathe steadily',s:'3x',r:'30 sec',yt:ytUrl('plank form')},{n:'Hip Thrusts',c:'Drive through heels, squeeze glutes',s:'3x',r:'15',yt:ytUrl('hip thrust form')}]},
@@ -549,12 +577,11 @@ const PHASES_FEMALE=[
   }},
 ];
 
-// Helper — get the right plan based on profile sex
 function getPhases(){
   const p=profile();
   if(!p)return PHASES;
   if(p.sex==='female')return PHASES_FEMALE;
-  return PHASES; // male and other use the same balanced plan
+  return PHASES;
 }
 
 // ── Local Storage ─────────────────────────────────────────────
@@ -569,9 +596,7 @@ function syncToCloud(p){
   syncTimeout=setTimeout(async()=>{
     showSync();
     try{
-      // Save full profile (private data)
       await window._fbSetDoc(window._fbDoc(window._db,'profiles',p.id),JSON.parse(JSON.stringify(p)));
-      // Save public summary for leaderboard/friends
       const wk=weekKey(new Date());
       const thisWeekDays=(p.weekLog||{})[wk]||[];
       const logs=p.wl||[];
@@ -626,7 +651,6 @@ async function getFriendPublicData(ids){
 function showSync(){const el=document.getElementById('sync-indicator');if(el){el.textContent='☁️ Syncing...';el.style.opacity='1';}}
 function hideSync(){const el=document.getElementById('sync-indicator');if(el){el.textContent='☁️ Saved';setTimeout(()=>el.style.opacity='0',2000);}}
 
-// ── Friend Code Generator ─────────────────────────────────────
 function generateFriendCode(name){
   const prefix=(name||'USER').substring(0,4).toUpperCase().replace(/[^A-Z]/g,'X').padEnd(4,'X');
   const num=Math.floor(1000+Math.random()*9000);
@@ -685,6 +709,15 @@ function updateProfile(fn){
 // ── Toasts ────────────────────────────────────────────────────
 function showPtsToast(pts){const el=document.getElementById('pts-toast');el.textContent='+'+pts+' pts ⭐';el.style.opacity='1';setTimeout(()=>el.style.opacity='0',1500);}
 function showAwardToast(award){const el=document.getElementById('award-toast');el.innerHTML=`<div style="font-size:28px">${award.icon}</div><div style="color:#F5A623;font-weight:bold;font-size:12px;margin-top:3px">Award Unlocked!</div><div style="color:#fff;font-weight:bold;font-size:14px;margin-top:2px">${award.name}</div>`;el.style.opacity='1';setTimeout(()=>el.style.opacity='0',3000);}
+
+// ── Quick Session Toggle ──────────────────────────────────────
+function toggleQuickSession(){
+  const body=document.getElementById('quick-session-body');
+  const chev=document.getElementById('qs-chevron');
+  const open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  chev.style.transform=open?'':'rotate(180deg)';
+}
 
 // ── Splash ────────────────────────────────────────────────────
 function showSplash(){
@@ -754,22 +787,10 @@ function renderCreateForm(){
     <div class="splash-back" onclick="showSplashMain()">← Back</div>`;
 }
 
-function selectSex(s){
-  cSex=s;
-  _saveFormValues();renderCreateForm();_restoreFormValues();
-}
-function selectTheme(id){
-  cTheme=id;
-  _saveFormValues();renderCreateForm();_restoreFormValues();
-}
-function selectAG(i){
-  cAG=i;
-  _saveFormValues();renderCreateForm();_restoreFormValues();
-}
-function selectAvatar(a){
-  cAvatar=a;
-  _saveFormValues();renderCreateForm();_restoreFormValues();
-}
+function selectSex(s){cSex=s;_saveFormValues();renderCreateForm();_restoreFormValues();}
+function selectTheme(id){cTheme=id;_saveFormValues();renderCreateForm();_restoreFormValues();}
+function selectAG(i){cAG=i;_saveFormValues();renderCreateForm();_restoreFormValues();}
+function selectAvatar(a){cAvatar=a;_saveFormValues();renderCreateForm();_restoreFormValues();}
 
 function _saveFormValues(){
   const fields=['c-name','c-sw','c-gw','c-cal','c-pro','c-carb','c-fat'];
@@ -794,7 +815,6 @@ function doCreate(){
 
 function selectProfile(id){
   G.activeId=id;saveLocal(G);
-  // Try to load latest from cloud
   if(window._fbReady){
     loadFromCloud(id).then(cloudData=>{
       if(cloudData){
@@ -828,7 +848,6 @@ function startApp(){
   document.getElementById('splash-screen').classList.add('hidden');
   document.getElementById('app-screen').classList.remove('hidden');
   buildNav();buildPhaseTabs();refreshHeader();setTab('workout');
-  // Sync from cloud on start
   const p=profile();
   if(p&&window._fbReady){
     loadFromCloud(p.id).then(cloudData=>{
@@ -842,7 +861,6 @@ function startApp(){
   }
 }
 
-// Wait for Firebase if not ready yet
 window._onFbReady=function(){
   if(G.activeId&&G.profiles[G.activeId]){
     const p=profile();
@@ -990,14 +1008,12 @@ async function renderFriendsList(){
   }).join('');
 }
 
-// ── Friend Profile View ───────────────────────────────────────
 let _friendCache={};
 
 async function showFriendProfile(id){
   document.getElementById('friend-profile-modal').classList.remove('hidden');
   document.getElementById('friend-profile-content').innerHTML=`<div style="text-align:center;padding:40px;color:#bbb">Loading...</div>`;
   try{
-    // Get public data
     const snap=await window._fbGetDoc(window._fbDoc(window._db,'public',id));
     if(!snap.exists()){document.getElementById('friend-profile-content').innerHTML=`<div style="text-align:center;padding:40px;color:#bbb">Could not load profile.</div>`;return;}
     const f=snap.data();
@@ -1014,9 +1030,7 @@ function renderFriendProfile(f){
   const wc=f.wc||0;
   const phase=f.phase||Math.min(3,Math.ceil(wc/28)||1);
   const phaseNames=['Fat Burn Foundation','Strength & Burn','Peak Performance'];
-  const phaseColors=['#8B2E2E','#2D5A27','#1A2C5B'];
 
-  // Weight progress
   let weightHtml='';
   if(f.startWeight&&f.goalWeight&&f.currentWeight){
     const prog=Math.min(100,Math.round(((f.startWeight-f.currentWeight)/(f.startWeight-f.goalWeight))*100));
@@ -1041,7 +1055,6 @@ function renderFriendProfile(f){
     </div>`;
   }
 
-  // This week tracker
   const weekHtml=`<div style="background:#fff;border-radius:13px;padding:12px 14px;margin-bottom:10px">
     <div style="font-weight:bold;font-size:11px;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px">This Week — ${thisWeek.length}/7</div>
     <div class="fp-week-days">
@@ -1050,7 +1063,6 @@ function renderFriendProfile(f){
     ${thisWeek.length===7?`<div style="margin-top:8px;text-align:center;color:#F5A623;font-weight:bold;font-size:12px">🔥 Perfect Week!</div>`:''}
   </div>`;
 
-  // Awards
   const awardsHtml=earned.length?`<div style="background:#fff;border-radius:13px;padding:12px 14px;margin-bottom:10px">
     <div style="font-weight:bold;font-size:11px;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px">Awards (${earned.length}/${AWARDS.length})</div>
     <div class="fp-award-grid">
@@ -1081,7 +1093,6 @@ function renderFriendProfile(f){
 function closeFriendProfile(){document.getElementById('friend-profile-modal').classList.add('hidden');}
 
 // ── Workout ───────────────────────────────────────────────────
-// Checks are scoped to the current week — auto-resets every Monday
 function ck(ph,d,key){const p=profile();const wk=weekKey(new Date());return p.id+'_w'+wk+'_p'+ph+'_'+d+'_'+key;}
 
 function toggleManageMode(){
@@ -1323,10 +1334,7 @@ function saveEditProfile(){
   const name=(document.getElementById('e-name').value||'').trim();
   if(!name)return;
   updateProfile(p=>{
-    p.name=name;
-    p.avatar=eAvatar;
-    p.themeId=eTheme;
-    p.sex=eSex;
+    p.name=name;p.avatar=eAvatar;p.themeId=eTheme;p.sex=eSex;
     p.sw=document.getElementById('e-sw').value||p.sw;
     p.gw=document.getElementById('e-gw').value||p.gw;
     p.cg=Number(document.getElementById('e-cal').value)||p.cg||2000;
@@ -1334,17 +1342,12 @@ function saveEditProfile(){
     p.cbg=Number(document.getElementById('e-carb').value)||p.cbg||200;
     p.fg=Number(document.getElementById('e-fat').value)||p.fg||65;
   });
-  closeEditProfile();
-  buildNav();
-  buildPhaseTabs();
-  refreshHeader();
-  renderCurrentTab();
+  closeEditProfile();buildNav();buildPhaseTabs();refreshHeader();renderCurrentTab();
 }
 
 // ── AI Exercise Suggestions ───────────────────────────────────
 function closeSuggest(){document.getElementById('suggest-modal').classList.add('hidden');}
 
-// Smart exercise database organized by muscle group / movement pattern
 const EX_DB={
   chest:[
     {name:'Dumbbell Bench Press',desc:'Lower slowly for 3 counts, explode up',sets:'4x',reps:'10-12',muscle:'Chest'},
@@ -1415,7 +1418,6 @@ const EX_DB={
   ],
 };
 
-// Map exercise names to muscle groups
 function getMusclGroup(exerciseName){
   const n=exerciseName.toLowerCase();
   if(n.includes('push')&&(n.includes('up')||n.includes('press')||n.includes('bench')))return'chest';
@@ -1427,10 +1429,10 @@ function getMusclGroup(exerciseName){
   if(n.includes('squat')||n.includes('lunge')||n.includes('leg')||n.includes('glute')||n.includes('hamstring')||n.includes('calf')||n.includes('nordic')||n.includes('step-up'))return'legs';
   if(n.includes('plank')||n.includes('crunch')||n.includes('sit-up')||n.includes('ab')||n.includes('core')||n.includes('twist')||n.includes('v-up')||n.includes('dead bug'))return'core';
   if(n.includes('jog')||n.includes('run')||n.includes('sprint')||n.includes('cardio')||n.includes('bike')||n.includes('walk')||n.includes('hiit')||n.includes('burpee')||n.includes('jump')||n.includes('climber'))return'cardio';
-  return'core'; // fallback
+  return'core';
 }
 
-async function getSuggestions(exerciseName, day){
+async function getSuggestions(exerciseName,day){
   const t=theme();
   const phases=getPhases();
   const phase=phases[curPhase];
@@ -1441,12 +1443,9 @@ async function getSuggestions(exerciseName, day){
   document.getElementById('suggest-content').innerHTML=`<div style="text-align:center;padding:30px;color:#bbb"><div style="font-size:28px;margin-bottom:10px">🤔</div><div>Finding alternatives...</div></div>`;
   document.getElementById('suggest-modal').classList.remove('hidden');
 
-  // Small delay for UX feel
   await new Promise(r=>setTimeout(r,400));
 
   const group=getMusclGroup(exerciseName);
-
-  // Pick suggestions — female gets more glute/lower body options in those categories
   const p2=profile();
   const isFemale=p2&&p2.sex==='female';
   const femaleGluteSuggestions=[
@@ -1458,15 +1457,10 @@ async function getSuggestions(exerciseName, day){
     {name:'Single-Leg Glute Bridge',desc:'One leg extended, drive through planted heel',sets:'3x',reps:'12/side',muscle:'Glutes'},
   ];
   let pool=EX_DB[group]||EX_DB.core;
-  if(isFemale&&(group==='legs'||group==='core')){
-    pool=[...femaleGluteSuggestions,...pool];
-  }
+  if(isFemale&&(group==='legs'||group==='core')){pool=[...femaleGluteSuggestions,...pool];}
 
-  // Filter out the current exercise and pick 5
   const filtered=pool.filter(e=>e.name.toLowerCase()!==exerciseName.toLowerCase());
   const shuffled=filtered.sort(()=>Math.random()-.5).slice(0,5);
-
-  // Add phase-appropriate sets/reps hint
   const phaseNote=phase.id===1?'(lighter weight, focus on form)':phase.id===2?'(increase weight from Phase 1)':'(go heavy, max effort)';
 
   document.getElementById('suggest-content').innerHTML=`
@@ -1592,6 +1586,5 @@ if(G.activeId&&G.profiles[G.activeId]){
   showSplash();
 }
 </script>
-
 </body>
 </html>
