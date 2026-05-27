@@ -525,7 +525,27 @@ let qsOpen=false;
 /* ── STORAGE ── */
 function load(){try{const d=localStorage.getItem(STORE_KEY);if(d)S=JSON.parse(d)}catch(e){}}
 function saveLocal(){try{localStorage.setItem(STORE_KEY,JSON.stringify(S))}catch(e){}}
-function profile(){return S.profiles[S.active]||null;}
+function profile(){
+  const p=S.profiles[S.active]||null;
+  if(p){
+    // Repair old profiles missing new fields
+    if(!p.wk)p.wk={};
+    if(!p.wl)p.wl=[];
+    if(!p.nutr)p.nutr={};
+    if(!p.awards)p.awards=[];
+    if(!p.friends)p.friends=[];
+    if(!p.customEx)p.customEx={};
+    if(!p.hiddenEx)p.hiddenEx={};
+    if(!p.friendCode)p.friendCode=generateFriendCode();
+    if(p.pts===undefined)p.pts=0;
+    if(p.wc===undefined)p.wc=0;
+    if(p.fwc===undefined)p.fwc=0;
+    if(p.phase===undefined)p.phase=1;
+    if(!p.sex)p.sex='male';
+    if(!p.theme)p.theme='green';
+  }
+  return p;
+}
 
 /* ── FIREBASE ── */
 async function syncToCloud(p){
