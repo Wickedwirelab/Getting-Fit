@@ -20,7 +20,7 @@ input:focus,textarea:focus,select:focus{outline:none}
 :root{
   --bg:#09090b;--surface:#111113;--surface2:#18181b;--surface3:#1e1e22;
   --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--border3:rgba(255,255,255,.16);
-  --text:#fafafa;--text2:rgba(250,250,250,.6);--text3:rgba(250,250,250,.28);
+  --text:#fafafa;--text2:#e4e4e7;--text3:#a1a1aa;
   --green:#fbbf24;--green-dim:rgba(251,191,36,.1);--green-border:rgba(251,191,36,.25);
   --danger:#ef4444;--radius:12px;
 }
@@ -115,7 +115,7 @@ input:focus,textarea:focus,select:focus{outline:none}
 #phase-goal-card{margin:14px 18px 0;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px}
 
 /* Quick Session */
-#quick-session-card{margin:12px 18px 0;border-radius:var(--radius);overflow:hidden;background:var(--surface);border:1px solid var(--green-border);cursor:pointer}
+#quick-session-card{margin:12px 18px 0;border-radius:var(--radius);overflow:hidden;background:var(--surface);border:1px solid var(--border2);cursor:pointer}
 .qs-ex-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
 .qs-num{width:22px;height:22px;border-radius:11px;background:var(--green-dim);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--green);flex-shrink:0}
 .qs-stat{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 8px;text-align:center}
@@ -964,7 +964,7 @@ function renderWorkout(){
   const dayKeys=Object.keys(phase.days);
   // Phase goal
   document.getElementById('phase-goal-text').textContent=phase.goal;
-  document.getElementById('phase-goal-card').style.borderLeft=`3px solid ${phase.color}`;
+  document.getElementById('phase-goal-card').style.borderLeft=`3px solid var(--border3)`;
   // Pts info
   document.getElementById('pts-info').innerHTML=`<span>Exercise: +${PTS_EX} pts</span><span>Workout: +${PTS_WO} pts</span><span>Full Week: +${PTS_WK} pts</span>`;
   // Day tabs
@@ -973,7 +973,7 @@ function renderWorkout(){
   const dayKey=dayKeys[curDay];const day=phase.days[dayKey];
   document.getElementById('day-name').textContent=DAY_FULL[dayKey]||dayKey;
   document.getElementById('day-label-badge').textContent=day.label;
-  document.getElementById('day-header').style.background=`linear-gradient(135deg,${phase.color}15,${phase.color}08)`;
+  document.getElementById('day-header').style.background='var(--surface)';
   // Exercises
   const wkKey=`p${curPhase}_${dayKey}`;
   const done=p.wk[wkKey]||[];
