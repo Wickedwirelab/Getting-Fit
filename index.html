@@ -751,12 +751,19 @@ function signOut(){S.active=null;saveLocal();showSplash();}
 
 /* ── START APP ── */
 function startApp(){
-  const p=profile();if(!p)return showSplash();
-  applyTheme(p.theme||'green');
-  document.getElementById('splash-screen').classList.add('hidden');
-  document.getElementById('app-screen').classList.remove('hidden');
-  curPhase=(p.phase||1)-1;curDay=0;curTab='workout';manageMode=false;
-  refreshHeader();buildNav();buildPhaseTabs();setTab('workout');
+  try{
+    const p=profile();if(!p)return showSplash();
+    applyTheme(p.theme||'green');
+    document.getElementById('splash-screen').classList.add('hidden');
+    document.getElementById('app-screen').classList.remove('hidden');
+    curPhase=(p.phase||1)-1;curDay=0;curTab='workout';manageMode=false;
+    refreshHeader();buildNav();buildPhaseTabs();setTab('workout');
+  }catch(e){
+    console.error('startApp error:',e);
+    // If app fails to start, offer fresh start
+    document.getElementById('app-screen').classList.add('hidden');
+    showSplash();
+  }
 }
 function applyTheme(id){
   const t=THEMES.find(x=>x.id===id)||THEMES[1];
@@ -1348,7 +1355,14 @@ function initApp(){
 }
 
 // Run init now - Firebase syncs in background when ready
-try{initApp();}catch(e){console.error('Init error:',e);}
+try{initApp();}catch(e){
+  console.error('Init error:',e);
+  // If init fails, show splash with buttons anyway
+  try{showSplash();}catch(e2){
+    document.getElementById('splash-screen').classList.remove('hidden');
+    document.getElementById('splash-main').innerHTML='<button class="splash-btn-primary" onclick="goCreate()">Start New Program</button><button class="splash-btn-ghost" onclick="goRestore()">Restore from Code</button>';
+  }
+}
 
 // Also hook Firebase ready callback for cloud sync
 if(!window._fbReady){window._onFbReady=function(){
