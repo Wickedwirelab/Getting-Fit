@@ -1320,9 +1320,14 @@ function renderAwards(){
 /* ── INIT ── */
 load();
 if(window._fbReady){initApp();}
-else{window._onFbReady=initApp;}
+else{
+  window._onFbReady=initApp;
+  // Fallback: if Firebase module fails (e.g. file:// or offline), start anyway after 2s
+  setTimeout(function(){if(!window._fbReady){console.warn('Firebase unavailable, starting offline');initApp();}},2000);
+}
 
 function initApp(){
+  if(window._initDone)return;window._initDone=true;
   if(S.active!==null&&S.profiles[S.active]){startApp();}
   else{showSplash();}
 }
