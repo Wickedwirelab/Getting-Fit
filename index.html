@@ -1319,18 +1319,21 @@ function renderAwards(){
 
 /* ── INIT ── */
 load();
-if(window._fbReady){initApp();}
-else{
-  window._onFbReady=initApp;
-  // Fallback: if Firebase module fails (e.g. file:// or offline), start anyway after 2s
-  setTimeout(function(){if(!window._fbReady){console.warn('Firebase unavailable, starting offline');initApp();}},2000);
-}
 
+// Start app immediately from localStorage - no need to wait for Firebase
 function initApp(){
   if(window._initDone)return;window._initDone=true;
   if(S.active!==null&&S.profiles[S.active]){startApp();}
   else{showSplash();}
 }
+
+// Run init now - Firebase syncs in background when ready
+try{initApp();}catch(e){console.error('Init error:',e);}
+
+// Also hook Firebase ready callback for cloud sync
+if(!window._fbReady){window._onFbReady=function(){
+  const p=profile();if(p)syncToCloud(p);
+};}
 </script>
 </body>
 </html>
