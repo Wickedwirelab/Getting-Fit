@@ -505,7 +505,7 @@ input:focus,textarea:focus,select:focus{outline:none}
         <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;margin-top:4px">Reminder Time</div>
         <div style="display:flex;gap:8px;align-items:center">
           <input type="time" id="notif-time-input" style="flex:1;padding:11px 14px;border-radius:10px;border:1px solid var(--border2);font-size:14px;font-family:'Space Mono',monospace;font-weight:600;background:var(--surface2);color:var(--text)" value="07:00"/>
-          <button onclick="saveNotifTime()" style="padding:11px 18px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;color:var(--bg);font-family:inherit;background:var(--green)">Save</button>
+          <button onclick="saveNotifTime()" class="save-time-btn" style="padding:11px 18px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;color:var(--bg);font-family:inherit;background:var(--green)">Save</button>
         </div>
         <div id="notif-preview-area"></div>
       </div>
@@ -514,15 +514,44 @@ input:focus,textarea:focus,select:focus{outline:none}
     </div>
   </div>
 
+  <!-- ── INBOX MODAL ── -->
+  <div id="inbox-modal" class="hidden" onclick="closeInbox()">
+    <div id="inbox-sheet" style="background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;padding:22px 18px 44px;width:100%;max-width:480px;margin:0 auto;border-top:1px solid var(--border2);max-height:88vh;overflow-y:auto;position:fixed;bottom:0;left:50%;transform:translateX(-50%)" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div>
+          <div style="font-weight:700;font-size:18px;color:var(--text);letter-spacing:-.4px">🔔 Inbox</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">Your notification history</div>
+        </div>
+        <button onclick="clearInbox()" id="clear-inbox-btn" style="background:transparent;border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:500;cursor:pointer;color:var(--text3);font-family:inherit">Clear All</button>
+      </div>
+      <div id="inbox-list"></div>
+      <div onclick="closeInbox()" style="text-align:center;margin-top:18px;color:var(--text3);font-size:13px;cursor:pointer">Close</div>
+    </div>
+  </div>
+
+  <!-- ── MOTIVATIONAL BANNER ── -->
+  <div id="motiv-banner" class="hidden" style="margin:10px 18px 0;border-radius:var(--radius);padding:14px 16px;display:flex;align-items:flex-start;gap:12px;position:relative;overflow:hidden">
+    <div style="font-size:26px;flex-shrink:0;margin-top:2px" id="motiv-emoji">💪</div>
+    <div style="flex:1;min-width:0">
+      <div id="motiv-title" style="font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px;margin-bottom:3px"></div>
+      <div id="motiv-body" style="font-size:12px;color:var(--text2);line-height:1.5;opacity:.85"></div>
+    </div>
+    <button onclick="dismissBanner()" style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;flex-shrink:0;padding:0;line-height:1;margin-top:-2px">&times;</button>
+  </div>
+
   <div id="header">
     <div id="header-top">
       <div>
         <div style="font-size:9px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;font-weight:500">12-Week Program</div>
         <div style="font-size:18px;font-weight:700;color:var(--text);margin-top:2px;letter-spacing:-.5px">Fitness Tracker</div>
       </div>
-      <div id="profile-chip" onclick="toggleMenu()">
-        <span id="chip-avatar"></span>
-        <div><div id="profile-name"></div><div id="profile-pts"></div></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button id="bell-btn" onclick="openInbox()" style="position:relative;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0">🔔<span id="bell-badge" class="hidden" style="position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:8px;background:var(--danger);font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;border:2px solid var(--bg)"></span></button>
+        <div id="profile-chip" onclick="toggleMenu()">
+          <span id="chip-avatar"></span>
+          <div><div id="profile-name"></div><div id="profile-pts"></div></div>
+        </div>
       </div>
     </div>
     <div id="phase-tabs"></div>
@@ -1026,6 +1055,9 @@ function startApp(){
     document.getElementById('app-screen').classList.remove('hidden');
     curPhase=(p.phase||1)-1;curDay=new Date().getDay();curDay=curDay===0?6:curDay-1;curTab='workout';manageMode=false;curLocation='home';
     refreshHeader();buildNav();buildPhaseTabs();setTab('workout');
+    // Show today's motivational banner (once per day)
+    setTimeout(showMotivBanner, 600);
+    updateBellBadge();
   }catch(e){console.error('startApp error:',e);document.getElementById('app-screen').classList.add('hidden');showSplash();}
 }
 function applyTheme(id){
@@ -1561,170 +1593,297 @@ function renderAwards(){
 }
 
 // ─────────────────────────────────────────────
-// PUSH NOTIFICATIONS
+// PUSH NOTIFICATIONS — FIXED + INBOX + BANNER
 // ─────────────────────────────────────────────
 const MOTIVATIONAL_MSGS=[
-  {title:"Time to train 💪",body:"Your future self is watching. Make them proud — get your workout in today."},
-  {title:"No excuses today 🔥",body:"The only workout you'll regret is the one you didn't do. Let's go."},
-  {title:"It's go time ⚡",body:"Champions are built on the days they don't feel like it. Today is one of those days."},
-  {title:"Rise and grind 🏋️",body:"Every rep you do today is a vote for the person you're becoming. Cast your vote."},
-  {title:"Your body is waiting 💥",body:"Pain is temporary. The results you're building? Those last forever."},
-  {title:"Don't break the streak 🔑",body:"You've worked too hard to stop now. One more session. That's all it takes."},
-  {title:"Stronger every day 📈",body:"Progress isn't always visible — but it's always happening. Show up today."},
-  {title:"The gym misses you 🎯",body:"Discipline is choosing what you want most over what you want right now. Choose wisely."},
-  {title:"Beast mode: ON 🦁",body:"Motivation gets you started. Habit keeps you going. Build the habit — start now."},
-  {title:"Earn it today 🏆",body:"Nobody can do your pushups for you. The work is yours. Own it."},
-  {title:"Get after it 💫",body:"Small consistent efforts compound into massive results. Today's session matters."},
-  {title:"It's workout o'clock ⏰",body:"Your muscles grow when you challenge them. Challenge accepted?"},
-  {title:"One day or day one 🌅",body:"Stop waiting for the perfect moment. This is it — make today day one again."},
-  {title:"Fuel the fire 🔥",body:"Every great physique was built one workout at a time. Add another brick today."},
-  {title:"Move it or lose it 💪",body:"Your body is capable of more than your mind believes. Prove it today."},
-  {title:"Grind season 🎽",body:"The version of you that you want to be is waiting on the other side of this workout."},
-  {title:"Lock in 🧠",body:"Success isn't owned, it's rented — and rent is due every single day. Pay up."},
-  {title:"It's time ⚡",body:"Hard choices, easy life. Easy choices, hard life. You know what to do."},
-  {title:"Conquer today 🌟",body:"You didn't come this far to only come this far. Push a little further."},
-  {title:"Show up for yourself 🙌",body:"The best investment you'll ever make is in your own health. Invest today."},
+  {emoji:'💪',title:"Time to train 💪",body:"Your future self is watching. Make them proud — get your workout in today."},
+  {emoji:'🔥',title:"No excuses today 🔥",body:"The only workout you'll regret is the one you didn't do. Let's go."},
+  {emoji:'⚡',title:"It's go time ⚡",body:"Champions are built on the days they don't feel like it. Today is one of those days."},
+  {emoji:'🏋️',title:"Rise and grind 🏋️",body:"Every rep you do today is a vote for the person you're becoming. Cast your vote."},
+  {emoji:'💥',title:"Your body is waiting 💥",body:"Pain is temporary. The results you're building? Those last forever."},
+  {emoji:'🔑',title:"Don't break the streak 🔑",body:"You've worked too hard to stop now. One more session. That's all it takes."},
+  {emoji:'📈',title:"Stronger every day 📈",body:"Progress isn't always visible — but it's always happening. Show up today."},
+  {emoji:'🎯',title:"The gym misses you 🎯",body:"Discipline is choosing what you want most over what you want right now. Choose wisely."},
+  {emoji:'🦁',title:"Beast mode: ON 🦁",body:"Motivation gets you started. Habit keeps you going. Build the habit — start now."},
+  {emoji:'🏆',title:"Earn it today 🏆",body:"Nobody can do your pushups for you. The work is yours. Own it."},
+  {emoji:'💫',title:"Get after it 💫",body:"Small consistent efforts compound into massive results. Today's session matters."},
+  {emoji:'⏰',title:"It's workout o'clock ⏰",body:"Your muscles grow when you challenge them. Challenge accepted?"},
+  {emoji:'🌅',title:"One day or day one 🌅",body:"Stop waiting for the perfect moment. This is it — make today day one again."},
+  {emoji:'🔥',title:"Fuel the fire 🔥",body:"Every great physique was built one workout at a time. Add another brick today."},
+  {emoji:'💪',title:"Move it or lose it 💪",body:"Your body is capable of more than your mind believes. Prove it today."},
+  {emoji:'🎽',title:"Grind season 🎽",body:"The version of you that you want to be is waiting on the other side of this workout."},
+  {emoji:'🧠',title:"Lock in 🧠",body:"Success isn't owned, it's rented — and rent is due every single day. Pay up."},
+  {emoji:'⚡',title:"It's time ⚡",body:"Hard choices, easy life. Easy choices, hard life. You know what to do."},
+  {emoji:'🌟',title:"Conquer today 🌟",body:"You didn't come this far to only come this far. Push a little further."},
+  {emoji:'🙌',title:"Show up for yourself 🙌",body:"The best investment you'll ever make is in your own health. Invest today."},
 ];
 
-const NOTIF_KEY='ft_notif_v1';
-let notifSettings={enabled:false,dailyReminder:true,reminderTime:'07:00',swRegistered:false};
+const NOTIF_KEY='ft_notif_v2';
+const INBOX_KEY='ft_inbox_v1';
+let notifSettings={enabled:false,dailyReminder:true,reminderTime:'07:00'};
+let notifInbox=[];// [{title,body,emoji,ts,read}]
 
 function loadNotifSettings(){
   try{const d=localStorage.getItem(NOTIF_KEY);if(d)notifSettings={...notifSettings,...JSON.parse(d)};}catch(e){}
+  try{const d=localStorage.getItem(INBOX_KEY);if(d)notifInbox=JSON.parse(d);}catch(e){}
 }
 function saveNotifSettings(){
   try{localStorage.setItem(NOTIF_KEY,JSON.stringify(notifSettings));}catch(e){}
 }
-
-// Register Service Worker (inline via blob)
-function registerSW(){
-  if(!('serviceWorker' in navigator)||!('Notification' in window))return Promise.resolve(false);
-  const swCode=`
-self.addEventListener('install',e=>self.skipWaiting());
-self.addEventListener('activate',e=>self.clients.claim());
-self.addEventListener('push',e=>{
-  const data=e.data?e.data.json():{};
-  e.waitUntil(self.registration.showNotification(data.title||'Fitness Tracker',{
-    body:data.body||'Time to train!',
-    icon:data.icon||'',
-    badge:data.badge||'',
-    tag:'fitness-reminder',
-    requireInteraction:false,
-    data:{url:data.url||'/'}
-  }));
-});
-self.addEventListener('notificationclick',e=>{
-  e.notification.close();
-  e.waitUntil(clients.matchAll({type:'window'}).then(cs=>{
-    if(cs.length)cs[0].focus();
-    else clients.openWindow('/');
-  }));
-});
-// Scheduled alarm check
-self.addEventListener('message',e=>{
-  if(e.data&&e.data.type==='SCHEDULE_ALARM'){
-    const{time,msgs}=e.data;
-    const check=()=>{
-      const now=new Date();const[h,m]=time.split(':').map(Number);
-      const target=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0);
-      const diff=target-now;const wait=diff<0?diff+86400000:diff;
-      setTimeout(()=>{
-        const msg=msgs[Math.floor(Math.random()*msgs.length)];
-        self.registration.showNotification(msg.title,{
-          body:msg.body,tag:'fitness-daily',requireInteraction:false
-        });
-        check(); // reschedule for next day
-      },wait);
-    };
-    check();
-  }
-});`;
-  const blob=new Blob([swCode],{type:'application/javascript'});
-  const url=URL.createObjectURL(blob);
-  return navigator.serviceWorker.register(url).then(reg=>{
-    notifSettings.swRegistered=true;saveNotifSettings();
-    // Schedule alarm via message
-    if(notifSettings.dailyReminder&&notifSettings.enabled){
-      reg.active?reg.active.postMessage({type:'SCHEDULE_ALARM',time:notifSettings.reminderTime,msgs:MOTIVATIONAL_MSGS}):
-        reg.addEventListener('updatefound',()=>{});
-      navigator.serviceWorker.ready.then(r=>{
-        if(r.active)r.active.postMessage({type:'SCHEDULE_ALARM',time:notifSettings.reminderTime,msgs:MOTIVATIONAL_MSGS});
-      });
-    }
-    return true;
-  }).catch(()=>false);
+function saveInbox(){
+  try{localStorage.setItem(INBOX_KEY,JSON.stringify(notifInbox.slice(0,50)));}catch(e){}
 }
 
-// Schedule via local alarm (fallback for when SW is active but no push server)
-let _reminderInterval=null;
-function scheduleLocalReminder(){
-  clearInterval(_reminderInterval);
+// ── INBOX ──
+function addToInbox(msg){
+  notifInbox.unshift({title:msg.title,body:msg.body,emoji:msg.emoji||'💪',ts:Date.now(),read:false});
+  saveInbox();updateBellBadge();
+}
+function markAllRead(){
+  notifInbox.forEach(n=>n.read=true);saveInbox();updateBellBadge();
+}
+function clearInbox(){
+  notifInbox=[];saveInbox();updateBellBadge();renderInbox();
+}
+function updateBellBadge(){
+  const badge=document.getElementById('bell-badge');if(!badge)return;
+  const unread=notifInbox.filter(n=>!n.read).length;
+  if(unread>0){badge.classList.remove('hidden');badge.textContent=unread>9?'9+':unread;}
+  else badge.classList.add('hidden');
+}
+function renderInbox(){
+  const el=document.getElementById('inbox-list');if(!el)return;
+  if(!notifInbox.length){
+    el.innerHTML=`<div style="text-align:center;padding:40px 20px"><div style="font-size:40px;margin-bottom:14px">🔔</div><div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px">No notifications yet</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Enable daily reminders and your motivational messages will show up here.</div></div>`;
+    return;
+  }
+  el.innerHTML=notifInbox.map((n,i)=>{
+    const date=new Date(n.ts);const now=new Date();
+    const diff=Math.floor((now-date)/60000);
+    let timeStr=diff<1?'Just now':diff<60?diff+'m ago':diff<1440?Math.floor(diff/60)+'h ago':date.toLocaleDateString('en',{month:'short',day:'numeric'});
+    return`<div style="display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);animation:fadeIn .2s ease both;animation-delay:${i*0.04}s">
+      <div style="width:40px;height:40px;border-radius:10px;background:${n.read?'var(--surface2)':'var(--green-dim)'};border:1px solid ${n.read?'var(--border)':'var(--green-border)'};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${n.emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:${n.read?500:700};color:${n.read?'var(--text3)':'var(--text)'};margin-bottom:3px">${n.title}</div>
+        <div style="font-size:11px;color:var(--text3);line-height:1.5;margin-bottom:4px">${n.body}</div>
+        <div style="font-size:10px;color:var(--text3);opacity:.6;letter-spacing:.3px">${timeStr}</div>
+      </div>
+      ${!n.read?`<div style="width:8px;height:8px;border-radius:4px;background:var(--green);flex-shrink:0;margin-top:6px"></div>`:''}
+    </div>`;
+  }).join('');
+}
+function openInbox(){
+  markAllRead();
+  renderInbox();
+  document.getElementById('inbox-modal').classList.remove('hidden');
+}
+function closeInbox(){document.getElementById('inbox-modal').classList.add('hidden');}
+
+// ── MOTIVATIONAL BANNER ──
+const BANNER_KEY='ft_banner_v1';
+function shouldShowBanner(){
+  try{
+    const last=localStorage.getItem(BANNER_KEY);
+    const today=new Date().toISOString().slice(0,10);
+    return last!==today;
+  }catch(e){return false;}
+}
+function dismissBanner(){
+  document.getElementById('motiv-banner').classList.add('hidden');
+  try{localStorage.setItem(BANNER_KEY,new Date().toISOString().slice(0,10));}catch(e){}
+}
+function showMotivBanner(){
+  const el=document.getElementById('motiv-banner');if(!el)return;
+  if(!shouldShowBanner())return;
+  const msg=MOTIVATIONAL_MSGS[Math.floor(Math.random()*MOTIVATIONAL_MSGS.length)];
+  document.getElementById('motiv-emoji').textContent=msg.emoji;
+  document.getElementById('motiv-title').textContent=msg.title;
+  document.getElementById('motiv-body').textContent=msg.body;
+  // Style with theme color
+  el.style.background='var(--green-dim)';
+  el.style.border='1px solid var(--green-border)';
+  el.classList.remove('hidden');
+  el.style.animation='fadeIn .4s ease';
+  // Also add to inbox so it appears even if they missed it
+  addToInbox(msg);
+}
+
+// ── SERVICE WORKER (precise setTimeout-based, registered as blob) ──
+const SW_CODE=`
+self.addEventListener('install', e => { self.skipWaiting(); });
+self.addEventListener('activate', e => { self.clients.claim(); });
+
+let _alarmTimer = null;
+
+function scheduleNext(time, msgs) {
+  clearTimeout(_alarmTimer);
+  const now = new Date();
+  const [h, m] = time.split(':').map(Number);
+  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+  if (next <= now) next.setDate(next.getDate() + 1); // already passed today → tomorrow
+  const ms = next - now;
+  _alarmTimer = setTimeout(() => {
+    const msg = msgs[Math.floor(Math.random() * msgs.length)];
+    self.registration.showNotification(msg.title, {
+      body: msg.body,
+      tag: 'fitness-daily',
+      icon: '',
+      requireInteraction: false
+    });
+    // Schedule next day
+    scheduleNext(time, msgs);
+  }, ms);
+}
+
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SCHEDULE') {
+    scheduleNext(e.data.time, e.data.msgs);
+  }
+  if (e.data && e.data.type === 'CANCEL') {
+    clearTimeout(_alarmTimer);
+  }
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => {
+      for (const c of cs) { if ('focus' in c) return c.focus(); }
+      return clients.openWindow(self.location.origin);
+    })
+  );
+});
+`;
+
+let _swReg=null;
+
+async function registerSW(){
+  if(!('serviceWorker' in navigator))return false;
+  try{
+    // Revoke any old blob SWs
+    const regs=await navigator.serviceWorker.getRegistrations();
+    for(const r of regs){if(r.scope.startsWith('blob:'))await r.unregister();}
+    const blob=new Blob([SW_CODE],{type:'application/javascript'});
+    const url=URL.createObjectURL(blob);
+    _swReg=await navigator.serviceWorker.register(url,{scope:'./'});
+    await navigator.serviceWorker.ready;
+    return true;
+  }catch(e){
+    // blob SW may be blocked in some browsers (file://, some CSPs) — fall back to tab timer
+    return false;
+  }
+}
+
+function sendSWMessage(msg){
+  if(navigator.serviceWorker&&navigator.serviceWorker.controller){
+    navigator.serviceWorker.controller.postMessage(msg);
+  } else if(_swReg&&_swReg.active){
+    _swReg.active.postMessage(msg);
+  }
+}
+
+// ── TAB-BASED PRECISE TIMER (fallback, fires when tab is open) ──
+let _tabAlarmTimer=null;
+function scheduleTabAlarm(){
+  clearTimeout(_tabAlarmTimer);
   if(!notifSettings.enabled||!notifSettings.dailyReminder)return;
   if(Notification.permission!=='granted')return;
-  const fire=()=>{
-    const now=new Date();const[h,m]=notifSettings.reminderTime.split(':').map(Number);
-    if(now.getHours()===h&&now.getMinutes()===m){
-      const msg=MOTIVATIONAL_MSGS[Math.floor(Math.random()*MOTIVATIONAL_MSGS.length)];
-      new Notification(msg.title,{body:msg.body,tag:'fitness-daily'});
-    }
-  };
-  // Check every minute
-  _reminderInterval=setInterval(fire,60000);
+  const now=new Date();
+  const[h,m]=notifSettings.reminderTime.split(':').map(Number);
+  const next=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0,0);
+  if(next<=now)next.setDate(next.getDate()+1);
+  const ms=next-now;
+  _tabAlarmTimer=setTimeout(()=>{
+    fireReminder();
+    scheduleTabAlarm();// reschedule for next day
+  },ms);
 }
 
+function fireReminder(){
+  const msg=MOTIVATIONAL_MSGS[Math.floor(Math.random()*MOTIVATIONAL_MSGS.length)];
+  // System notification
+  if(Notification.permission==='granted'){
+    new Notification(msg.title,{body:msg.body,tag:'fitness-daily-tab'});
+  }
+  // Always add to inbox
+  addToInbox(msg);
+}
+
+async function setupScheduler(){
+  if(!notifSettings.enabled||!notifSettings.dailyReminder)return;
+  if(Notification.permission!=='granted')return;
+  // Try SW first for background delivery
+  const swOk=await registerSW();
+  if(swOk){
+    // Give SW a moment to activate then message it
+    setTimeout(()=>{
+      sendSWMessage({type:'SCHEDULE',time:notifSettings.reminderTime,msgs:MOTIVATIONAL_MSGS});
+    },800);
+  }
+  // Always also set tab timer as fallback
+  scheduleTabAlarm();
+}
+
+function cancelScheduler(){
+  clearTimeout(_tabAlarmTimer);
+  sendSWMessage({type:'CANCEL'});
+}
+
+// ── PERMISSION + ENABLE/DISABLE ──
 async function requestNotifPermission(){
   if(!('Notification' in window))return'unsupported';
   if(Notification.permission==='granted')return'granted';
   if(Notification.permission==='denied')return'denied';
-  const result=await Notification.requestPermission();
-  return result;
+  return await Notification.requestPermission();
 }
 
 async function enableNotifications(){
   const perm=await requestNotifPermission();
   if(perm==='granted'){
     notifSettings.enabled=true;saveNotifSettings();
-    await registerSW();
-    scheduleLocalReminder();
-    renderNotifModal();
-    return true;
-  }else if(perm==='denied'){
-    notifSettings.enabled=false;saveNotifSettings();
-    renderNotifModal();
-    return false;
+    await setupScheduler();
+    renderNotifModal();return true;
   }
+  if(perm==='denied'){notifSettings.enabled=false;saveNotifSettings();renderNotifModal();}
   return false;
 }
 
 function disableNotifications(){
   notifSettings.enabled=false;saveNotifSettings();
-  clearInterval(_reminderInterval);
-  renderNotifModal();
+  cancelScheduler();renderNotifModal();
 }
 
 function saveNotifTime(){
-  const t=document.getElementById('notif-time-input').value;
-  if(!t)return;
+  const t=document.getElementById('notif-time-input').value;if(!t)return;
   notifSettings.reminderTime=t;saveNotifSettings();
-  scheduleLocalReminder();
-  const btn=document.querySelector('#notif-time-picker button');
-  if(btn){btn.textContent='Saved ✓';btn.style.background='var(--surface2)';btn.style.color='var(--text3)';setTimeout(()=>{btn.textContent='Save';btn.style.background='var(--green)';btn.style.color='var(--bg)';},1500);}
+  cancelScheduler();
+  if(notifSettings.enabled)setupScheduler();
+  const btn=document.querySelector('#notif-time-picker .save-time-btn');
+  if(btn){btn.textContent='Saved ✓';btn.style.opacity='.6';setTimeout(()=>{btn.textContent='Save';btn.style.opacity='1';},1500);}
   renderNotifPreview();
 }
 
 function sendTestNotif(){
-  if(Notification.permission!=='granted'){alert('Please enable notifications first.');return;}
+  if(Notification.permission!=='granted'){alert('Enable notifications first.');return;}
   const msg=MOTIVATIONAL_MSGS[Math.floor(Math.random()*MOTIVATIONAL_MSGS.length)];
   new Notification(msg.title,{body:msg.body,tag:'fitness-test'});
+  addToInbox(msg);
 }
 
+// ── RENDER ──
 function renderNotifPreview(){
   const el=document.getElementById('notif-preview-area');if(!el)return;
   const msg=MOTIVATIONAL_MSGS[Math.floor(Math.random()*MOTIVATIONAL_MSGS.length)];
-  el.innerHTML=`<div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin:14px 0 6px">Preview</div>
+  const[h,m]=notifSettings.reminderTime.split(':').map(Number);
+  const ampm=h>=12?'PM':'AM';const h12=h%12||12;const timeStr=h12+':'+(m<10?'0':'')+m+' '+ampm;
+  el.innerHTML=`
+    <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin:14px 0 6px">Sample — fires daily at ${timeStr}</div>
     <div class="notif-preview">
-      <div class="notif-preview-icon">💪</div>
+      <div class="notif-preview-icon">${msg.emoji}</div>
       <div><div class="notif-preview-title">${msg.title}</div><div class="notif-preview-body">${msg.body}</div></div>
+    </div>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.6;padding:8px 10px;background:var(--surface2);border-radius:8px">
+      ℹ️ <b>Android/Chrome:</b> fires even when the tab is closed. <b>Desktop:</b> fires when browser is open. <b>iPhone:</b> save to home screen first.
     </div>`;
 }
 
@@ -1733,42 +1892,32 @@ function renderNotifModal(){
   const togglesEl=document.getElementById('notif-toggles');
   const timePicker=document.getElementById('notif-time-picker');
   const perm='Notification' in window?Notification.permission:'unsupported';
-  const supported='Notification' in window&&'serviceWorker' in navigator;
+  const supported='Notification' in window;
 
   if(!supported){
-    permArea.innerHTML=`<div class="notif-permission-banner" style="background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25)"><div style="font-size:20px">⚠️</div><div><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px">Not Supported</div><div style="font-size:11px;color:var(--text3);line-height:1.5">Push notifications aren't supported in this browser. Try Chrome on Android or add this app to your home screen on iPhone.</div></div></div>`;
+    permArea.innerHTML=`<div class="notif-permission-banner" style="background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25)"><div style="font-size:20px">⚠️</div><div><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px">Not Supported</div><div style="font-size:11px;color:var(--text3);line-height:1.5">Try Chrome on Android or save this app to your iPhone home screen.</div></div></div>`;
     togglesEl.innerHTML='';timePicker.classList.add('hidden');return;
   }
-
   if(perm==='denied'){
-    permArea.innerHTML=`<div class="notif-permission-banner" style="background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25)"><div style="font-size:20px">🚫</div><div><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px">Notifications Blocked</div><div style="font-size:11px;color:var(--text3);line-height:1.5">You've blocked notifications for this site. To re-enable, go to your browser's site settings and allow notifications, then come back here.</div></div></div>`;
+    permArea.innerHTML=`<div class="notif-permission-banner" style="background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25);padding:14px;border-radius:10px;display:flex;gap:10px;align-items:flex-start;margin-bottom:16px"><div style="font-size:20px">🚫</div><div><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px">Notifications Blocked</div><div style="font-size:11px;color:var(--text3);line-height:1.5">Go to your browser's site settings → allow notifications for this site, then reload.</div></div></div>`;
     togglesEl.innerHTML='';timePicker.classList.add('hidden');return;
   }
-
   if(perm==='default'&&!notifSettings.enabled){
-    permArea.innerHTML=`<div class="notif-permission-banner" style="background:var(--green-dim);border-color:var(--green-border)"><div style="font-size:20px">🔔</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px">Enable Push Notifications</div><div style="font-size:11px;color:var(--text3);line-height:1.5;margin-bottom:10px">Get daily workout reminders with motivational messages delivered right to your device.</div><button onclick="enableNotifications()" style="padding:10px 18px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--bg);font-family:inherit;background:var(--green)">Allow Notifications</button></div></div>`;
+    permArea.innerHTML=`<div style="background:var(--green-dim);border:1px solid var(--green-border);border-radius:10px;padding:16px;margin-bottom:16px"><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">🔔 Enable Push Notifications</div><div style="font-size:11px;color:var(--text3);line-height:1.5;margin-bottom:12px">Get daily motivational reminders delivered to your device — even when the tab is closed on Android.</div><button onclick="enableNotifications()" style="padding:11px 20px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:var(--bg);font-family:inherit;background:var(--green)">Allow Notifications</button></div>`;
     togglesEl.innerHTML='';timePicker.classList.add('hidden');return;
   }
-
   if(perm==='granted'){
-    permArea.innerHTML=`<div class="notif-permission-banner" style="background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25)"><div style="font-size:20px">✅</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Notifications Active</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Browser permission granted</div></div></div>`;
+    permArea.innerHTML=`<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:10px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px"><div style="font-size:18px">✅</div><div style="font-size:12px;color:var(--text2)"><b>Permission granted.</b> Notifications are active.</div></div>`;
   }
 
-  // Toggle rows
   togglesEl.innerHTML=`
     <div class="notif-toggle-row">
-      <div class="notif-toggle-info">
-        <div class="notif-toggle-label">All Notifications</div>
-        <div class="notif-toggle-sub">Master switch for all workout reminders</div>
-      </div>
-      <div class="toggle-switch${notifSettings.enabled?' on':''}" onclick="toggleNotifMaster()" id="toggle-master"><div class="toggle-knob"></div></div>
+      <div class="notif-toggle-info"><div class="notif-toggle-label">All Notifications</div><div class="notif-toggle-sub">Master switch for all reminders</div></div>
+      <div class="toggle-switch${notifSettings.enabled?' on':''}" onclick="toggleNotifMaster()"><div class="toggle-knob"></div></div>
     </div>
-    <div class="notif-toggle-row" id="daily-row" style="${notifSettings.enabled?'':'opacity:.4;pointer-events:none'}">
-      <div class="notif-toggle-info">
-        <div class="notif-toggle-label">Daily Workout Reminder</div>
-        <div class="notif-toggle-sub">A motivational push at your chosen time every day</div>
-      </div>
-      <div class="toggle-switch${notifSettings.dailyReminder?' on':''}" onclick="toggleDailyReminder()" id="toggle-daily"><div class="toggle-knob"></div></div>
+    <div class="notif-toggle-row" style="${notifSettings.enabled?'':'opacity:.35;pointer-events:none'}">
+      <div class="notif-toggle-info"><div class="notif-toggle-label">Daily Workout Reminder</div><div class="notif-toggle-sub">Motivational push at your chosen time every day</div></div>
+      <div class="toggle-switch${notifSettings.dailyReminder?' on':''}" onclick="toggleDailyReminder()"><div class="toggle-knob"></div></div>
     </div>`;
 
   if(notifSettings.enabled&&notifSettings.dailyReminder){
@@ -1782,15 +1931,15 @@ function renderNotifModal(){
 }
 
 async function toggleNotifMaster(){
-  if(notifSettings.enabled){disableNotifications();}
-  else{await enableNotifications();}
+  if(notifSettings.enabled)disableNotifications();
+  else await enableNotifications();
 }
-
 function toggleDailyReminder(){
   if(!notifSettings.enabled)return;
   notifSettings.dailyReminder=!notifSettings.dailyReminder;
   saveNotifSettings();
-  scheduleLocalReminder();
+  if(notifSettings.dailyReminder)setupScheduler();
+  else cancelScheduler();
   renderNotifModal();
 }
 
@@ -1806,13 +1955,17 @@ function closeNotifModal(){document.getElementById('notif-modal').classList.add(
 // ─────────────────────────────────────────────
 load();
 loadNotifSettings();
-function initApp(){if(window._initDone)return;window._initDone=true;if(S.active!==null&&S.profiles[S.active]){startApp();}else{showSplash();}}
+function initApp(){
+  if(window._initDone)return;window._initDone=true;
+  if(S.active!==null&&S.profiles[S.active]){startApp();}
+  else{showSplash();}
+}
 try{initApp();}catch(e){console.error('Init error:',e);try{showSplash();}catch(e2){document.getElementById('splash-screen').classList.remove('hidden');}}
 if(!window._fbReady){window._onFbReady=function(){const p=profile();if(p)syncToCloud(p);};}
-// Restart notification scheduler if previously enabled
+// Boot notifications
+updateBellBadge();
 if(notifSettings.enabled&&Notification.permission==='granted'){
-  scheduleLocalReminder();
-  registerSW().catch(()=>{});
+  setupScheduler().catch(()=>{});
 }</script>
 </body>
 </html>
