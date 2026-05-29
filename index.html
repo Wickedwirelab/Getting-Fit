@@ -289,10 +289,10 @@ input:focus,textarea:focus,select:focus{outline:none}
 .splash-seg-btn.active{background:var(--surface3);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .splash-row-2{display:flex;gap:10px;margin-bottom:18px}
 .splash-row-2>*{flex:1}
-.splash-themes{display:flex;gap:6px;margin-bottom:22px}
-.splash-theme-bar{flex:1;height:40px;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:all .2s;position:relative;overflow:hidden}
-.splash-theme-bar.active{border-color:var(--text)}
-.splash-theme-bar.active::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:12px;height:2px;background:#fff;border-radius:1px}
+.splash-themes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.splash-theme-bar{width:36px;height:36px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s;position:relative;flex-shrink:0}
+.splash-theme-bar.active{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+.splash-theme-bar.active::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:14px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .splash-stat-strip{display:flex;gap:1px;margin-bottom:24px;background:var(--border);border-radius:var(--radius);overflow:hidden}
 .splash-stat-cell{flex:1;background:var(--surface);padding:14px 8px;text-align:center}
 .splash-stat-num{font-size:18px;font-weight:700;font-family:'Space Mono',monospace;color:var(--text);letter-spacing:-1px}
@@ -556,7 +556,10 @@ const STORE_KEY='ft_v6';
 const THEMES=[
   {id:'gold',bg:'#fbbf24'},{id:'green',bg:'#22c55e'},{id:'blue',bg:'#3b82f6'},
   {id:'violet',bg:'#a855f7'},{id:'red',bg:'#ef4444'},{id:'orange',bg:'#f97316'},
-  {id:'white',bg:'#fafafa'},{id:'slate',bg:'#6b7280'},
+  {id:'pink',bg:'#ec4899'},{id:'rose',bg:'#fb7185'},{id:'fuchsia',bg:'#d946ef'},
+  {id:'cyan',bg:'#06b6d4'},{id:'teal',bg:'#14b8a6'},{id:'lime',bg:'#84cc16'},
+  {id:'amber',bg:'#f59e0b'},{id:'indigo',bg:'#6366f1'},{id:'sky',bg:'#38bdf8'},
+  {id:'emerald',bg:'#10b981'},{id:'white',bg:'#fafafa'},{id:'slate',bg:'#6b7280'},
 ];
 const AWARDS=[
   {id:'first',icon:'01',name:'First Step',desc:'Complete your first workout',check:p=>(p.wc||0)>=1},
