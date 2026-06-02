@@ -883,22 +883,43 @@ function profile(){
   return p;
 }
 
+
 async function syncToCloud(p){
-  if(!window._fbReady||!p||!p.friendCode)return;
-  try{const ref=window._fbDoc(window._db,'profiles',p.friendCode);const d={...p};delete d.photoData;await window._fbSetDoc(ref,d);showSync('synced');}
-  catch(e){showSync('offline');}
+  if(!p||!p.friendCode)return;
+  try{
+    await waitForFb();
+    const ref=window._fbDoc(window._db,'profiles',p.friendCode);
+    const d={...p};delete d.photoData;
+    await window._fbSetDoc(ref,d);
+    showSync('synced');
+  }catch(e){showSync('offline');console.warn('syncToCloud failed:',e);}
 }
 async function findByFriendCode(code){
-  if(!window._fbReady)return null;
-  try{const snap=await window._fbGetDoc(window._fbDoc(window._db,'profiles',code));return snap.exists()?snap.data():null;}
-  catch(e){return null;}
+  try{
+    await waitForFb();
+    const snap=await window._fbGetDoc(window._fbDoc(window._db,'profiles',code));
+    return snap.exists()?snap.data():null;
+  }catch(e){console.warn('findByFriendCode failed:',e);return null;}
 }
 async function getFriendPublicData(code){
-  if(!window._fbReady)return null;
-  try{const snap=await window._fbGetDoc(window._fbDoc(window._db,'profiles',code));
+  try{
+    await waitForFb();
+    const snap=await window._fbGetDoc(window._fbDoc(window._db,'profiles',code));
     if(!snap.exists())return null;const d=snap.data();
     return{name:d.name,pts:d.pts||0,wc:d.wc||0,phase:d.phase||1,awards:d.awards||[],sex:d.sex||'male',theme:d.theme||'gold',fwc:d.fwc||0};
-  }catch(e){return null;}
+  }catch(e){console.warn('getFriendPublicData failed:',e);return null;}
+}
+// Wait up to 8 seconds for Firebase to be ready
+function waitForFb(){
+  return new Promise((resolve,reject)=>{
+    if(window._fbReady)return resolve();
+    let elapsed=0;
+    const iv=setInterval(()=>{
+      elapsed+=100;
+      if(window._fbReady){clearInterval(iv);resolve();}
+      else if(elapsed>=8000){clearInterval(iv);reject(new Error('Firebase timeout'));}
+    },100);
+  });
 }
 function showSync(s){const el=document.getElementById('sync-indicator');if(!el)return;el.textContent=s==='synced'?'synced':'offline';el.style.opacity='1';setTimeout(()=>el.style.opacity='0',1500);}
 function generateFriendCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let r='';for(let i=0;i<6;i++)r+=c[Math.floor(Math.random()*c.length)];return r;}
@@ -1070,10 +1091,27 @@ async function addFriend(){
   if(code===p.friendCode){msg.style.color='var(--danger)';msg.textContent="That's your own code";return;}
   if((p.friends||[]).find(f=>f.code===code)){msg.style.color='var(--danger)';msg.textContent='Already friends';return;}
   document.getElementById('add-friend-btn').textContent='...';
-  const fd=await findByFriendCode(code);
-  if(!fd){msg.style.color='var(--danger)';msg.textContent='Profile not found';document.getElementById('add-friend-btn').textContent='Add';return;}
-  if(!p.friends)p.friends=[];p.friends.push({code:code,name:fd.name,pts:fd.pts||0});
-  saveLocal();syncToCloud(p);msg.style.color='var(--green)';msg.textContent=`Added ${fd.name}!`;document.getElementById('add-friend-input').value='';document.getElementById('add-friend-btn').textContent='Add';renderFriendsModal();
+  msg.style.color='var(--text3)';msg.textContent='Searching...';
+  // Make sure own profile is synced first so others can find us too
+  syncToCloud(p);
+  let fd=null;
+  try{fd=await findByFriendCode(code);}
+  catch(e){
+    msg.style.color='var(--danger)';msg.textContent='Connection error — check your internet and try again.';
+    document.getElementById('add-friend-btn').textContent='Add';return;
+  }
+  if(!fd){
+    msg.style.color='var(--danger)';
+    msg.textContent='Profile not found. Make sure they have opened the app at least once so their profile is synced.';
+    document.getElementById('add-friend-btn').textContent='Add';return;
+  }
+  if(!p.friends)p.friends=[];
+  p.friends.push({code:code,name:fd.name,pts:fd.pts||0});
+  saveLocal();syncToCloud(p);
+  msg.style.color='var(--green)';msg.textContent=`Added ${fd.name}!`;
+  document.getElementById('add-friend-input').value='';
+  document.getElementById('add-friend-btn').textContent='Add';
+  renderFriendsModal();
 }
 async function openFriendProfile(code){
   const fd=await getFriendPublicData(code);if(!fd)return;
@@ -1588,6 +1626,7 @@ function initApp(){
   else{showSplash();}
 }
 try{initApp();}catch(e){console.error('Init error:',e);try{showSplash();}catch(e2){document.getElementById('splash-screen').classList.remove('hidden');}}
-if(!window._fbReady){window._onFbReady=function(){const p=profile();if(p)syncToCloud(p);};}</script>
+if(!window._fbReady){window._onFbReady=function(){const p=profile();if(p){syncToCloud(p);}};}
+else{const p=profile();if(p)syncToCloud(p);}</script>
 </body>
 </html>
