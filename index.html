@@ -897,9 +897,14 @@ async function syncToCloud(p){
 async function findByFriendCode(code){
   try{
     await waitForFb();
+    console.log('[Friends] Searching for code:',code);
     const snap=await window._fbGetDoc(window._fbDoc(window._db,'profiles',code));
+    console.log('[Friends] Result — exists:',snap.exists());
     return snap.exists()?snap.data():null;
-  }catch(e){console.warn('findByFriendCode failed:',e);return null;}
+  }catch(e){
+    console.error('[Friends] findByFriendCode error:',e.code,e.message);
+    throw e;
+  }
 }
 async function getFriendPublicData(code){
   try{
@@ -1097,8 +1102,18 @@ async function addFriend(){
   let fd=null;
   try{fd=await findByFriendCode(code);}
   catch(e){
-    msg.style.color='var(--danger)';msg.textContent='Connection error — check your internet and try again.';
-    document.getElementById('add-friend-btn').textContent='Add';return;
+    const errMsg=e.code==='permission-denied'
+      ?'Permission denied — Firestore rules are blocking this. See instructions below.'
+      :e.code==='unavailable'||e.message?.includes('network')
+      ?'Network error — check your connection and try again.'
+      :'Error: '+(e.code||e.message||'unknown');
+    msg.style.color='var(--danger)';msg.textContent=errMsg;
+    document.getElementById('add-friend-btn').textContent='Add';
+    // Show fix instructions if permission error
+    if(e.code==='permission-denied'){
+      msg.innerHTML=errMsg+'<br/><span style="font-size:10px;color:var(--text3);line-height:1.6">Go to <b>console.firebase.google.com</b> → Firestore → Rules → publish rules that allow read/write.</span>';
+    }
+    return;
   }
   if(!fd){
     msg.style.color='var(--danger)';
