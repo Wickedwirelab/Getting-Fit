@@ -602,6 +602,17 @@ const FOODS=[
 const MEAL_TYPES=['Breakfast','Lunch','Dinner','Snack','Pre-Workout','Post-Workout'];
 const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const DAY_FULL={Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday',Sun:'Sunday'};
+
+// Returns a string like "2024-W03" — resets workout keys each calendar week
+function getWeekKey(){
+  const now=new Date();
+  const jan1=new Date(now.getFullYear(),0,1);
+  const week=Math.ceil(((now-jan1)/86400000+jan1.getDay()+1)/7);
+  return`${now.getFullYear()}-W${String(week).padStart(2,'0')}`;
+}
+function buildWkKey(phaseIdx,dayKey,location){
+  return`p${phaseIdx}_${dayKey}_${location}_${getWeekKey()}`;
+}
 const ytUrl=q=>`https://www.youtube.com/results?search_query=${encodeURIComponent(q+' exercise tutorial')}`;
 function mkQEx(n,equip,c,s,r,mins){return{n,equip,c,s,r,mins:mins||3,yt:ytUrl(n)};}
 
@@ -1169,7 +1180,7 @@ function renderWorkout(){
   document.getElementById('day-name').textContent=DAY_FULL[dayKey]||dayKey;
   document.getElementById('day-label-badge').textContent=day.label;
   document.getElementById('day-header').style.background='var(--surface)';
-  const wkKey=`p${curPhase}_${dayKey}_${curLocation}`;
+  const wkKey=buildWkKey(curPhase,dayKey,curLocation);
   const done=p.wk[wkKey]||[];
   const baseEx=(curLocation==='gym'?day.gym:day.home)||[];
   const customs=(p.customEx&&p.customEx[wkKey])||[];
@@ -1212,9 +1223,24 @@ function renderWorkout(){
   }
   document.getElementById('add-ex-btn').style.display=manageMode?'flex':'none';
   const logBtn=document.getElementById('log-workout-btn');
-  if(pct>=80&&!isWorkoutLogged(wkKey)){logBtn.classList.remove('hidden');logBtn.textContent=`Log Workout (+${PTS_WO} pts)`;logBtn.style.background=phase.color;logBtn.style.color='#000';logBtn.disabled=false;}
-  else if(isWorkoutLogged(wkKey)){logBtn.classList.remove('hidden');logBtn.textContent='✓ Workout Logged';logBtn.style.background='var(--surface2)';logBtn.style.color='var(--text3)';logBtn.disabled=true;}
-  else{logBtn.classList.add('hidden');}
+  if(isRest){
+    // Rest day — always show a simple "Mark Complete" button
+    if(!isWorkoutLogged(wkKey)){
+      logBtn.classList.remove('hidden');
+      logBtn.textContent='Mark Rest Day Complete';
+      logBtn.style.background=phase.color;logBtn.style.color='#000';logBtn.disabled=false;
+    } else {
+      logBtn.classList.remove('hidden');
+      logBtn.textContent='✓ Rest Day Complete';
+      logBtn.style.background='var(--surface2)';logBtn.style.color='var(--text3)';logBtn.disabled=true;
+    }
+  } else if(pct>=80&&!isWorkoutLogged(wkKey)){
+    logBtn.classList.remove('hidden');logBtn.textContent=`Log Workout (+${PTS_WO} pts)`;logBtn.style.background=phase.color;logBtn.style.color='#000';logBtn.disabled=false;
+  } else if(isWorkoutLogged(wkKey)){
+    logBtn.classList.remove('hidden');logBtn.textContent='✓ Workout Logged';logBtn.style.background='var(--surface2)';logBtn.style.color='var(--text3)';logBtn.disabled=true;
+  } else {
+    logBtn.classList.add('hidden');
+  }
 }
 function pickDay(i){curDay=i;renderWorkout();}
 function toggleManageMode(){manageMode=!manageMode;renderWorkout();}
@@ -1222,7 +1248,7 @@ function toggleManageMode(){manageMode=!manageMode;renderWorkout();}
 function openExDetail(idx){
   const phase=PHASES[curPhase];const dayKeys=Object.keys(phase.days);const dayKey=dayKeys[curDay];const day=phase.days[dayKey];
   const baseEx=(curLocation==='gym'?day.gym:day.home)||[];
-  const p=profile();const wkKey=`p${curPhase}_${dayKey}_${curLocation}`;
+  const p=profile();const wkKey=buildWkKey(curPhase,dayKey,curLocation);
   const customs=(p.customEx&&p.customEx[wkKey])||[];
   const allEx=[...baseEx,...customs];
   const ex=allEx[idx];if(!ex)return;
@@ -1297,7 +1323,7 @@ function closeSwap(){document.getElementById('swap-modal').classList.add('hidden
 function doSwap(exIdx,alt){
   const p=profile();if(!p)return;
   const phase=PHASES[curPhase];const dayKeys=Object.keys(phase.days);const dayKey=dayKeys[curDay];
-  const wkKey=`p${curPhase}_${dayKey}_${curLocation}`;const day=phase.days[dayKey];
+  const wkKey=buildWkKey(curPhase,dayKey,curLocation);const day=phase.days[dayKey];
   const baseEx=(curLocation==='gym'?day.gym:day.home)||[];
   if(!p.customEx)p.customEx={};if(!p.customEx[wkKey])p.customEx[wkKey]=[];
   if(!p.hiddenEx)p.hiddenEx={};if(!p.hiddenEx[wkKey])p.hiddenEx[wkKey]=[];
@@ -1313,13 +1339,12 @@ function closeExDetail(){document.getElementById('ex-detail-modal').classList.ad
 function toggleEx(idx){
   const p=profile();if(!p)return;
   const dayKeys=Object.keys(PHASES[curPhase].days);
-  const wkKey=`p${curPhase}_${dayKeys[curDay]}_${curLocation}`;
+  const wkKey=buildWkKey(curPhase,dayKeys[curDay],curLocation);
   if(!p.wk[wkKey])p.wk[wkKey]=[];
   const i=p.wk[wkKey].indexOf(idx);
   if(i>-1){p.wk[wkKey].splice(i,1);}
   else{
     p.wk[wkKey].push(idx);p.pts=(p.pts||0)+PTS_EX;showPtsToast(PTS_EX);
-    // Start rest timer after checking exercise
     startRestTimer(timerDuration);
   }
   saveLocal();syncToCloud(p);checkAwards();renderWorkout();refreshHeader();
@@ -1328,11 +1353,16 @@ function isWorkoutLogged(wkKey){const p=profile();return p&&p.wk[wkKey+'_logged'
 function logWorkout(){
   const p=profile();if(!p)return;
   const dayKeys=Object.keys(PHASES[curPhase].days);
-  const wkKey=`p${curPhase}_${dayKeys[curDay]}_${curLocation}`;
+  const dayKey=dayKeys[curDay];
+  const wkKey=buildWkKey(curPhase,dayKey,curLocation);
   if(isWorkoutLogged(wkKey))return;
-  p.wk[wkKey+'_logged']=true;p.pts=(p.pts||0)+PTS_WO;p.wc=(p.wc||0)+1;showPtsToast(PTS_WO);
-  const allLogged=dayKeys.every(d=>p.wk[`p${curPhase}_${d}_${curLocation}_logged`]);
-  if(allLogged){p.pts+=PTS_WK;p.fwc=(p.fwc||0)+1;showPtsToast(PTS_WK);}
+  p.wk[wkKey+'_logged']=true;
+  // Rest days don't award workout points, just mark complete for week tracking
+  const isRest=PHASES[curPhase].days[dayKey].label==='Rest';
+  if(!isRest){p.pts=(p.pts||0)+PTS_WO;p.wc=(p.wc||0)+1;showPtsToast(PTS_WO);}
+  // Check if all 7 days this week are logged
+  const allLogged=dayKeys.every(d=>p.wk[buildWkKey(curPhase,d,curLocation)+'_logged']);
+  if(allLogged){p.pts=(p.pts||0)+PTS_WK;p.fwc=(p.fwc||0)+1;showPtsToast(PTS_WK,'Full week! +'+PTS_WK+' pts');}
   saveLocal();syncToCloud(p);checkAwards();renderWorkout();refreshHeader();
 }
 function openAddEx(){document.getElementById('add-ex-modal').classList.remove('hidden');['ex-name-input','ex-equip-input','ex-cue-input','ex-sets-input','ex-reps-input'].forEach(id=>document.getElementById(id).value='');}
@@ -1340,7 +1370,7 @@ function closeAddEx(){document.getElementById('add-ex-modal').classList.add('hid
 function submitAddEx(){
   const name=document.getElementById('ex-name-input').value.trim();if(!name)return;
   const p=profile();const dayKeys=Object.keys(PHASES[curPhase].days);
-  const wkKey=`p${curPhase}_${dayKeys[curDay]}_${curLocation}`;
+  const wkKey=buildWkKey(curPhase,dayKeys[curDay],curLocation);
   if(!p.customEx)p.customEx={};if(!p.customEx[wkKey])p.customEx[wkKey]=[];
   p.customEx[wkKey].push({n:name,equip:document.getElementById('ex-equip-input').value.trim(),c:document.getElementById('ex-cue-input').value.trim(),s:document.getElementById('ex-sets-input').value.trim()||'3x',r:document.getElementById('ex-reps-input').value.trim()||'12',yt:ytUrl(name)});
   saveLocal();syncToCloud(p);closeAddEx();renderWorkout();
@@ -1568,9 +1598,16 @@ function renderHistory(){
     <div class="card-title">Phase Progress</div>
     ${PHASES.map((ph,pi)=>{
       const dKeys=Object.keys(ph.days);
-      const logged=dKeys.filter(d=>p.wk[`p${pi}_${d}_home_logged`]||p.wk[`p${pi}_${d}_gym_logged`]).length;
+      // Count days logged across ALL weeks (keys contain week stamp)
+      const loggedSet=new Set(
+        Object.keys(p.wk)
+          .filter(k=>k.endsWith('_logged')&&k.startsWith(`p${pi}_`))
+          .map(k=>k.replace(`p${pi}_`,'').replace(/_home_.*/,'').replace(/_gym_.*/,''))
+      );
+      const logged=dKeys.filter(d=>loggedSet.has(d)).length;
       const pct=Math.round(logged/dKeys.length*100);
-      return`<div class="card" style="border-left:3px solid ${ph.color}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div><div style="font-size:13px;font-weight:600;color:var(--text)">${ph.name}</div><div style="font-size:10px;color:var(--text3)">${ph.weeks}</div></div><div style="font-size:14px;font-weight:700;color:${ph.color};font-family:'Space Mono',monospace">${pct}%</div></div><div style="height:4px;background:var(--surface2);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${ph.color};border-radius:2px"></div></div><div style="display:flex;gap:4px;margin-top:8px">${dKeys.map(d=>{const done=p.wk[`p${pi}_${d}_home_logged`]||p.wk[`p${pi}_${d}_gym_logged`];return`<div style="flex:1;height:22px;border-radius:4px;background:${done?ph.color+'30':'var(--surface2)'};border:1px solid ${done?ph.color+'50':'var(--border)'};display:flex;align-items:center;justify-content:center;font-size:8px;color:${done?ph.color:'var(--text3)'};font-weight:500">${d.slice(0,1)}</div>`;}).join('')}</div></div>`;
+      // For the day dots, check current week
+      return`<div class="card" style="border-left:3px solid ${ph.color}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div><div style="font-size:13px;font-weight:600;color:var(--text)">${ph.name}</div><div style="font-size:10px;color:var(--text3)">${ph.weeks}</div></div><div style="font-size:14px;font-weight:700;color:${ph.color};font-family:'Space Mono',monospace">${pct}%</div></div><div style="height:4px;background:var(--surface2);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${ph.color};border-radius:2px"></div></div><div style="display:flex;gap:4px;margin-top:8px">${dKeys.map(d=>{const done=p.wk[buildWkKey(pi,d,'home')+'_logged']||p.wk[buildWkKey(pi,d,'gym')+'_logged'];return`<div style="flex:1;height:22px;border-radius:4px;background:${done?ph.color+'30':'var(--surface2)'};border:1px solid ${done?ph.color+'50':'var(--border)'};display:flex;align-items:center;justify-content:center;font-size:8px;color:${done?ph.color:'var(--text3)'};font-weight:500">${d.slice(0,1)}</div>`;}).join('')}</div></div>`;
     }).join('')}`;
 }
 
