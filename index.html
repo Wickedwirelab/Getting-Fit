@@ -570,81 +570,326 @@ Sat:{label:'Active Recovery',
   home:[{n:'Easy Walk',equip:'Bodyweight',c:'Enjoy it, you have come a long way',s:'1x',r:'30 min',yt:ytUrl('Walk')},{n:'Full Body Stretch',equip:'Floor',c:'Deep stretches, full recovery',s:'1x',r:'15 min',yt:ytUrl('Stretch')}]},
 Sun:{label:'Rest',gym:[],home:[]}}}
 ];
-
 // ─────────────────────────────────────────────
-// FEMALE-SPECIFIC EXERCISE OVERRIDES
-// Used when profile.sex === 'female'
-// Unisex exercises kept. Swapped: barbell flat bench -> DB press,
-// skull crushers -> kickbacks/pushdowns, heavy bag -> cardio,
-// Legs adds hip thrusts + glute work, abs adds hip dips.
+// FEMALE PROGRAM — Brand new exercise selection
+// Same 3-phase / 12-week / 7-day structure
+// Focus: glutes & legs + full body tone + cardio
+// Home and gym versions for every day
 // ─────────────────────────────────────────────
 const FEMALE_PHASES=[
-{id:1,name:'Fat Burn',weeks:'Wks 1-4',color:'#ff4d1c',goal:'Build aerobic base, establish habits, shed initial weight',
+{id:1,name:'Fat Burn',weeks:'Wks 1-4',color:'#ff4d1c',goal:'Build your foundation, ignite fat burn, establish movement patterns',
 days:{
 Mon:{label:'Chest & Triceps',
-  gym:[{n:'DB Chest Press',equip:'Dumbbells + Bench',c:'Full range, squeeze chest at top, controlled descent',s:'4x',r:'10',yt:ytUrl('Dumbbell Chest Press')},{n:'Incline DB Press',equip:'Dumbbells + Bench',c:'45 degree incline, squeeze at the top',s:'3x',r:'12',yt:ytUrl('Incline DB Press')},{n:'Cable Chest Fly',equip:'Cable Machine',c:'Slight bend in elbows, slow squeeze at center',s:'3x',r:'12',yt:ytUrl('Cable Chest Fly')},{n:'Tricep Pushdown',equip:'Cable Machine',c:'Elbows pinned at sides, extend fully each rep',s:'3x',r:'15',yt:ytUrl('Tricep Pushdown')},{n:'Tricep Kickbacks',equip:'Dumbbells',c:'Hinge forward, extend arm fully behind you, squeeze',s:'3x',r:'12/side',yt:ytUrl('Tricep Kickbacks')},{n:'Treadmill Intervals',equip:'Treadmill',c:'1 min on / 1 min off',s:'10 min',r:'--',yt:ytUrl('Treadmill Intervals')}],
-  home:[{n:'Push-Ups',equip:'Bodyweight',c:'Chest to floor, full range of motion',s:'4x',r:'10',yt:ytUrl('Push Ups')},{n:'Kneeling Push-Ups',equip:'Bodyweight',c:'Knees down, full chest to floor, great for building up',s:'3x',r:'12',yt:ytUrl('Kneeling Push Ups')},{n:'Wide Push-Ups',equip:'Bodyweight',c:'Hands wider than shoulder width, chest focus',s:'3x',r:'10',yt:ytUrl('Wide Push Ups')},{n:'Tricep Dips',equip:'Chair',c:'Use a sturdy chair, full range of motion',s:'3x',r:'12',yt:ytUrl('Tricep Dips Chair')},{n:'Tricep Kickbacks',equip:'Adjustable Dumbbell',c:'Hinge forward, extend arm fully, squeeze at top',s:'3x',r:'12/side',yt:ytUrl('Tricep Kickbacks')},{n:'Jump Rope',equip:'Jump Rope',c:'Steady pace, stay light on feet',s:'3x',r:'2 min',yt:ytUrl('Jump Rope Workout')}]},
+  gym:[
+    {n:'DB Chest Press',equip:'Dumbbells + Bench',c:'Full range, slow 3-count down, squeeze at top',s:'4x',r:'12',yt:ytUrl('Dumbbell Chest Press')},
+    {n:'Incline DB Press',equip:'Dumbbells + Bench',c:'45 degree incline, elbows at 45 degrees',s:'3x',r:'12',yt:ytUrl('Incline Dumbbell Press')},
+    {n:'Cable Chest Fly',equip:'Cable Machine',c:'Slight bend in elbows, squeeze chest at center',s:'3x',r:'15',yt:ytUrl('Cable Chest Fly')},
+    {n:'Tricep Pushdown',equip:'Cable Machine',c:'Elbows pinned to sides, extend fully each rep',s:'3x',r:'15',yt:ytUrl('Tricep Pushdown')},
+    {n:'Overhead DB Tricep Extension',equip:'Dumbbell',c:'Both hands on one DB, elbows close to head',s:'3x',r:'15',yt:ytUrl('Overhead Tricep Extension')},
+    {n:'Treadmill Walk',equip:'Treadmill',c:'Moderate incline, zone 2 cardio to finish',s:'1x',r:'15 min',yt:ytUrl('Treadmill Incline Walk')}
+  ],
+  home:[
+    {n:'Push-Ups',equip:'Bodyweight',c:'Chest to floor, full range — do kneeling if needed',s:'4x',r:'10',yt:ytUrl('Push Ups')},
+    {n:'Kneeling Diamond Push-Ups',equip:'Bodyweight',c:'Hands form diamond, elbows track back',s:'3x',r:'10',yt:ytUrl('Diamond Push Ups')},
+    {n:'DB Chest Fly on Floor',equip:'Dumbbells',c:'Lie flat, slight bend in elbow, wide arc down',s:'3x',r:'12',yt:ytUrl('Dumbbell Floor Fly')},
+    {n:'Tricep Dips',equip:'Chair',c:'Use sturdy chair, lower until elbows at 90',s:'3x',r:'12',yt:ytUrl('Tricep Dips Chair')},
+    {n:'Tricep Kickbacks',equip:'Dumbbells',c:'Hinge forward, extend arm fully, pause at top',s:'3x',r:'12/side',yt:ytUrl('Tricep Kickbacks')},
+    {n:'Jump Rope',equip:'Jump Rope',c:'Steady pace, light on feet',s:'3x',r:'2 min',yt:ytUrl('Jump Rope Workout')}
+  ]},
 Tue:{label:'Back & Biceps',
-  gym:[{n:'Lat Pulldown',equip:'Lat Pulldown Machine',c:'Pull to upper chest, slight lean back, full stretch at top',s:'4x',r:'10',yt:ytUrl('Lat Pulldown')},{n:'Seated Cable Row',equip:'Cable Machine',c:'Drive elbows back, squeeze shoulder blades together',s:'4x',r:'10',yt:ytUrl('Seated Cable Row')},{n:'DB Bent-Over Row',equip:'Dumbbells',c:'Support on knee, pull elbow to ceiling',s:'3x',r:'12/side',yt:ytUrl('Dumbbell Row')},{n:'DB Bicep Curls',equip:'Dumbbells',c:'Slow 2-count on the way down, full squeeze at top',s:'3x',r:'12',yt:ytUrl('Bicep Curls')},{n:'Hammer Curls',equip:'Dumbbells',c:'Neutral grip, controlled reps each side',s:'3x',r:'12',yt:ytUrl('Hammer Curls')},{n:'Treadmill Walk',equip:'Treadmill',c:'Moderate pace, Zone 2 cardio',s:'15 min',r:'--',yt:ytUrl('Treadmill Walk')}],
-  home:[{n:'Kettlebell Deadlift',equip:'Kettlebell',c:'Push floor away, drive hips forward',s:'4x',r:'10',yt:ytUrl('Kettlebell Deadlift')},{n:'DB Bent-Over Row',equip:'Adjustable Dumbbell',c:'Support on knee, full range of motion',s:'4x',r:'10/side',yt:ytUrl('Dumbbell Row')},{n:'Inverted Row',equip:'Table / Bar',c:'Body straight, pull chest to edge',s:'3x',r:'10',yt:ytUrl('Inverted Row')},{n:'DB Bicep Curls',equip:'Adjustable Dumbbell',c:'Slow 2-count on the way down',s:'3x',r:'12',yt:ytUrl('Bicep Curls')},{n:'Hammer Curls',equip:'Adjustable Dumbbell',c:'Neutral grip, controlled reps',s:'3x',r:'12',yt:ytUrl('Hammer Curls')},{n:'Exercise Bike',equip:'Exercise Bike',c:'Conversational pace Zone 2',s:'15 min',r:'--',yt:ytUrl('Zone 2 Cardio')}]},
+  gym:[
+    {n:'Lat Pulldown',equip:'Lat Pulldown Machine',c:'Wide grip, pull to upper chest, full stretch at top',s:'4x',r:'12',yt:ytUrl('Lat Pulldown')},
+    {n:'Seated Cable Row',equip:'Cable Machine',c:'Drive elbows back, squeeze shoulder blades, sit tall',s:'4x',r:'12',yt:ytUrl('Seated Cable Row')},
+    {n:'Single-Arm DB Row',equip:'Dumbbell + Bench',c:'Brace on bench, pull elbow to ceiling, big range',s:'3x',r:'12/side',yt:ytUrl('Single Arm Dumbbell Row')},
+    {n:'DB Bicep Curls',equip:'Dumbbells',c:'Slow 3-count down, full squeeze at top',s:'3x',r:'12',yt:ytUrl('Bicep Curls')},
+    {n:'Hammer Curls',equip:'Dumbbells',c:'Neutral grip, no swinging',s:'3x',r:'12',yt:ytUrl('Hammer Curls')},
+    {n:'Treadmill Intervals',equip:'Treadmill',c:'1 min brisk / 1 min easy, repeat',s:'1x',r:'12 min',yt:ytUrl('Treadmill Intervals')}
+  ],
+  home:[
+    {n:'Inverted Row',equip:'Table or Bar',c:'Body straight, pull chest to edge, squeeze back',s:'4x',r:'10',yt:ytUrl('Inverted Row')},
+    {n:'DB Bent-Over Row',equip:'Dumbbells',c:'Hinge at hips, row both arms, elbows close',s:'4x',r:'12',yt:ytUrl('Bent Over Dumbbell Row')},
+    {n:'Superman Hold',equip:'Floor',c:'Lift chest and legs simultaneously, hold 2 sec',s:'3x',r:'12',yt:ytUrl('Superman Exercise')},
+    {n:'DB Bicep Curls',equip:'Dumbbells',c:'Slow controlled descent, full range',s:'3x',r:'12',yt:ytUrl('Bicep Curls')},
+    {n:'Hammer Curls',equip:'Dumbbells',c:'Neutral grip, controlled tempo',s:'3x',r:'12',yt:ytUrl('Hammer Curls')},
+    {n:'Exercise Bike',equip:'Exercise Bike',c:'Steady zone 2, conversational pace',s:'1x',r:'15 min',yt:ytUrl('Zone 2 Cardio')}
+  ]},
 Wed:{label:'Legs & Glutes',
-  gym:[{n:'Barbell Back Squat',equip:'Power Rack + Barbell',c:'Depth below parallel, knees track toes',s:'4x',r:'10',yt:ytUrl('Barbell Squat')},{n:'Hip Thrust',equip:'Barbell + Bench',c:'Shoulders on bench, drive hips up, hard squeeze at top',s:'4x',r:'12',yt:ytUrl('Barbell Hip Thrust')},{n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Feel hamstring stretch, hinge at hips',s:'3x',r:'12',yt:ytUrl('Romanian Deadlift')},{n:'Sumo Squat',equip:'Kettlebell',c:'Wide stance, toes out, KB between legs, targets inner thighs',s:'3x',r:'15',yt:ytUrl('Sumo Squat')},{n:'Leg Press',equip:'Leg Press Machine',c:'Feet high and wide to target glutes',s:'3x',r:'12',yt:ytUrl('Leg Press Glutes')},{n:'Treadmill Incline Walk',equip:'Treadmill',c:'3.5 mph, incline activates glutes more',s:'15 min',r:'--',yt:ytUrl('Treadmill Incline Walk')}],
-  home:[{n:'Goblet Squat',equip:'Kettlebell',c:'KB at chest, elbows inside knees, drive through heels',s:'4x',r:'12',yt:ytUrl('Goblet Squat')},{n:'Glute Bridge',equip:'Bodyweight',c:'Drive through heels, hard squeeze at top, hold 1 sec',s:'4x',r:'15',yt:ytUrl('Glute Bridge')},{n:'DB Romanian Deadlift',equip:'Adjustable Dumbbell',c:'Slow descent, feel the hamstring stretch',s:'3x',r:'12',yt:ytUrl('Romanian Deadlift')},{n:'Sumo Squat',equip:'Dumbbell',c:'Wide stance, toes out, targets inner thighs and glutes',s:'3x',r:'15',yt:ytUrl('Sumo Squat')},{n:'Donkey Kicks',equip:'Bodyweight',c:'On all fours, kick one leg back and up, squeeze glute',s:'3x',r:'15/side',yt:ytUrl('Donkey Kicks')},{n:'Exercise Bike Intervals',equip:'Exercise Bike',c:'30s moderate / 30s easy',s:'10 min',r:'--',yt:ytUrl('Bike Intervals')}]},
+  gym:[
+    {n:'Barbell Hip Thrust',equip:'Barbell + Bench',c:'Shoulders on bench, feet flat, drive hips up hard, squeeze at top',s:'4x',r:'12',yt:ytUrl('Barbell Hip Thrust')},
+    {n:'Leg Press',equip:'Leg Press Machine',c:'Feet high and wide on platform, targets glutes',s:'4x',r:'12',yt:ytUrl('Leg Press Glutes')},
+    {n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Hinge at hips, soft knees, feel the hamstring stretch',s:'3x',r:'12',yt:ytUrl('Romanian Deadlift')},
+    {n:'Cable Glute Kickback',equip:'Cable Machine',c:'Ankle attachment, kick back and up, hard squeeze at top',s:'3x',r:'15/side',yt:ytUrl('Cable Glute Kickback')},
+    {n:'Sumo Squat',equip:'Dumbbell',c:'Wide stance, toes out, hold DB at chest, deep squat',s:'3x',r:'15',yt:ytUrl('Sumo Squat')},
+    {n:'Treadmill Incline Walk',equip:'Treadmill',c:'High incline, slow pace — activates glutes',s:'1x',r:'15 min',yt:ytUrl('Treadmill Incline Walk')}
+  ],
+  home:[
+    {n:'Glute Bridge',equip:'Bodyweight',c:'Drive heels into floor, hard squeeze at top, hold 1 sec',s:'4x',r:'20',yt:ytUrl('Glute Bridge')},
+    {n:'Goblet Squat',equip:'Dumbbell',c:'Hold DB at chest, elbows inside knees, full depth',s:'4x',r:'12',yt:ytUrl('Goblet Squat')},
+    {n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Slow descent, feel the hamstrings load up',s:'3x',r:'12',yt:ytUrl('Romanian Deadlift')},
+    {n:'Donkey Kicks',equip:'Bodyweight',c:'On all fours, kick one leg back and up, squeeze glute hard',s:'3x',r:'15/side',yt:ytUrl('Donkey Kicks')},
+    {n:'Sumo Squat',equip:'Dumbbell',c:'Wide stance, toes out, full depth, squeeze at top',s:'3x',r:'15',yt:ytUrl('Sumo Squat')},
+    {n:'Exercise Bike Intervals',equip:'Exercise Bike',c:'30s hard / 30s easy, repeat',s:'1x',r:'10 min',yt:ytUrl('Bike Intervals')}
+  ]},
 Thu:{label:'Shoulders & Abs',
-  gym:[{n:'DB Shoulder Press',equip:'Dumbbells',c:'Press overhead, controlled descent, no excessive arch',s:'4x',r:'10',yt:ytUrl('Dumbbell Shoulder Press')},{n:'DB Lateral Raises',equip:'Dumbbells',c:'Lead with elbows, do not shrug, raise to shoulder height',s:'4x',r:'15',yt:ytUrl('Lateral Raises')},{n:'DB Front Raises',equip:'Dumbbells',c:'Raise to eye level, palms down, controlled',s:'3x',r:'12',yt:ytUrl('Front Raises')},{n:'Face Pulls',equip:'Cable Machine',c:'Pull to forehead height, elbows high, rear delt focus',s:'3x',r:'15',yt:ytUrl('Face Pulls')},{n:'Plank Hold',equip:'Floor',c:'Hips level, glutes tight, breathe steady',s:'3x',r:'45 sec',yt:ytUrl('Plank')},{n:'Bicycle Crunches',equip:'Floor',c:'Opposite elbow to knee, slow and deliberate',s:'3x',r:'20',yt:ytUrl('Bicycle Crunches')},{n:'Dead Bug',equip:'Floor',c:'Lower back pressed flat, extend opposite arm and leg slowly',s:'3x',r:'10/side',yt:ytUrl('Dead Bug Exercise')},{n:'Hip Dips',equip:'Floor',c:'Side plank position, dip hip to floor and raise back up',s:'3x',r:'12/side',yt:ytUrl('Hip Dips')},{n:'Leg Raises',equip:'Bench or Floor',c:'Lower back flat, raise legs to 90 degrees',s:'3x',r:'15',yt:ytUrl('Leg Raises')}],
-  home:[{n:'DB Shoulder Press',equip:'Adjustable Dumbbell',c:'Press overhead, full extension at top',s:'4x',r:'10',yt:ytUrl('Shoulder Press')},{n:'DB Lateral Raises',equip:'Adjustable Dumbbell',c:'Control every rep, no swinging',s:'4x',r:'15',yt:ytUrl('Lateral Raises')},{n:'DB Front Raises',equip:'Adjustable Dumbbell',c:'Raise to eye level, palms down',s:'3x',r:'12',yt:ytUrl('Front Raises')},{n:'Pike Push-Ups',equip:'Bodyweight',c:'Hips high, lower head to floor',s:'3x',r:'10',yt:ytUrl('Pike Push Ups')},{n:'Plank Hold',equip:'Floor',c:'Breathe steady, do not let hips drop',s:'3x',r:'45 sec',yt:ytUrl('Plank')},{n:'Bicycle Crunches',equip:'Floor',c:'Opposite elbow to knee, slow and deliberate',s:'3x',r:'20',yt:ytUrl('Bicycle Crunches')},{n:'Dead Bug',equip:'Floor',c:'Lower back pressed flat, extend opposite arm and leg slowly',s:'3x',r:'10/side',yt:ytUrl('Dead Bug Exercise')},{n:'Hip Dips',equip:'Floor',c:'Side plank, dip hip to floor and raise back up',s:'3x',r:'12/side',yt:ytUrl('Hip Dips')},{n:'Lying Leg Raises',equip:'Floor',c:'Lower back flat, slow and controlled',s:'3x',r:'15',yt:ytUrl('Leg Raises')}]},
+  gym:[
+    {n:'DB Shoulder Press',equip:'Dumbbells',c:'Press overhead, controlled descent, no arching back',s:'4x',r:'12',yt:ytUrl('Dumbbell Shoulder Press')},
+    {n:'DB Lateral Raises',equip:'Dumbbells',c:'Lead with elbows, raise to shoulder height, no shrugging',s:'4x',r:'15',yt:ytUrl('Lateral Raises')},
+    {n:'Face Pulls',equip:'Cable Machine',c:'Pull to forehead level, elbows high, rear delt focus',s:'3x',r:'15',yt:ytUrl('Face Pulls')},
+    {n:'Plank Hold',equip:'Floor',c:'Hips level, glutes squeezed, breathe steady',s:'3x',r:'40 sec',yt:ytUrl('Plank')},
+    {n:'Hanging Knee Raises',equip:'Pull-Up Bar',c:'Slow and controlled, no swinging, pull with abs',s:'3x',r:'12',yt:ytUrl('Hanging Knee Raise')},
+    {n:'Bicycle Crunches',equip:'Floor',c:'Opposite elbow to knee, slow deliberate twist',s:'3x',r:'20',yt:ytUrl('Bicycle Crunches')},
+    {n:'Hip Dips',equip:'Floor',c:'Side plank position, drop hip to floor and raise back up',s:'3x',r:'12/side',yt:ytUrl('Hip Dips')},
+    {n:'Dead Bug',equip:'Floor',c:'Lower back pressed flat, extend opposite arm and leg slowly',s:'3x',r:'10/side',yt:ytUrl('Dead Bug Exercise')}
+  ],
+  home:[
+    {n:'DB Shoulder Press',equip:'Dumbbells',c:'Press overhead, full extension at top',s:'4x',r:'12',yt:ytUrl('Shoulder Press')},
+    {n:'DB Lateral Raises',equip:'Dumbbells',c:'Control every rep, no momentum',s:'4x',r:'15',yt:ytUrl('Lateral Raises')},
+    {n:'Pike Push-Ups',equip:'Bodyweight',c:'Hips high, lower head toward floor',s:'3x',r:'10',yt:ytUrl('Pike Push Ups')},
+    {n:'Plank Hold',equip:'Floor',c:'Do not let hips drop, breathe steadily',s:'3x',r:'40 sec',yt:ytUrl('Plank')},
+    {n:'Bicycle Crunches',equip:'Floor',c:'Slow and deliberate, full twist each side',s:'3x',r:'20',yt:ytUrl('Bicycle Crunches')},
+    {n:'Hip Dips',equip:'Floor',c:'Side plank, lower hip to floor and lift back up',s:'3x',r:'12/side',yt:ytUrl('Hip Dips')},
+    {n:'Dead Bug',equip:'Floor',c:'Lower back flat throughout, move slow and controlled',s:'3x',r:'10/side',yt:ytUrl('Dead Bug Exercise')},
+    {n:'Lying Leg Raises',equip:'Floor',c:'Lower back pressed down, raise legs to 90 degrees',s:'3x',r:'12',yt:ytUrl('Leg Raises')}
+  ]},
 Fri:{label:'Full Body + Conditioning',
-  gym:[{n:'DB Squat to Press',equip:'Dumbbells',c:'Squat down, press overhead as you stand',s:'4x',r:'10',yt:ytUrl('DB Squat to Press')},{n:'Hip Thrust',equip:'Barbell + Bench',c:'Full glute squeeze at top, hold 1 sec',s:'3x',r:'12',yt:ytUrl('Barbell Hip Thrust')},{n:'Seated Cable Row',equip:'Cable Machine',c:'Drive elbows back, squeeze at peak',s:'3x',r:'12',yt:ytUrl('Seated Cable Row')},{n:'DB Shoulder Press',equip:'Dumbbells',c:'Full extension overhead, controlled descent',s:'3x',r:'10',yt:ytUrl('Shoulder Press')},{n:'Treadmill Sprints',equip:'Treadmill',c:'Max effort on working intervals',s:'8x',r:'30s on/30s off',yt:ytUrl('Treadmill Sprints')}],
-  home:[{n:'Kettlebell Swings',equip:'Kettlebell',c:'Hinge not squat, snap hips forward',s:'4x',r:'15',yt:ytUrl('Kettlebell Swings')},{n:'DB Thrusters',equip:'Adjustable Dumbbell',c:'Squat into press in one fluid motion',s:'4x',r:'10',yt:ytUrl('DB Thrusters')},{n:'Glute Bridge Pulses',equip:'Bodyweight',c:'Hold at top and pulse 10 times per set',s:'3x',r:'10 pulses',yt:ytUrl('Glute Bridge')},{n:'Jump Rope Sprints',equip:'Jump Rope',c:'Fast feet, max effort',s:'8x',r:'30s on/30s off',yt:ytUrl('Jump Rope')},{n:'Burpees',equip:'Bodyweight',c:'Chest to floor, jump at top',s:'3x',r:'8',yt:ytUrl('Burpees')}]},
+  gym:[
+    {n:'DB Squat to Press',equip:'Dumbbells',c:'Squat down, explode up and press overhead in one motion',s:'4x',r:'10',yt:ytUrl('Dumbbell Squat to Press')},
+    {n:'Barbell Hip Thrust',equip:'Barbell + Bench',c:'Full glute squeeze at top, hold 1 sec',s:'3x',r:'12',yt:ytUrl('Barbell Hip Thrust')},
+    {n:'Lat Pulldown',equip:'Lat Pulldown Machine',c:'Full stretch at top, pull to chest',s:'3x',r:'12',yt:ytUrl('Lat Pulldown')},
+    {n:'DB Lateral Raises',equip:'Dumbbells',c:'Superset with pulldown, minimal rest',s:'3x',r:'15',yt:ytUrl('Lateral Raises')},
+    {n:'Treadmill Sprints',equip:'Treadmill',c:'Max effort on working intervals, walk recovery',s:'8x',r:'30s on / 30s off',yt:ytUrl('Treadmill Sprints')}
+  ],
+  home:[
+    {n:'Kettlebell Swings',equip:'Kettlebell',c:'Hinge not squat, snap hips forward, power from glutes',s:'4x',r:'15',yt:ytUrl('Kettlebell Swings')},
+    {n:'DB Thrusters',equip:'Dumbbells',c:'Squat deep, press overhead as you stand',s:'4x',r:'10',yt:ytUrl('Dumbbell Thrusters')},
+    {n:'Glute Bridge',equip:'Bodyweight',c:'Hold at top, pulse 5 times each set',s:'3x',r:'15 + 5 pulses',yt:ytUrl('Glute Bridge')},
+    {n:'Burpees',equip:'Bodyweight',c:'Chest to floor, jump at top, controlled landing',s:'3x',r:'8',yt:ytUrl('Burpees')},
+    {n:'Jump Rope Sprints',equip:'Jump Rope',c:'Max effort, fast feet',s:'8x',r:'30s on / 30s off',yt:ytUrl('Jump Rope')}
+  ]},
 Sat:{label:'Active Recovery',
-  gym:[{n:'Treadmill Easy Walk',equip:'Treadmill',c:'Zone 2 only, conversational pace',s:'1x',r:'25 min',yt:ytUrl('Zone 2 Walk')},{n:'Hip Flexor and Glute Stretch',equip:'Floor',c:'Hold each stretch 30 sec',s:'1x',r:'10 min',yt:ytUrl('Hip Flexor Stretch')}],
-  home:[{n:'Easy Walk',equip:'Bodyweight',c:'Keep it easy, just move',s:'1x',r:'25-30 min',yt:ytUrl('Easy Walk')},{n:'Hip Flexor and Glute Stretch',equip:'Floor',c:'Hip flexors, glutes, hamstrings',s:'1x',r:'10 min',yt:ytUrl('Stretching')}]},
+  gym:[
+    {n:'Treadmill Easy Walk',equip:'Treadmill',c:'Zone 2 only, easy conversational pace',s:'1x',r:'25 min',yt:ytUrl('Zone 2 Walk')},
+    {n:'Hip Flexor Stretch',equip:'Floor',c:'Kneeling lunge position, hold 30+ sec each side',s:'1x',r:'5 min',yt:ytUrl('Hip Flexor Stretch')},
+    {n:'Glute and Piriformis Stretch',equip:'Floor',c:'Figure-4 stretch, hold 30 sec each side',s:'1x',r:'5 min',yt:ytUrl('Glute Stretch')}
+  ],
+  home:[
+    {n:'Easy Walk',equip:'Bodyweight',c:'Relaxed pace, just get the body moving',s:'1x',r:'25-30 min',yt:ytUrl('Easy Walk')},
+    {n:'Hip Flexor Stretch',equip:'Floor',c:'Kneeling lunge, lean forward gently, hold 30 sec',s:'1x',r:'5 min',yt:ytUrl('Hip Flexor Stretch')},
+    {n:'Glute and Piriformis Stretch',equip:'Floor',c:'Figure-4 on floor, breathe into the stretch',s:'1x',r:'5 min',yt:ytUrl('Glute Stretch')}
+  ]},
 Sun:{label:'Rest',gym:[],home:[]}}},
-{id:2,name:'Strength',weeks:'Wks 5-8',color:'#f5a623',goal:'Build strength, increase intensity, continue fat loss',
+
+// ─────────────────────────────────────────────
+// PHASE 2 — STRENGTH (Wks 5-8)
+// ─────────────────────────────────────────────
+{id:2,name:'Strength',weeks:'Wks 5-8',color:'#f5a623',goal:'Build real strength, go heavier, sharpen your physique',
 days:{
 Mon:{label:'Chest & Triceps',
-  gym:[{n:'DB Chest Press',equip:'Dumbbells + Bench',c:'Heavier than phase 1, full range',s:'5x',r:'8',yt:ytUrl('Dumbbell Chest Press')},{n:'Incline DB Press',equip:'Dumbbells + Bench',c:'Full stretch at bottom, squeeze at top',s:'4x',r:'10',yt:ytUrl('Incline Press')},{n:'Cable Chest Fly',equip:'Cable Machine',c:'Slight bend in elbow, deep stretch',s:'3x',r:'12',yt:ytUrl('Cable Chest Fly')},{n:'Tricep Pushdown',equip:'Cable Machine',c:'Heavier weight this phase, elbows pinned',s:'4x',r:'12',yt:ytUrl('Tricep Pushdown')},{n:'Overhead DB Tricep Extension',equip:'Dumbbell',c:'Go heavier this phase, elbows close',s:'3x',r:'12',yt:ytUrl('Overhead Tricep Extension')},{n:'Treadmill Intervals',equip:'Treadmill',c:'Push faster than phase 1',s:'12 min',r:'--',yt:ytUrl('Treadmill')}],
-  home:[{n:'Weighted Push-Ups',equip:'Bodyweight + Backpack',c:'Use a backpack with weight inside',s:'5x',r:'10',yt:ytUrl('Weighted Push Ups')},{n:'Archer Push-Ups',equip:'Bodyweight',c:'Shift weight to one arm',s:'3x',r:'8/side',yt:ytUrl('Archer Push Up')},{n:'Tricep Dips',equip:'Chair',c:'Pause at bottom for extra burn',s:'4x',r:'12',yt:ytUrl('Tricep Dips')},{n:'Overhead DB Tricep Extension',equip:'Adjustable Dumbbell',c:'Go heavier this phase',s:'4x',r:'12',yt:ytUrl('Tricep Extension')},{n:'Tricep Kickbacks',equip:'Adjustable Dumbbell',c:'Heavier than phase 1, full extension',s:'3x',r:'12/side',yt:ytUrl('Tricep Kickbacks')},{n:'Jump Rope Intervals',equip:'Jump Rope',c:'Double-unders if you can',s:'3x',r:'2 min',yt:ytUrl('Jump Rope')}]},
+  gym:[
+    {n:'DB Chest Press',equip:'Dumbbells + Bench',c:'Heavier than phase 1, full range, 3-sec descent',s:'4x',r:'10',yt:ytUrl('Dumbbell Chest Press')},
+    {n:'Incline DB Press',equip:'Dumbbells + Bench',c:'Slow down, explosive up, add weight',s:'4x',r:'10',yt:ytUrl('Incline Dumbbell Press')},
+    {n:'Cable Chest Fly',equip:'Cable Machine',c:'Deep stretch at the bottom, hard squeeze at center',s:'3x',r:'12',yt:ytUrl('Cable Chest Fly')},
+    {n:'Tricep Pushdown Superset',equip:'Cable Machine',c:'Straight bar then rope — no rest between',s:'3x',r:'10+10',yt:ytUrl('Tricep Pushdown')},
+    {n:'Overhead DB Tricep Extension',equip:'Dumbbell',c:'Go heavier this phase, slow descent',s:'4x',r:'12',yt:ytUrl('Overhead Tricep Extension')},
+    {n:'Treadmill Intervals',equip:'Treadmill',c:'Push faster than phase 1',s:'1x',r:'15 min',yt:ytUrl('Treadmill Intervals')}
+  ],
+  home:[
+    {n:'Weighted Push-Ups',equip:'Backpack + Bodyweight',c:'Add weight in a backpack, full range',s:'4x',r:'10',yt:ytUrl('Weighted Push Ups')},
+    {n:'Archer Push-Ups',equip:'Bodyweight',c:'Shift weight to one arm, near single-arm difficulty',s:'3x',r:'8/side',yt:ytUrl('Archer Push Up')},
+    {n:'DB Chest Fly on Floor',equip:'Dumbbells',c:'Heavier DBs, controlled arc down',s:'3x',r:'12',yt:ytUrl('Dumbbell Floor Fly')},
+    {n:'Tricep Dips',equip:'Chair',c:'Pause at bottom for 1 sec',s:'4x',r:'12',yt:ytUrl('Tricep Dips Chair')},
+    {n:'Tricep Kickbacks',equip:'Dumbbells',c:'Go heavier, full lockout at top',s:'4x',r:'12/side',yt:ytUrl('Tricep Kickbacks')},
+    {n:'Jump Rope Intervals',equip:'Jump Rope',c:'Double unders if you can manage them',s:'3x',r:'2 min',yt:ytUrl('Jump Rope')}
+  ]},
 Tue:{label:'Back & Biceps',
-  gym:[{n:'Barbell Deadlift',equip:'Barbell Rack',c:'Add weight from phase 1, neutral spine',s:'4x',r:'6',yt:ytUrl('Deadlift')},{n:'Pull-Ups or Assisted Pull-Ups',equip:'Pull-Up Bar',c:'Use assistance band if needed',s:'4x',r:'6',yt:ytUrl('Pull Ups')},{n:'Seated Cable Row',equip:'Cable Machine',c:'Heavier load, drive elbows past torso',s:'4x',r:'8',yt:ytUrl('Seated Cable Row')},{n:'DB Bicep Curls',equip:'Dumbbells',c:'Heavier weight, full squeeze at top',s:'4x',r:'10',yt:ytUrl('Bicep Curls')},{n:'Incline DB Curls',equip:'Dumbbells + Bench',c:'Long stretch at bottom',s:'3x',r:'10',yt:ytUrl('Incline Curl')},{n:'Treadmill Incline Walk',equip:'Treadmill',c:'Incline 5 percent, build aerobic base',s:'20 min',r:'--',yt:ytUrl('Incline Treadmill')}],
-  home:[{n:'Kettlebell Deadlift',equip:'Kettlebell',c:'Heavier bell this phase',s:'5x',r:'8',yt:ytUrl('KB Deadlift')},{n:'DB Row',equip:'Adjustable Dumbbell',c:'Elbow past your torso at top',s:'4x',r:'10/side',yt:ytUrl('DB Row')},{n:'Inverted Row',equip:'Table / Bar',c:'Elevate feet to increase difficulty',s:'4x',r:'12',yt:ytUrl('Inverted Row')},{n:'DB Curls',equip:'Adjustable Dumbbell',c:'Heavier dumbbells than phase 1',s:'4x',r:'10',yt:ytUrl('Bicep Curls')},{n:'Concentration Curls',equip:'Adjustable Dumbbell',c:'Elbow on inner knee, full squeeze',s:'3x',r:'12/side',yt:ytUrl('Concentration Curl')},{n:'Exercise Bike',equip:'Exercise Bike',c:'Build that aerobic base',s:'20 min',r:'--',yt:ytUrl('Stationary Bike')}]},
+  gym:[
+    {n:'Lat Pulldown',equip:'Lat Pulldown Machine',c:'Heavier weight, controlled slow return',s:'4x',r:'10',yt:ytUrl('Lat Pulldown')},
+    {n:'Seated Cable Row',equip:'Cable Machine',c:'Load up, drive elbows hard past torso',s:'4x',r:'10',yt:ytUrl('Seated Cable Row')},
+    {n:'Single-Arm DB Row',equip:'Dumbbell + Bench',c:'Go heavier, pull elbow as high as possible',s:'4x',r:'10/side',yt:ytUrl('Single Arm Dumbbell Row')},
+    {n:'Incline DB Curls',equip:'Dumbbells + Bench',c:'Long stretch at bottom, full squeeze at top',s:'3x',r:'12',yt:ytUrl('Incline Dumbbell Curl')},
+    {n:'Cable Hammer Curl',equip:'Cable Machine',c:'Rope attachment, neutral grip throughout',s:'3x',r:'12',yt:ytUrl('Cable Hammer Curl')},
+    {n:'Treadmill Incline Walk',equip:'Treadmill',c:'Steeper incline than phase 1, steady pace',s:'1x',r:'20 min',yt:ytUrl('Treadmill Incline Walk')}
+  ],
+  home:[
+    {n:'Inverted Row',equip:'Table or Bar',c:'Elevate feet on a chair to increase difficulty',s:'4x',r:'12',yt:ytUrl('Inverted Row')},
+    {n:'DB Bent-Over Row',equip:'Dumbbells',c:'Heavier DBs, keep back flat, pull hard',s:'4x',r:'10',yt:ytUrl('Bent Over Dumbbell Row')},
+    {n:'Renegade Row',equip:'Dumbbells',c:'Plank position, row one arm at a time, hips level',s:'3x',r:'8/side',yt:ytUrl('Renegade Row')},
+    {n:'DB Bicep Curls',equip:'Dumbbells',c:'Heavier than phase 1, 3-sec descent',s:'4x',r:'10',yt:ytUrl('Bicep Curls')},
+    {n:'Concentration Curls',equip:'Dumbbell',c:'Elbow on inner knee, full peak contraction',s:'3x',r:'12/side',yt:ytUrl('Concentration Curl')},
+    {n:'Exercise Bike',equip:'Exercise Bike',c:'Build aerobic base, moderate resistance',s:'1x',r:'20 min',yt:ytUrl('Stationary Bike')}
+  ]},
 Wed:{label:'Legs & Glutes',
-  gym:[{n:'Barbell Back Squat',equip:'Power Rack + Barbell',c:'Heavier this phase, progressive overload',s:'4x',r:'8',yt:ytUrl('Back Squat')},{n:'Hip Thrust',equip:'Barbell + Bench',c:'Add weight from phase 1, hard glute squeeze',s:'4x',r:'12',yt:ytUrl('Barbell Hip Thrust')},{n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Feel that hamstring stretch, go heavier',s:'4x',r:'10',yt:ytUrl('RDL')},{n:'DB Step-Ups',equip:'Dumbbells + Bench',c:'Drive through heel, full hip extension',s:'3x',r:'12/side',yt:ytUrl('Step Ups')},{n:'Cable Kickback',equip:'Cable Machine',c:'Ankle attachment, kick back and squeeze glute hard',s:'3x',r:'15/side',yt:ytUrl('Cable Glute Kickback')},{n:'Treadmill Incline Sprint',equip:'Treadmill',c:'Incline at 5-8 percent, glute activation',s:'10 min',r:'30s on/30s off',yt:ytUrl('Incline Treadmill')}],
-  home:[{n:'Goblet Squat',equip:'Kettlebell',c:'Go heavier this phase',s:'5x',r:'10',yt:ytUrl('Goblet Squat')},{n:'Single-Leg Glute Bridge',equip:'Bodyweight',c:'One leg up, drive through heel, hard squeeze',s:'4x',r:'12/side',yt:ytUrl('Single Leg Glute Bridge')},{n:'Bulgarian Split Squat',equip:'Chair + Bodyweight',c:'Rear foot elevated, deep lunge',s:'4x',r:'10/side',yt:ytUrl('Bulgarian Split Squat')},{n:'Donkey Kicks',equip:'Bodyweight',c:'On all fours, kick leg back and up, squeeze glute',s:'4x',r:'15/side',yt:ytUrl('Donkey Kicks')},{n:'Calf Raises',equip:'Bodyweight',c:'Single-leg for extra challenge',s:'4x',r:'20',yt:ytUrl('Calf Raises')},{n:'Exercise Bike Intervals',equip:'Exercise Bike',c:'Higher resistance than phase 1',s:'12 min',r:'--',yt:ytUrl('Bike Intervals')}]},
+  gym:[
+    {n:'Barbell Hip Thrust',equip:'Barbell + Bench',c:'Add weight from phase 1, hard squeeze at top, hold 1 sec',s:'4x',r:'10',yt:ytUrl('Barbell Hip Thrust')},
+    {n:'Barbell Back Squat',equip:'Power Rack + Barbell',c:'Depth below parallel, drive knees out',s:'4x',r:'8',yt:ytUrl('Barbell Back Squat')},
+    {n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Feel the hamstring load, go heavier',s:'4x',r:'10',yt:ytUrl('Romanian Deadlift')},
+    {n:'Cable Glute Kickback',equip:'Cable Machine',c:'Full extension, squeeze at top, slow return',s:'3x',r:'15/side',yt:ytUrl('Cable Glute Kickback')},
+    {n:'DB Step-Ups',equip:'Dumbbells + Bench',c:'Drive through heel, full hip extension at top',s:'3x',r:'12/side',yt:ytUrl('Dumbbell Step Ups')},
+    {n:'Treadmill Incline Sprint',equip:'Treadmill',c:'Incline 6-8%, intervals',s:'1x',r:'12 min',yt:ytUrl('Incline Treadmill Sprint')}
+  ],
+  home:[
+    {n:'Single-Leg Glute Bridge',equip:'Bodyweight',c:'One leg raised, drive through heel, squeeze hard',s:'4x',r:'15/side',yt:ytUrl('Single Leg Glute Bridge')},
+    {n:'Bulgarian Split Squat',equip:'Chair + Dumbbells',c:'Rear foot elevated, front knee over ankle',s:'4x',r:'10/side',yt:ytUrl('Bulgarian Split Squat')},
+    {n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Go heavier this phase, feel the stretch',s:'4x',r:'10',yt:ytUrl('Romanian Deadlift')},
+    {n:'Donkey Kicks',equip:'Bodyweight',c:'Squeeze glute at top, slow controlled return',s:'4x',r:'15/side',yt:ytUrl('Donkey Kicks')},
+    {n:'Sumo Squat',equip:'Dumbbell',c:'Heavier DB, full depth, pause at bottom',s:'3x',r:'15',yt:ytUrl('Sumo Squat')},
+    {n:'Exercise Bike Intervals',equip:'Exercise Bike',c:'Higher resistance than phase 1',s:'1x',r:'12 min',yt:ytUrl('Bike Intervals')}
+  ]},
 Thu:{label:'Shoulders & Abs',
-  gym:[{n:'DB Shoulder Press',equip:'Dumbbells',c:'Add weight from phase 1, strict form',s:'4x',r:'10',yt:ytUrl('Shoulder Press')},{n:'DB Arnold Press',equip:'Dumbbells',c:'Slow and deliberate rotation each rep',s:'4x',r:'8',yt:ytUrl('Arnold Press')},{n:'DB Lateral Raises',equip:'Dumbbells',c:'Heavier weight, controlled tempo',s:'4x',r:'12',yt:ytUrl('Lateral Raises')},{n:'Face Pulls',equip:'Cable Machine',c:'Heavier this phase, elbows high',s:'3x',r:'12',yt:ytUrl('Face Pulls')},{n:'V-Ups',equip:'Bodyweight',c:'Control the descent, touch toes at top',s:'4x',r:'12',yt:ytUrl('V Ups')},{n:'Dead Bug',equip:'Floor',c:'Lower back flat throughout, slow and controlled',s:'3x',r:'10/side',yt:ytUrl('Dead Bug Exercise')},{n:'Hip Dips',equip:'Floor',c:'Side plank, dip hip to floor and raise',s:'4x',r:'15/side',yt:ytUrl('Hip Dips')},{n:'Plank Variations',equip:'Floor',c:'Standard, side plank, reverse 30 sec each',s:'3x',r:'90 sec total',yt:ytUrl('Plank Variations')},{n:'Lying Leg Raises',equip:'Floor',c:'Lower back flat, slow and controlled',s:'3x',r:'15',yt:ytUrl('Leg Raises')}],
-  home:[{n:'DB Shoulder Press',equip:'Adjustable Dumbbell',c:'Heavier dumbbells this phase',s:'4x',r:'10',yt:ytUrl('Shoulder Press')},{n:'DB Lateral Raises',equip:'Adjustable Dumbbell',c:'Pause at the top of each rep',s:'4x',r:'12',yt:ytUrl('Lateral Raises')},{n:'DB Upright Row',equip:'Adjustable Dumbbell',c:'Lead elbows high',s:'3x',r:'12',yt:ytUrl('Upright Row')},{n:'Pike Push-Ups',equip:'Bodyweight',c:'Go deeper than phase 1',s:'4x',r:'12',yt:ytUrl('Pike Push Up')},{n:'V-Ups',equip:'Bodyweight',c:'Control the descent, touch toes at top',s:'4x',r:'12',yt:ytUrl('V Ups')},{n:'Dead Bug',equip:'Floor',c:'Lower back flat throughout',s:'3x',r:'10/side',yt:ytUrl('Dead Bug Exercise')},{n:'Hip Dips',equip:'Floor',c:'Side plank position, drop hip and raise',s:'4x',r:'15/side',yt:ytUrl('Hip Dips')},{n:'Plank Variations',equip:'Floor',c:'Standard, side plank, reverse 30 sec each',s:'3x',r:'90 sec total',yt:ytUrl('Plank Variations')},{n:'Lying Leg Raises',equip:'Floor',c:'Lower back flat, slow and controlled',s:'3x',r:'15',yt:ytUrl('Leg Raises')}]},
+  gym:[
+    {n:'DB Shoulder Press',equip:'Dumbbells',c:'Heavier than phase 1, strict form no arching',s:'4x',r:'10',yt:ytUrl('Dumbbell Shoulder Press')},
+    {n:'DB Arnold Press',equip:'Dumbbells',c:'Slow rotation, deliberate on the way down',s:'3x',r:'10',yt:ytUrl('Arnold Press')},
+    {n:'DB Lateral Raises',equip:'Dumbbells',c:'Heavier weight, pause at shoulder height',s:'4x',r:'12',yt:ytUrl('Lateral Raises')},
+    {n:'Face Pulls',equip:'Cable Machine',c:'Heavier this phase, elbows high, external rotation',s:'4x',r:'15',yt:ytUrl('Face Pulls')},
+    {n:'Hanging Knee Raises',equip:'Pull-Up Bar',c:'Slow up and down, squeeze abs at top',s:'4x',r:'15',yt:ytUrl('Hanging Knee Raise')},
+    {n:'V-Ups',equip:'Floor',c:'Touch toes at top, control descent',s:'3x',r:'12',yt:ytUrl('V Ups')},
+    {n:'Hip Dips',equip:'Floor',c:'Heavier rep count this phase',s:'4x',r:'15/side',yt:ytUrl('Hip Dips')},
+    {n:'Hollow Body Hold',equip:'Floor',c:'Arms overhead, back pressed flat, hold strong',s:'3x',r:'30 sec',yt:ytUrl('Hollow Body Hold')}
+  ],
+  home:[
+    {n:'DB Shoulder Press',equip:'Dumbbells',c:'Heavier dumbbells, strict press',s:'4x',r:'10',yt:ytUrl('Shoulder Press')},
+    {n:'DB Lateral Raises',equip:'Dumbbells',c:'Pause at top of every rep',s:'4x',r:'12',yt:ytUrl('Lateral Raises')},
+    {n:'DB Upright Row',equip:'Dumbbells',c:'Lead elbows high, traps and shoulders',s:'3x',r:'12',yt:ytUrl('Upright Row')},
+    {n:'Pike Push-Ups',equip:'Bodyweight',c:'Go deeper than phase 1',s:'4x',r:'12',yt:ytUrl('Pike Push Ups')},
+    {n:'V-Ups',equip:'Floor',c:'Control the descent, touch toes at top',s:'4x',r:'12',yt:ytUrl('V Ups')},
+    {n:'Hip Dips',equip:'Floor',c:'Increase rep count from phase 1',s:'4x',r:'15/side',yt:ytUrl('Hip Dips')},
+    {n:'Hollow Body Hold',equip:'Floor',c:'Back flat, arms and legs extended, hold',s:'3x',r:'30 sec',yt:ytUrl('Hollow Body Hold')},
+    {n:'Lying Leg Raises',equip:'Floor',c:'Lower back flat, slow and controlled',s:'3x',r:'15',yt:ytUrl('Leg Raises')}
+  ]},
 Fri:{label:'Full Body + Conditioning',
-  gym:[{n:'DB Squat to Press',equip:'Dumbbells',c:'Heavier than phase 1, explosive press at top',s:'5x',r:'8',yt:ytUrl('DB Squat to Press')},{n:'Hip Thrust',equip:'Barbell + Bench',c:'Peak glute activation, hold at top',s:'3x',r:'12',yt:ytUrl('Barbell Hip Thrust')},{n:'Seated Cable Row',equip:'Cable Machine',c:'Heaviest row of the phase',s:'3x',r:'10',yt:ytUrl('Seated Cable Row')},{n:'Treadmill Sprints',equip:'Treadmill',c:'Faster than phase 1',s:'10x',r:'30s on/30s off',yt:ytUrl('Sprint Workout')},{n:'Jump Rope',equip:'Jump Rope',c:'Fastest pace you can hold',s:'3x',r:'2 min',yt:ytUrl('Jump Rope')}],
-  home:[{n:'Kettlebell Complex',equip:'Kettlebell',c:'Swing to Squat to Reverse Lunge',s:'5x',r:'8 each',yt:ytUrl('KB Complex')},{n:'Glute Bridge with DB',equip:'Adjustable Dumbbell',c:'DB on hips, hold at top and pulse hard',s:'4x',r:'15 pulses',yt:ytUrl('Glute Bridge')},{n:'Jump Rope All Out',equip:'Jump Rope',c:'Fastest pace you can hold',s:'5x',r:'2 min',yt:ytUrl('Jump Rope')},{n:'Burpees',equip:'Bodyweight',c:'Chest to floor, jump at top',s:'4x',r:'10',yt:ytUrl('Burpees')}]},
+  gym:[
+    {n:'DB Squat to Press',equip:'Dumbbells',c:'Heavier than phase 1, explosive at top',s:'4x',r:'10',yt:ytUrl('Dumbbell Squat to Press')},
+    {n:'Barbell Hip Thrust',equip:'Barbell + Bench',c:'Peak glute drive, add weight',s:'4x',r:'10',yt:ytUrl('Barbell Hip Thrust')},
+    {n:'Seated Cable Row',equip:'Cable Machine',c:'Heaviest row of the phase',s:'3x',r:'12',yt:ytUrl('Seated Cable Row')},
+    {n:'DB Lateral Raises',equip:'Dumbbells',c:'Superset with row, no rest between',s:'3x',r:'15',yt:ytUrl('Lateral Raises')},
+    {n:'Treadmill Sprints',equip:'Treadmill',c:'Faster than phase 1, push yourself',s:'10x',r:'30s on / 30s off',yt:ytUrl('Treadmill Sprints')}
+  ],
+  home:[
+    {n:'Kettlebell Swings',equip:'Kettlebell',c:'Heavier bell, explosive hip snap',s:'4x',r:'15',yt:ytUrl('Kettlebell Swings')},
+    {n:'DB Thrusters',equip:'Dumbbells',c:'Heavier DBs, full squat, full press',s:'4x',r:'10',yt:ytUrl('Dumbbell Thrusters')},
+    {n:'Single-Leg Glute Bridge',equip:'Bodyweight',c:'Drive one heel hard, hold at top',s:'3x',r:'15/side',yt:ytUrl('Single Leg Glute Bridge')},
+    {n:'Burpees',equip:'Bodyweight',c:'Full chest to floor, explosive jump',s:'4x',r:'10',yt:ytUrl('Burpees')},
+    {n:'Jump Rope All Out',equip:'Jump Rope',c:'Fastest pace you can sustain',s:'5x',r:'2 min',yt:ytUrl('Jump Rope')}
+  ]},
 Sat:{label:'Active Recovery',
-  gym:[{n:'Treadmill Easy Walk',equip:'Treadmill',c:'Zone 2 only',s:'1x',r:'30 min',yt:ytUrl('Zone 2')},{n:'Hip Flexor and Glute Stretch',equip:'Floor',c:'Focus on hip flexors, glutes, hamstrings',s:'1x',r:'10 min',yt:ytUrl('Hip Flexor Stretch')}],
-  home:[{n:'Easy Walk',equip:'Bodyweight',c:'Light pace, just recover',s:'1x',r:'30 min',yt:ytUrl('Walking')},{n:'Hip Flexor and Glute Stretch',equip:'Floor',c:'Focus on tight areas from the week',s:'1x',r:'10 min',yt:ytUrl('Stretching')}]},
+  gym:[
+    {n:'Treadmill Easy Walk',equip:'Treadmill',c:'Zone 2, easy pace, celebrate the week',s:'1x',r:'30 min',yt:ytUrl('Zone 2 Walk')},
+    {n:'Hip Flexor Stretch',equip:'Floor',c:'Hold longer this phase — 45 sec each side',s:'1x',r:'6 min',yt:ytUrl('Hip Flexor Stretch')},
+    {n:'Glute and Piriformis Stretch',equip:'Floor',c:'Figure-4, sink deeper than phase 1',s:'1x',r:'6 min',yt:ytUrl('Glute Stretch')}
+  ],
+  home:[
+    {n:'Easy Walk',equip:'Bodyweight',c:'Light pace, active recovery',s:'1x',r:'30 min',yt:ytUrl('Easy Walk')},
+    {n:'Hip Flexor Stretch',equip:'Floor',c:'Hold 45 sec each side',s:'1x',r:'6 min',yt:ytUrl('Hip Flexor Stretch')},
+    {n:'Glute and Piriformis Stretch',equip:'Floor',c:'Deeper hold than phase 1',s:'1x',r:'6 min',yt:ytUrl('Glute Stretch')}
+  ]},
 Sun:{label:'Rest',gym:[],home:[]}}},
-{id:3,name:'Peak',weeks:'Wks 9-12',color:'#c8f135',goal:'Maximize definition, peak conditioning, hit your goal weight',
+
+// ─────────────────────────────────────────────
+// PHASE 3 — PEAK (Wks 9-12)
+// ─────────────────────────────────────────────
+{id:3,name:'Peak',weeks:'Wks 9-12',color:'#c8f135',goal:'Peak conditioning, maximum definition, hit your goal',
 days:{
 Mon:{label:'Chest & Triceps',
-  gym:[{n:'DB Chest Press',equip:'Dumbbells + Bench',c:'Max effort sets, heaviest dumbbells of the program',s:'5x',r:'6',yt:ytUrl('Dumbbell Chest Press')},{n:'Incline DB Press',equip:'Dumbbells + Bench',c:'Full range, peak squeeze at top',s:'4x',r:'8',yt:ytUrl('Incline Press')},{n:'Cable Fly and Push-Up Superset',equip:'Cable Machine',c:'No rest between, burnout the chest',s:'3x',r:'10+12',yt:ytUrl('Chest Superset')},{n:'Tricep Pushdown Dropset',equip:'Cable Machine',c:'Drop weight twice, no rest between drops',s:'3x',r:'12+10+8',yt:ytUrl('Tricep Pushdown')},{n:'Tricep Dips',equip:'Bench',c:'Go to failure each set',s:'3x',r:'AMRAP',yt:ytUrl('Tricep Dips')},{n:'Treadmill Sprints',equip:'Treadmill',c:'Peak cardio this phase',s:'15 min',r:'30s on/30s off',yt:ytUrl('Sprint')}],
-  home:[{n:'Explosive Push-Ups',equip:'Bodyweight',c:'Clap or leave the floor each rep',s:'4x',r:'8',yt:ytUrl('Explosive Push Ups')},{n:'Archer Push-Ups',equip:'Bodyweight',c:'Near one-arm difficulty',s:'4x',r:'8/side',yt:ytUrl('Archer Push Up')},{n:'Tricep Dips',equip:'Chair + Dumbbell on lap',c:'Weight on lap for added resistance',s:'4x',r:'10',yt:ytUrl('Weighted Dips')},{n:'Overhead DB Tricep Extension',equip:'Adjustable Dumbbell',c:'Peak weight, elbows close, slow descent',s:'4x',r:'10',yt:ytUrl('Overhead Tricep Extension')},{n:'Push-Up Burnout',equip:'Bodyweight',c:'As many as possible, no rest',s:'2x',r:'AMRAP',yt:ytUrl('Push Up Challenge')},{n:'Jump Rope All Out',equip:'Jump Rope',c:'Peak intensity this phase',s:'4x',r:'2 min',yt:ytUrl('Jump Rope')}]},
+  gym:[
+    {n:'DB Chest Press',equip:'Dumbbells + Bench',c:'Heaviest of the program, full range, no bounce',s:'5x',r:'8',yt:ytUrl('Dumbbell Chest Press')},
+    {n:'Incline DB Press',equip:'Dumbbells + Bench',c:'Peak weight, slow eccentric',s:'4x',r:'8',yt:ytUrl('Incline Dumbbell Press')},
+    {n:'Cable Fly + Push-Up Superset',equip:'Cable Machine + Bodyweight',c:'10 cable flyes then immediately max push-ups',s:'3x',r:'10 + AMRAP',yt:ytUrl('Chest Superset')},
+    {n:'Tricep Pushdown Dropset',equip:'Cable Machine',c:'Do 10, drop weight, do 8 more without rest',s:'3x',r:'10 + 8',yt:ytUrl('Tricep Pushdown')},
+    {n:'Tricep Dips',equip:'Bench',c:'Go to failure each set',s:'3x',r:'AMRAP',yt:ytUrl('Tricep Dips')},
+    {n:'Treadmill Sprint Finisher',equip:'Treadmill',c:'Peak cardio effort, push the pace',s:'1x',r:'15 min',yt:ytUrl('Treadmill Sprints')}
+  ],
+  home:[
+    {n:'Explosive Push-Ups',equip:'Bodyweight',c:'Clap at top or get hands off the floor',s:'4x',r:'8',yt:ytUrl('Explosive Push Ups')},
+    {n:'Archer Push-Ups',equip:'Bodyweight',c:'Near one-arm difficulty, slow down',s:'4x',r:'8/side',yt:ytUrl('Archer Push Up')},
+    {n:'DB Chest Fly on Floor',equip:'Dumbbells',c:'Heaviest DBs, full arc, controlled',s:'4x',r:'10',yt:ytUrl('Dumbbell Floor Fly')},
+    {n:'Weighted Tricep Dips',equip:'Chair + Dumbbell on lap',c:'Weight on lap, full range',s:'4x',r:'10',yt:ytUrl('Weighted Dips')},
+    {n:'Push-Up Burnout',equip:'Bodyweight',c:'As many as possible, rest 10 sec, go again',s:'2x',r:'AMRAP',yt:ytUrl('Push Up Challenge')},
+    {n:'Jump Rope All Out',equip:'Jump Rope',c:'Peak intensity, fastest you have gone',s:'4x',r:'2 min',yt:ytUrl('Jump Rope')}
+  ]},
 Tue:{label:'Back & Biceps',
-  gym:[{n:'Barbell Deadlift',equip:'Barbell Rack',c:'Peak strength, heavy and clean',s:'4x',r:'5',yt:ytUrl('Deadlift')},{n:'Pull-Ups or Assisted Pull-Ups',equip:'Pull-Up Bar',c:'Use band if needed, aim for more reps each session',s:'4x',r:'AMRAP',yt:ytUrl('Pull Ups')},{n:'Seated Cable Row',equip:'Cable Machine',c:'Heaviest weight of the program',s:'4x',r:'8',yt:ytUrl('Seated Cable Row')},{n:'DB 21s',equip:'Dumbbells',c:'7 bottom 7 top 7 full reps, peak bicep burn',s:'3x',r:'21',yt:ytUrl('Bicep 21s')},{n:'Incline DB Curls',equip:'Dumbbells + Bench',c:'Full stretch, peak isolation',s:'3x',r:'10',yt:ytUrl('Incline Curl')},{n:'Treadmill Interval Sprints',equip:'Treadmill',c:'Best cardio conditioning of the plan',s:'12 min',r:'30s on/30s off',yt:ytUrl('Treadmill Sprints')}],
-  home:[{n:'KB Deadlift',equip:'Kettlebell',c:'Heaviest setting, peak phase',s:'4x',r:'8',yt:ytUrl('KB Deadlift')},{n:'DB Row',equip:'Adjustable Dumbbell',c:'Peak weight this phase',s:'4x',r:'10/side',yt:ytUrl('DB Row')},{n:'Inverted Row',equip:'Table / Bar',c:'Feet elevated, chest to bar',s:'4x',r:'AMRAP',yt:ytUrl('Inverted Row')},{n:'DB 21s',equip:'Adjustable Dumbbell',c:'7 bottom 7 top 7 full',s:'3x',r:'21',yt:ytUrl('Bicep 21s')},{n:'Concentration Curls',equip:'Adjustable Dumbbell',c:'Total isolation and peak squeeze',s:'3x',r:'10/side',yt:ytUrl('Concentration Curl')},{n:'Exercise Bike Sprints',equip:'Exercise Bike',c:'Highest resistance of the plan',s:'12 min',r:'30s on/30s off',yt:ytUrl('Bike Sprint')}]},
+  gym:[
+    {n:'Lat Pulldown',equip:'Lat Pulldown Machine',c:'Peak weight, full stretch at top every rep',s:'4x',r:'8',yt:ytUrl('Lat Pulldown')},
+    {n:'Seated Cable Row',equip:'Cable Machine',c:'Heaviest of the program, drive elbows hard',s:'4x',r:'8',yt:ytUrl('Seated Cable Row')},
+    {n:'Single-Arm DB Row',equip:'Dumbbell + Bench',c:'Peak weight, maximum range of motion',s:'4x',r:'10/side',yt:ytUrl('Single Arm Dumbbell Row')},
+    {n:'DB 21s',equip:'Dumbbells',c:'7 bottom half / 7 top half / 7 full reps',s:'3x',r:'21',yt:ytUrl('Bicep 21s')},
+    {n:'Incline DB Curls',equip:'Dumbbells + Bench',c:'Full stretch, peak isolation',s:'3x',r:'10',yt:ytUrl('Incline Dumbbell Curl')},
+    {n:'Treadmill Sprint Intervals',equip:'Treadmill',c:'Best cardio conditioning of the plan',s:'1x',r:'15 min',yt:ytUrl('Treadmill Sprints')}
+  ],
+  home:[
+    {n:'Inverted Row',equip:'Table or Bar',c:'Feet fully elevated, chest to bar',s:'4x',r:'AMRAP',yt:ytUrl('Inverted Row')},
+    {n:'DB Bent-Over Row',equip:'Dumbbells',c:'Peak weight, explosive pull',s:'4x',r:'10',yt:ytUrl('Bent Over Dumbbell Row')},
+    {n:'Renegade Row',equip:'Dumbbells',c:'Heavy DBs, hips locked level',s:'4x',r:'8/side',yt:ytUrl('Renegade Row')},
+    {n:'DB 21s',equip:'Dumbbells',c:'7 bottom / 7 top / 7 full — peak bicep isolation',s:'3x',r:'21',yt:ytUrl('Bicep 21s')},
+    {n:'Concentration Curls',equip:'Dumbbell',c:'Heaviest yet, total peak squeeze',s:'3x',r:'10/side',yt:ytUrl('Concentration Curl')},
+    {n:'Exercise Bike Sprints',equip:'Exercise Bike',c:'Highest resistance of the entire plan',s:'1x',r:'15 min',yt:ytUrl('Bike Sprint')}
+  ]},
 Wed:{label:'Legs & Glutes',
-  gym:[{n:'Barbell Back Squat',equip:'Power Rack + Barbell',c:'Peak squat weight of the program',s:'5x',r:'5',yt:ytUrl('Back Squat')},{n:'Hip Thrust',equip:'Barbell + Bench',c:'Heaviest hip thrust of the program, peak glute squeeze',s:'4x',r:'10',yt:ytUrl('Barbell Hip Thrust')},{n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Maximum stretch and control',s:'4x',r:'10',yt:ytUrl('RDL')},{n:'Walking Lunges',equip:'Dumbbells',c:'Longest lunge set of the program',s:'4x',r:'24 steps',yt:ytUrl('Walking Lunges')},{n:'Cable Kickback',equip:'Cable Machine',c:'Peak glute isolation, squeeze at top of every rep',s:'4x',r:'15/side',yt:ytUrl('Cable Glute Kickback')},{n:'Treadmill Sprint Finisher',equip:'Treadmill',c:'Final push, leave it all here',s:'15 min',r:'30s all out/30s walk',yt:ytUrl('Sprint')}],
-  home:[{n:'Goblet Squat',equip:'Kettlebell',c:'Heaviest kettlebell, explosive drive',s:'5x',r:'8',yt:ytUrl('Goblet Squat')},{n:'Bulgarian Split Squat',equip:'Chair + Adjustable Dumbbell',c:'Add DB for max challenge',s:'4x',r:'10/side',yt:ytUrl('Bulgarian Split Squat')},{n:'Single-Leg Glute Bridge',equip:'Bodyweight',c:'Drive through one heel, peak squeeze, no floor touch',s:'4x',r:'12/side',yt:ytUrl('Single Leg Glute Bridge')},{n:'Donkey Kicks',equip:'Resistance Band optional',c:'Peak glute isolation, add band for more burn',s:'4x',r:'20/side',yt:ytUrl('Donkey Kicks')},{n:'Jump Squat',equip:'Bodyweight',c:'Explode up, land soft, glute focus',s:'3x',r:'12',yt:ytUrl('Jump Squat')},{n:'Exercise Bike Peak Effort',equip:'Exercise Bike',c:'Hardest bike session of the plan',s:'15 min',r:'30s all out/30s easy',yt:ytUrl('Bike')}]},
+  gym:[
+    {n:'Barbell Hip Thrust',equip:'Barbell + Bench',c:'Heaviest hip thrust of the program, peak glute squeeze',s:'5x',r:'8',yt:ytUrl('Barbell Hip Thrust')},
+    {n:'Barbell Back Squat',equip:'Power Rack + Barbell',c:'Peak squat weight, depth and control',s:'4x',r:'6',yt:ytUrl('Barbell Back Squat')},
+    {n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Maximum stretch, peak hamstring and glute load',s:'4x',r:'10',yt:ytUrl('Romanian Deadlift')},
+    {n:'Cable Glute Kickback',equip:'Cable Machine',c:'Peak isolation, squeeze hard at top every rep',s:'4x',r:'15/side',yt:ytUrl('Cable Glute Kickback')},
+    {n:'Walking Lunges',equip:'Dumbbells',c:'Longest lunge set of the program',s:'4x',r:'24 steps',yt:ytUrl('Walking Lunges')},
+    {n:'Treadmill Sprint Finisher',equip:'Treadmill',c:'Final push, leave everything here',s:'1x',r:'15 min',yt:ytUrl('Sprint')}
+  ],
+  home:[
+    {n:'Single-Leg Glute Bridge',equip:'Dumbbell on hip',c:'Add DB for resistance, peak squeeze, no touch between reps',s:'4x',r:'15/side',yt:ytUrl('Single Leg Glute Bridge')},
+    {n:'Bulgarian Split Squat',equip:'Chair + Dumbbells',c:'Peak weight, full depth, drive through heel',s:'4x',r:'10/side',yt:ytUrl('Bulgarian Split Squat')},
+    {n:'DB Romanian Deadlift',equip:'Dumbbells',c:'Heaviest of the program, maximum stretch',s:'4x',r:'10',yt:ytUrl('Romanian Deadlift')},
+    {n:'Donkey Kicks',equip:'Resistance Band optional',c:'Add band for peak burn, squeeze hard at top',s:'4x',r:'20/side',yt:ytUrl('Donkey Kicks')},
+    {n:'Jump Squat',equip:'Bodyweight',c:'Explode up, land soft, peak power output',s:'3x',r:'12',yt:ytUrl('Jump Squat')},
+    {n:'Exercise Bike Peak Effort',equip:'Exercise Bike',c:'Hardest bike session of the plan',s:'1x',r:'15 min',yt:ytUrl('Bike')}
+  ]},
 Thu:{label:'Shoulders & Abs',
-  gym:[{n:'DB Shoulder Press',equip:'Dumbbells',c:'Peak weight, max effort, strict form',s:'5x',r:'6',yt:ytUrl('Shoulder Press')},{n:'DB Arnold Press',equip:'Dumbbells',c:'Full rotation, slow and deliberate',s:'4x',r:'8',yt:ytUrl('Arnold Press')},{n:'DB Lateral Raise Dropset',equip:'Dumbbells',c:'Drop weight twice, no rest between drops',s:'3x',r:'10+10+10',yt:ytUrl('Lateral Raise')},{n:'Face Pulls',equip:'Cable Machine',c:'Heaviest face pulls of the plan',s:'4x',r:'12',yt:ytUrl('Face Pulls')},{n:'Hanging Leg Raises',equip:'Pull-Up Bar',c:'Legs straight, slow and controlled',s:'4x',r:'12',yt:ytUrl('Hanging Leg Raise')},{n:'V-Ups',equip:'Bodyweight',c:'Touch toes at top, slow descent',s:'4x',r:'15',yt:ytUrl('V Ups')},{n:'Hip Dips',equip:'Floor',c:'Peak version, add DB to hip for resistance',s:'4x',r:'15/side',yt:ytUrl('Hip Dips')},{n:'Hollow Body Hold',equip:'Floor',c:'Arms overhead, back flat, hold without breaking',s:'4x',r:'30 sec',yt:ytUrl('Hollow Body Hold')},{n:'Plank to Failure',equip:'Floor',c:'Final phase, hold as long as possible',s:'3x',r:'Max',yt:ytUrl('Plank')}],
-  home:[{n:'DB Shoulder Press',equip:'Adjustable Dumbbell',c:'Peak weight, max effort',s:'5x',r:'6',yt:ytUrl('Shoulder Press')},{n:'DB Lateral Raise Dropset',equip:'Adjustable Dumbbell',c:'Three drops, no rest',s:'3x',r:'10+10+10',yt:ytUrl('Lateral Raise')},{n:'Pike Push-Ups',equip:'Bodyweight',c:'Near handstand position for peak difficulty',s:'4x',r:'12',yt:ytUrl('Pike Push Up')},{n:'DB Upright Row',equip:'Adjustable Dumbbell',c:'Elbows high, squeeze traps at top',s:'3x',r:'12',yt:ytUrl('Upright Row')},{n:'V-Ups',equip:'Bodyweight',c:'Touch toes at the top, slow descent',s:'4x',r:'15',yt:ytUrl('V Ups')},{n:'Hip Dips',equip:'Floor',c:'Side plank, peak version, add DB resistance',s:'4x',r:'15/side',yt:ytUrl('Hip Dips')},{n:'Hollow Body Hold',equip:'Floor',c:'Arms overhead, back flat, hold without breaking',s:'4x',r:'30 sec',yt:ytUrl('Hollow Body Hold')},{n:'Glute Bridge with DB Pulses',equip:'Adjustable Dumbbell',c:'Heaviest DB this phase, pulse hard at top',s:'3x',r:'20 pulses',yt:ytUrl('Glute Bridge')},{n:'Plank to Failure',equip:'Floor',c:'Final phase, hold as long as possible',s:'3x',r:'Max',yt:ytUrl('Plank')}]},
-Fri:{label:'Full Body + Peak Conditioning',
-  gym:[{n:'DB Squat to Press',equip:'Dumbbells',c:'Peak weight, explosive and powerful',s:'5x',r:'8',yt:ytUrl('DB Squat to Press')},{n:'Hip Thrust',equip:'Barbell + Bench',c:'Final peak glute session of the program',s:'4x',r:'10',yt:ytUrl('Barbell Hip Thrust')},{n:'Pull-Ups or Assisted',equip:'Pull-Up Bar',c:'Best upper body pull of your life',s:'4x',r:'AMRAP',yt:ytUrl('Pull Ups')},{n:'Treadmill Sprint Finisher',equip:'Treadmill',c:'This is what you trained for',s:'12x',r:'30s on/30s off',yt:ytUrl('Sprint')},{n:'Jump Rope Peak Effort',equip:'Jump Rope',c:'Best cardio of the entire plan',s:'4x',r:'2 min',yt:ytUrl('Jump Rope')}],
-  home:[{n:'KB Complex',equip:'Kettlebell',c:'Best kettlebell complex of the plan',s:'6x',r:'8 each',yt:ytUrl('KB Complex')},{n:'Glute Bridge Burnout',equip:'Adjustable Dumbbell',c:'Heaviest DB, hold 30s then pulse 20',s:'4x',r:'30s hold + 20 pulses',yt:ytUrl('Glute Bridge')},{n:'Push-Up and Jump Squat Superset',equip:'Bodyweight',c:'No rest between exercises',s:'4x',r:'12+12',yt:ytUrl('Superset')},{n:'Jump Rope Peak Effort',equip:'Jump Rope',c:'Best cardio of the entire plan',s:'6x',r:'2 min',yt:ytUrl('Jump Rope')}]},
+  gym:[
+    {n:'DB Shoulder Press',equip:'Dumbbells',c:'Peak weight, max effort, strict form',s:'5x',r:'6',yt:ytUrl('Dumbbell Shoulder Press')},
+    {n:'DB Arnold Press',equip:'Dumbbells',c:'Full rotation, slow and deliberate',s:'4x',r:'8',yt:ytUrl('Arnold Press')},
+    {n:'DB Lateral Raise Dropset',equip:'Dumbbells',c:'Drop weight twice with no rest — 10 + 10 + 10',s:'3x',r:'10+10+10',yt:ytUrl('Lateral Raise Dropset')},
+    {n:'Face Pulls',equip:'Cable Machine',c:'Heaviest face pulls of the plan, rear delt peak',s:'4x',r:'12',yt:ytUrl('Face Pulls')},
+    {n:'Hanging Leg Raises',equip:'Pull-Up Bar',c:'Straight legs, slow and controlled — hardest version',s:'4x',r:'12',yt:ytUrl('Hanging Leg Raise')},
+    {n:'V-Ups',equip:'Floor',c:'Touch toes at top, slow controlled descent',s:'4x',r:'15',yt:ytUrl('V Ups')},
+    {n:'Hip Dips',equip:'Floor',c:'Peak version — add DB to hip for resistance',s:'4x',r:'15/side',yt:ytUrl('Hip Dips')},
+    {n:'Plank to Failure',equip:'Floor',c:'Hold as long as possible, beat your record',s:'3x',r:'Max',yt:ytUrl('Plank')}
+  ],
+  home:[
+    {n:'DB Shoulder Press',equip:'Dumbbells',c:'Peak weight, max effort press',s:'5x',r:'6',yt:ytUrl('Shoulder Press')},
+    {n:'DB Lateral Raise Dropset',equip:'Dumbbells',c:'Three drops, no rest between',s:'3x',r:'10+10+10',yt:ytUrl('Lateral Raises')},
+    {n:'Pike Push-Ups',equip:'Bodyweight',c:'Near handstand position, peak difficulty',s:'4x',r:'12',yt:ytUrl('Pike Push Ups')},
+    {n:'DB Upright Row',equip:'Dumbbells',c:'Elbows high, peak traps and shoulder activation',s:'3x',r:'12',yt:ytUrl('Upright Row')},
+    {n:'V-Ups',equip:'Floor',c:'Touch toes at top, slow descent',s:'4x',r:'15',yt:ytUrl('V Ups')},
+    {n:'Hip Dips',equip:'Floor',c:'Peak version, add DB resistance',s:'4x',r:'15/side',yt:ytUrl('Hip Dips')},
+    {n:'Hollow Body Hold',equip:'Floor',c:'Arms overhead, back flat, hold without breaking',s:'4x',r:'30 sec',yt:ytUrl('Hollow Body Hold')},
+    {n:'Plank to Failure',equip:'Floor',c:'Hold as long as possible — beat your record',s:'3x',r:'Max',yt:ytUrl('Plank')}
+  ]},
+Fri:{label:'Full Body + Conditioning',
+  gym:[
+    {n:'DB Squat to Press',equip:'Dumbbells',c:'Peak weight, explosive and powerful every rep',s:'5x',r:'8',yt:ytUrl('Dumbbell Squat to Press')},
+    {n:'Barbell Hip Thrust',equip:'Barbell + Bench',c:'Final peak glute session of the program',s:'4x',r:'10',yt:ytUrl('Barbell Hip Thrust')},
+    {n:'Lat Pulldown',equip:'Lat Pulldown Machine',c:'Best pull session of the plan',s:'4x',r:'8',yt:ytUrl('Lat Pulldown')},
+    {n:'DB Lateral Raises',equip:'Dumbbells',c:'Superset with pulldown, peak shoulder burn',s:'4x',r:'15',yt:ytUrl('Lateral Raises')},
+    {n:'Treadmill Sprint Finisher',equip:'Treadmill',c:'This is what you trained for — leave it all here',s:'12x',r:'30s on / 30s off',yt:ytUrl('Sprint')}
+  ],
+  home:[
+    {n:'Kettlebell Swings',equip:'Kettlebell',c:'Heaviest bell of the program, explosive',s:'5x',r:'15',yt:ytUrl('Kettlebell Swings')},
+    {n:'DB Thrusters',equip:'Dumbbells',c:'Peak weight, squat deep, press fully',s:'4x',r:'10',yt:ytUrl('Dumbbell Thrusters')},
+    {n:'Single-Leg Glute Bridge',equip:'Dumbbell on hip',c:'Heaviest DB, peak glute session',s:'4x',r:'15/side',yt:ytUrl('Single Leg Glute Bridge')},
+    {n:'Burpees',equip:'Bodyweight',c:'Best burpee session of the plan',s:'4x',r:'12',yt:ytUrl('Burpees')},
+    {n:'Jump Rope Peak Effort',equip:'Jump Rope',c:'Best cardio of the entire program — finish strong',s:'6x',r:'2 min',yt:ytUrl('Jump Rope')}
+  ]},
 Sat:{label:'Active Recovery',
-  gym:[{n:'Treadmill Easy Walk',equip:'Treadmill',c:'You earned this, easy pace',s:'1x',r:'30 min',yt:ytUrl('Walk')},{n:'Hip Flexor and Glute Stretch',equip:'Floor',c:'Deep stretches, celebrate the work',s:'1x',r:'15 min',yt:ytUrl('Hip Flexor Stretch')}],
-  home:[{n:'Easy Walk',equip:'Bodyweight',c:'Enjoy it, you have come a long way',s:'1x',r:'30 min',yt:ytUrl('Walk')},{n:'Hip Flexor and Glute Stretch',equip:'Floor',c:'Deep stretches, full recovery',s:'1x',r:'15 min',yt:ytUrl('Stretching')}]},
+  gym:[
+    {n:'Treadmill Easy Walk',equip:'Treadmill',c:'You earned this. Easy pace, celebrate the 12 weeks.',s:'1x',r:'30 min',yt:ytUrl('Zone 2 Walk')},
+    {n:'Hip Flexor Stretch',equip:'Floor',c:'Deep hold, enjoy the recovery',s:'1x',r:'8 min',yt:ytUrl('Hip Flexor Stretch')},
+    {n:'Glute and Piriformis Stretch',equip:'Floor',c:'Deep figure-4, breathe and release',s:'1x',r:'8 min',yt:ytUrl('Glute Stretch')}
+  ],
+  home:[
+    {n:'Easy Walk',equip:'Bodyweight',c:'Slow and easy, enjoy the finish',s:'1x',r:'30 min',yt:ytUrl('Easy Walk')},
+    {n:'Hip Flexor Stretch',equip:'Floor',c:'Deepest hold of the program',s:'1x',r:'8 min',yt:ytUrl('Hip Flexor Stretch')},
+    {n:'Glute and Piriformis Stretch',equip:'Floor',c:'Final deep stretch, full recovery',s:'1x',r:'8 min',yt:ytUrl('Glute Stretch')}
+  ]},
 Sun:{label:'Rest',gym:[],home:[]}}}
 ];
 
-// Returns the right phases based on profile sex
 function getPhases(){
   const p=profile();
   return(p&&p.sex==='female')?FEMALE_PHASES:PHASES;
